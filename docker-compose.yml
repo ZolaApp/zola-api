@@ -1,0 +1,32 @@
+version: '3'
+services:  
+  nodejs:
+    image: node:9
+    container_name: "zola-node"
+    working_dir: /zola-api
+    links:
+      - "postgres:postgres.host"
+    volumes:
+      - "${APP_DIR}:/zola-api:rw"
+    entrypoint: /bin/bash /app/docker/node/entrypoint.sh
+    restart: always
+    # logging:
+    #   driver: "syslog"
+    #   options:
+    #     syslog-facility: "local0"
+    #     tag: "zola-node"
+
+  postgres:
+    image: postgres:10
+    container_name: postgres
+    restart: always
+    volumes:
+      - "${POSTGRES_DATA_DIR}:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    # logging:
+    #   driver: "syslog"
+    #   options:
+    #     syslog-facility: "local0"
+    #     tag: "zola-postgres"
