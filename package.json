@@ -1,0 +1,42 @@
+{
+  "name": "zola-api",
+  "description": "zola.ink’s API",
+  "version": "0.1.1",
+  "bin": "./index.js",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-rewrite": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "flow check",
+      "prettier --write",
+      "git add",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.2",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-strict-mode": "^6.24.1",
+    "eslint": "^4.19.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "flow-bin": "^0.68.0",
+    "husky": "^0.15.0-rc.9",
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.1"
+  }
+}
