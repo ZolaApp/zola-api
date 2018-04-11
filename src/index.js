@@ -1,17 +1,17 @@
+// @flow
 import express from 'express'
 import bodyParser from 'body-parser'
 import compression from 'compression'
 
 const port = process.env.HTTP_PORT || 3001
-const server = express()
+const app = express()
 
-server.use(bodyParser.json())
-server.use(bodyParser.urlencoded({ extended: true }))
-server.use(compression())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use((compression(): express$Middleware))
 
-server.listen(port)
+app.listen(port)
 
-process.on('unhandledRejection', reason => {
-  console.error('UNHANDLED_REJECTION')
-  console.error(reason)
+process.on('unhandledRejection', (reason: Error, promise: Promise<string>) => {
+  console.error('Unhandled rejection at:', promise, 'Reason:', reason)
 })
