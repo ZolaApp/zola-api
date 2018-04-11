@@ -8,7 +8,7 @@ services:
       - "postgres:postgres.host"
     volumes:
       - "${APP_DIR}:/zola-api:rw"
-    entrypoint: /bin/bash /app/docker/node/entrypoint.sh
+    entrypoint: /bin/bash /zola-api/docker/node/entrypoint.sh
     restart: always
     # logging:
     #   driver: "syslog"
