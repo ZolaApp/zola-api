@@ -22,7 +22,6 @@
     ]
   },
   "scripts": {
-    "babel-node": "babel-node",
     "dev": "bin/zola-dev.sh"
   },
   "devDependencies": {
