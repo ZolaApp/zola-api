@@ -15,3 +15,7 @@ app.listen(port)
 process.on('unhandledRejection', (reason: Error, promise: Promise<string>) => {
   console.error('Unhandled rejection at:', promise, 'Reason:', reason)
 })
+
+app.get('/', (request, response: express$Response) =>
+  response.send('Hello Zola!')
+)

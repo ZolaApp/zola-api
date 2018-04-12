@@ -4,6 +4,8 @@ services:
     image: node:9
     container_name: "zola-node"
     working_dir: /zola-api
+    ports:
+      - "3001:3001"
     links:
       - "postgres:postgres.host"
     volumes:
@@ -18,7 +20,7 @@ services:
 
   postgres:
     image: postgres:10
-    container_name: postgres
+    container_name: "zola-postgres"
     restart: always
     volumes:
       - "${POSTGRES_DATA_DIR}:/var/lib/postgresql/data"
