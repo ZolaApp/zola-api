@@ -1,5 +1,5 @@
 version: '3'
-services:  
+services:
   nodejs:
     image: node:9@sha256:bd7b9aaf77ab2ce1e83e7e79fc0969229214f9126ced222c64eab49dc0bdae90
     container_name: "zola-node"
@@ -10,6 +10,8 @@ services:
       - "postgres:postgres.host"
     volumes:
       - "${APP_DIR}:/zola-api:rw"
+    environment:
+      - NODE_ENV
     entrypoint: /bin/bash /zola-api/docker/node/entrypoint.sh
     restart: always
     # logging:
@@ -21,10 +23,13 @@ services:
   postgres:
     image: postgres:10@sha256:d5787305ec0a3b9a24d0108cb5fdbb4befbd809f85639bf04aa1941138df9701
     container_name: "zola-postgres"
+    ports:
+      - "5432:5432"
     restart: always
     volumes:
       - "${POSTGRES_DATA_DIR}:/var/lib/postgresql/data"
     environment:
+      - POSTGRES_DATABASE
       - POSTGRES_USER
       - POSTGRES_PASSWORD
     # logging:
