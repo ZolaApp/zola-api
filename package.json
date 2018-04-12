@@ -5,13 +5,12 @@
   "bin": "./index.js",
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-rewrite": "lint-staged"
+      "pre-commit": "flow check && lint-staged",
+      "pre-rewrite": "flow check && lint-staged"
     }
   },
   "lint-staged": {
     "*.js": [
-      "flow check",
       "prettier --write",
       "git add",
       "eslint --fix",
@@ -22,10 +21,14 @@
       "git add"
     ]
   },
+  "scripts": {
+    "dev": "bin/zola-dev.sh"
+  },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-plugin-transform-strict-mode": "^6.24.1",
     "eslint": "^4.19.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-config-standard": "^11.0.0",
@@ -38,5 +41,11 @@
     "husky": "^0.15.0-rc.9",
     "lint-staged": "^7.0.0",
     "prettier": "^1.11.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.2",
+    "express": "^4.16.3",
+    "nodemon": "^1.17.3"
   }
 }
