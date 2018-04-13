@@ -12,6 +12,9 @@ services:
       - "${APP_DIR}:/zola-api:rw"
     environment:
       - NODE_ENV
+      - POSTGRES_DATABASE
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
     entrypoint: /bin/bash /zola-api/docker/node/entrypoint.sh
     restart: always
     # logging:

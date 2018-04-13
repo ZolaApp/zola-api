@@ -1,17 +1,7 @@
+// @flow
 import knex from 'knex'
+import knexfile from './knexfile'
 
-const database = knex({
-  client: 'pg',
-  version: '10',
-
-  connection: {
-    host: 'postgres.host',
-    database: process.env.POSTGRES_DATABASE,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD
-  },
-
-  debug: process.env.NODE_ENV === 'development'
-})
+const database = knex(knexfile)
 
 export default database

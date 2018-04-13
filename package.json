@@ -22,6 +22,7 @@
     ]
   },
   "scripts": {
+    "knex": "docker exec -it zola-node npx babel-node ./node_modules/.bin/knex --knexfile ./src/server/db/knexfile.js",
     "dev": "bin/zola-dev.sh"
   },
   "devDependencies": {
