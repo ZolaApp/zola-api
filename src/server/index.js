@@ -18,7 +18,13 @@ export default (): express$Application => {
   // Routes
   app.get('/', indexRoute)
   app.use(GRAPHQL_ENDPOINT, graphqlExpress({ schema }))
-  app.get(GRAPHIQL_ENDPOINT, graphiqlExpress({ endpointURL: GRAPHQL_ENDPOINT }))
+
+  if (process.env.NODE_ENV !== 'production') {
+    app.get(
+      GRAPHIQL_ENDPOINT,
+      graphiqlExpress({ endpointURL: GRAPHQL_ENDPOINT })
+    )
+  }
 
   return app
 }
