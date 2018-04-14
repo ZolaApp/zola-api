@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 import compression from 'compression'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { GRAPHQL_ENDPOINT, GRAPHIQL_ENDPOINT } from '@constants/api'
-import schema from './schema'
+import schema from '@api/schema'
 import indexRoute from './routes'
 
 export default (): express$Application => {

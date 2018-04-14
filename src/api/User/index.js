@@ -1,5 +1,5 @@
 // @flow
-import users from './users'
+import users from './queries/users'
 
 export default {
   Query: {
