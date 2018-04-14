@@ -2,6 +2,9 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import compression from 'compression'
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
+import { GRAPHQL_ENDPOINT, GRAPHIQL_ENDPOINT } from '@constants/api'
+import schema from './schema'
 import indexRoute from './routes'
 
 export default (): express$Application => {
@@ -14,6 +17,8 @@ export default (): express$Application => {
 
   // Routes
   app.get('/', indexRoute)
+  app.use(GRAPHQL_ENDPOINT, graphqlExpress({ schema }))
+  app.get(GRAPHIQL_ENDPOINT, graphiqlExpress({ endpointURL: GRAPHQL_ENDPOINT }))
 
   return app
 }

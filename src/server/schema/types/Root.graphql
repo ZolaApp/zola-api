@@ -1,0 +1,16 @@
+type Query {
+  # We need to add a dummy query as the root Query type can’t be empty but we
+  # extend it later.
+  _: Boolean
+}
+
+type Mutation {
+  # We need to add a dummy mutation as the root Mutation type can’t be empty but
+  # we extend it later.
+  _: Boolean
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
