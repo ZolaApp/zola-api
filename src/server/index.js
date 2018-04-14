@@ -1,5 +1,6 @@
 // @flow
 import express from 'express'
+import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
@@ -11,13 +12,14 @@ export default (): express$Application => {
   const app = express()
 
   // Middlewares
+  app.use(helmet())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use((compression(): express$Middleware))
 
   // Routes
-  app.get('/', indexRoute)
   app.use(GRAPHQL_ENDPOINT, graphqlExpress({ schema }))
+  app.get('/', indexRoute)
 
   if (process.env.NODE_ENV !== 'production') {
     app.get(
