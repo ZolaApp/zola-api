@@ -1,29 +1,7 @@
 // @flow
 import validator from 'validator'
-import zxcvbn from 'zxcvbn'
 import bcrypt from 'bcrypt'
-
-type PasswordValidationResult = {
-  isValid: boolean,
-  feedback: string
-}
-
-const validatePassword = (
-  passwordPlain: string,
-  userInputs: Array<string>
-): PasswordValidationResult => {
-  const passwordValidation = zxcvbn(passwordPlain)
-  const { warning, suggestions } = passwordValidation.feedback
-  const formattedSuggestions = suggestions.join(' ')
-  const feedback =
-    (warning ? `${warning}. ${formattedSuggestions}` : formattedSuggestions) ||
-    'Your password is not secure enough.'
-
-  return {
-    isValid: passwordValidation.score > 3,
-    feedback
-  }
-}
+import validatePassword from './validatePassword'
 
 type CreateUserArgs = {
   email: string,
