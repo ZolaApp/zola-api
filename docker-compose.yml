@@ -12,6 +12,8 @@ services:
       - "${APP_DIR}:/zola-api:rw"
     environment:
       - NODE_ENV
+      - NO_DEBUG
+      - POSTGRES_HOST
       - POSTGRES_DATABASE
       - POSTGRES_USER
       - POSTGRES_PASSWORD
