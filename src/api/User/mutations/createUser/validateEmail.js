@@ -8,7 +8,7 @@ type EmailValidationResult = {
 }
 
 const validateEmail = async (email: string): Promise<EmailValidationResult> => {
-  const errors = []
+  const errors: Array<string> = []
   const existingUsersWithEmail = await database('users')
     .where({ email })
     .count()

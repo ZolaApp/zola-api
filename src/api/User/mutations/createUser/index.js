@@ -2,6 +2,8 @@
 import validator from 'validator'
 import bcrypt from 'bcrypt'
 import database from '@server/database'
+import type { User } from '@models/User'
+import type { ValidationError } from '@types/ValidationError'
 import validateEmail from './validateEmail'
 import validatePassword from './validatePassword'
 
@@ -11,11 +13,16 @@ type CreateUserArgs = {
   passwordPlain: string
 }
 
+type CreateUserResponse = {
+  user?: User,
+  errors: Array<ValidationError>
+}
+
 const createUser = async (
   _: any,
   { email, name, passwordPlain }: CreateUserArgs
-) => {
-  const errors = []
+): Promise<CreateUserResponse> => {
+  const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
 
   if (!validator.isLength(trimmedName, { min: 2, max: 30 })) {
