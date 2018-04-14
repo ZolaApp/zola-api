@@ -1,3 +1,4 @@
+// @flow
 import { makeExecutableSchema } from 'graphql-tools'
 import merge from 'lodash/merge'
 import Root from './types/Root.graphql'
