@@ -2,6 +2,7 @@
 import validator from 'validator'
 import bcrypt from 'bcrypt'
 import database from '@server/database'
+import validateEmail from './validateEmail'
 import validatePassword from './validatePassword'
 
 type CreateUserArgs = {
@@ -26,21 +27,11 @@ const createUser = async (
   }
 
   const trimmedEmail = email.trim()
-  const existingUsersWithEmail = await database('users')
-    .where({ email: trimmedEmail })
-    .count()
+  const emailValidation = await validateEmail(trimmedEmail)
 
-  if (!validator.isEmail(trimmedEmail)) {
-    errors.push({
-      field: 'email',
-      message: 'Your e-mail address does not seem to be valid.'
-    })
-  }
-
-  if (existingUsersWithEmail[0].count > 0) {
-    errors.push({
-      field: 'email',
-      message: 'This e-mail address is already in use by another user.'
+  if (!emailValidation.isValid) {
+    emailValidation.errors.forEach(message => {
+      errors.push({ field: 'email', message })
     })
   }
 
@@ -53,7 +44,7 @@ const createUser = async (
     errors.push({ field: 'password', message: passwordValidation.feedback })
   }
 
-  if (errors.length) {
+  if (errors.length > 0) {
     return { errors }
   }
 
