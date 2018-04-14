@@ -5,7 +5,8 @@
       {
         "root": ["./"],
         "alias": {
-          "@server": "./src/server"
+          "@server": "./src/server",
+          "@models": "./src/models"
         }
       }
     ],
