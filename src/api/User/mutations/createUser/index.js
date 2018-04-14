@@ -1,6 +1,7 @@
 // @flow
 import validator from 'validator'
 import bcrypt from 'bcrypt'
+import database from '@server/database'
 import validatePassword from './validatePassword'
 
 type CreateUserArgs = {
@@ -14,8 +15,20 @@ const createUser = async (
   { email, name, passwordPlain }: CreateUserArgs
 ) => {
   const errors = []
-  const trimmedEmail = email.trim()
   const trimmedName = name.trim()
+
+  if (!validator.isLength(trimmedName, { min: 2, max: 30 })) {
+    errors.push({
+      field: 'name',
+      message:
+        'Your name is too long. It should be between 2 and 30 characters.'
+    })
+  }
+
+  const trimmedEmail = email.trim()
+  const existingUsersWithEmail = await database('users')
+    .where({ email: trimmedEmail })
+    .count()
 
   if (!validator.isEmail(trimmedEmail)) {
     errors.push({
@@ -24,11 +37,10 @@ const createUser = async (
     })
   }
 
-  if (!validator.isLength(trimmedName, { min: 2, max: 30 })) {
+  if (existingUsersWithEmail[0].count > 0) {
     errors.push({
-      field: 'name',
-      message:
-        'Your name is too long. It should be between 2 and 30 characters.'
+      field: 'email',
+      message: 'This e-mail address is already in use by another user.'
     })
   }
 
@@ -52,7 +64,11 @@ const createUser = async (
     passwordHash
   }
 
-  return { user, errors }
+  const savedUser = await database('users')
+    .insert(user)
+    .returning('*')
+
+  return { user: savedUser[0], errors }
 }
 
 export default createUser

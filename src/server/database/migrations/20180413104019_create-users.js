@@ -4,7 +4,12 @@ export const up = async knex => {
       .increments('id')
       .unsigned()
       .primary()
-    table.string('email').notNull()
+    table
+      .string('email')
+      .unique()
+      .notNull()
+    table.string('name', 30).notNull()
+    table.string('passwordHash').notNull()
   })
 }
 
