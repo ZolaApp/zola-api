@@ -19,10 +19,11 @@ const createUser = async (
   const trimmedName = name.trim()
 
   if (!validator.isLength(trimmedName, { min: 2, max: 30 })) {
+    const issue = trimmedName.length < 2 ? 'short' : 'long'
+
     errors.push({
       field: 'name',
-      message:
-        'Your name is too long. It should be between 2 and 30 characters.'
+      message: `Your name is too ${issue}. It should be between 2 and 30 characters.`
     })
   }
 
