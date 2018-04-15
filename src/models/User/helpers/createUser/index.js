@@ -1,15 +1,9 @@
 // @flow
 import bcrypt from 'bcrypt'
 import database from '@server/database'
+import type { User } from '@models/User'
 
 const BCRYPT_SALT_ROUNDS = process.env.NODE_ENV === 'test' ? 1 : 10
-
-export type User = {
-  id: number,
-  email: string,
-  name: string,
-  passwordHash: string
-}
 
 export type CreateUserArgs = {
   email: string,
@@ -33,6 +27,4 @@ const createUser = async ({
   return savedUser[0]
 }
 
-export default {
-  createUser
-}
+export default createUser
