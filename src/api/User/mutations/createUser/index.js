@@ -15,7 +15,7 @@ type CreateUserArgs = {
 
 type CreateUserResponse = {
   user?: User,
-  errors: Array<ValidationError>
+  errors?: Array<ValidationError>
 }
 
 const createUser = async (
@@ -66,7 +66,7 @@ const createUser = async (
     .insert(user)
     .returning('*')
 
-  return { user: savedUser[0], errors }
+  return { user: savedUser[0] }
 }
 
 export default createUser
