@@ -2,7 +2,6 @@
   "name": "zola-api",
   "description": "zola.ink’s API",
   "version": "0.1.1",
-  "bin": "./index.js",
   "husky": {
     "hooks": {
       "pre-commit": "flow check && lint-staged",
@@ -22,11 +21,14 @@
     ]
   },
   "scripts": {
-    "dev": "bin/zola-dev.sh"
+    "docker": "docker exec -it zola-node",
+    "knex": "npx babel-node --plugins=add-module-exports ./node_modules/.bin/knex --knexfile ./src/server/database/knexfile.js",
+    "dev": "npx nodemon src/index.js --exec babel-node"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
     "babel-eslint": "8.2.3",
+    "babel-plugin-add-module-exports": "0.2.1",
     "babel-plugin-module-resolver": "3.1.1",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
     "babel-plugin-transform-flow-strip-types": "6.22.0",
@@ -46,7 +48,10 @@
   "dependencies": {
     "body-parser": "1.18.2",
     "compression": "1.7.2",
+    "dotenv": "5.0.1",
     "express": "4.16.3",
-    "nodemon": "1.17.3"
+    "knex": "0.14.6",
+    "nodemon": "1.17.3",
+    "pg": "7.4.1"
   }
 }
