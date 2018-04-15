@@ -9,6 +9,6 @@ const TEST_ACCOUNTS = [
 ]
 
 export const seed = async knex => {
-  await knex('users').del()
+  await knex('users').truncate()
   await Promise.all(TEST_ACCOUNTS.map(User.createUser))
 }
