@@ -4,8 +4,8 @@ import bcrypt from 'bcrypt'
 import database from '@server/database'
 import type { User } from '@models/User'
 import type { ValidationError } from '@types/ValidationError'
-import validateEmail from './validateEmail'
-import validatePassword from './validatePassword'
+import validateEmail from './helpers/validateEmail'
+import validatePassword from './helpers/validatePassword'
 
 type CreateUserArgs = {
   email: string,
