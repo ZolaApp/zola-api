@@ -1,8 +1,7 @@
 // @flow
 import validator from 'validator'
-import database from '@server/database'
 
-export const INVALID_ADDRESS_ERROR =
+export const INVALID_EMAIL_ERROR =
   'Your e-mail address does not seem to be valid.'
 export const EMAIL_ALREADY_IN_USE_ERROR =
   'This e-mail address is already in use by another user.'
@@ -12,17 +11,17 @@ type EmailValidationResult = {
   errors: Array<string>
 }
 
-const validateEmail = async (email: string): Promise<EmailValidationResult> => {
+const validateEmail = (
+  email: string,
+  isEmailInUse: boolean
+): EmailValidationResult => {
   const errors: Array<string> = []
-  const existingUsersWithEmail = await database('users')
-    .where({ email })
-    .count()
 
   if (!validator.isEmail(email)) {
-    errors.push(INVALID_ADDRESS_ERROR)
+    errors.push(INVALID_EMAIL_ERROR)
   }
 
-  if (existingUsersWithEmail[0].count > 0) {
+  if (isEmailInUse) {
     errors.push(EMAIL_ALREADY_IN_USE_ERROR)
   }
 
