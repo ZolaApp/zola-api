@@ -26,10 +26,10 @@
     ]
   },
   "scripts": {
-    "dev": "npx nodemon src/index.js -e js,json,graphql --exec babel-node",
-    "docker": "docker exec -it zola-node",
-    "knex": "npx babel-node --plugins=add-module-exports ./node_modules/.bin/knex --knexfile ./src/server/database/knexfile.js",
-    "test": "jest --verbose --forceExit"
+    "dev": "./scripts/dev.sh",
+    "docker": "./scripts/docker.sh",
+    "knex": "./scripts/knex.sh",
+    "test": "./scripts/test.sh"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
