@@ -3,6 +3,8 @@ import validator from 'validator'
 import UserModel from '@models/User'
 import type { User, CreateUserArgs } from '@models/User'
 import type { ValidationError } from '@types/ValidationError'
+import database from '@server/database'
+import validateName from './helpers/validateName'
 import validateEmail from './helpers/validateEmail'
 import validatePassword from './helpers/validatePassword'
 
@@ -17,18 +19,18 @@ const createUser = async (
 ): Promise<CreateUserResponse> => {
   const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
+  const nameValidation = validateName(trimmedName)
 
-  if (!validator.isLength(trimmedName, { min: 2, max: 30 })) {
-    const issue = trimmedName.length < 2 ? 'short' : 'long'
-
-    errors.push({
-      field: 'name',
-      message: `Your name is too ${issue}. It should be between 2 and 30 characters.`
-    })
+  if (!nameValidation.isValid) {
+    errors.push({ field: 'name', message: nameValidation.error })
   }
 
-  const trimmedEmail = email.trim()
-  const emailValidation = await validateEmail(trimmedEmail)
+  const normalizedEmail = validator.normalizeEmail(email.trim())
+  const existingUsersWithEmail = await database('users')
+    .where({ email })
+    .count()
+  const isEmailInUse = existingUsersWithEmail[0].count > 0
+  const emailValidation = validateEmail(normalizedEmail, isEmailInUse)
 
   if (!emailValidation.isValid) {
     emailValidation.errors.forEach(message => {
@@ -37,7 +39,7 @@ const createUser = async (
   }
 
   const passwordValidation = validatePassword(passwordPlain, [
-    trimmedEmail,
+    normalizedEmail,
     trimmedName
   ])
 
@@ -50,7 +52,7 @@ const createUser = async (
   }
 
   const createUserArgs = {
-    email: validator.normalizeEmail(trimmedEmail),
+    email: normalizedEmail,
     name: trimmedName,
     passwordPlain
   }
