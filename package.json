@@ -60,7 +60,6 @@
     "graphql-tools": "2.24.0",
     "helmet": "3.12.0",
     "knex": "0.14.6",
-    "lodash": "4.17.5",
     "nodemon": "1.17.3",
     "pg": "7.4.1",
     "validator": "9.4.1",
