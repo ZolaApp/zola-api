@@ -20,6 +20,11 @@
       "git add"
     ]
   },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "src/server/database"
+    ]
+  },
   "scripts": {
     "dev": "npx nodemon src/index.js -e js,json,graphql --exec babel-node",
     "docker": "docker exec -it zola-node",
