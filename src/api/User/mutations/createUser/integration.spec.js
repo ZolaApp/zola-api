@@ -1,34 +1,31 @@
 import database from '@server/database'
+import {
+  INVALID_EMAIL_ERROR,
+  EMAIL_ALREADY_IN_USE_ERROR
+} from './helpers/validateEmail'
 import createUser from './index'
 
 describe('The `createUser` mutation', () => {
   beforeAll(async () => {
-    await database('users').truncate()
     await database.migrate.latest()
   })
 
-  it('should return an error if the name is not between 2 and 30 characters', async done => {
-    const actualTooShort = await createUser(
+  beforeEach(async () => {
+    await database('users').truncate()
+  })
+
+  it('should return errors if the name is not valid', async done => {
+    const actual = await createUser(
       {},
       { name: 'A', email: '', passwordPlain: '' }
     )
-    const expectedTooShort = {
+    const expected = {
       field: 'name',
       message:
         'Your name is too short. It should be between 2 and 30 characters.'
     }
-    const actualTooLong = await createUser(
-      {},
-      { name: 'A'.repeat(31), email: '', passwordPlain: '' }
-    )
-    const expectedTooLong = {
-      field: 'name',
-      message:
-        'Your name is too long. It should be between 2 and 30 characters.'
-    }
 
-    expect(actualTooShort.errors).toContainEqual(expectedTooShort)
-    expect(actualTooLong.errors).toContainEqual(expectedTooLong)
+    expect(actual.errors).toContainEqual(expected)
     done()
   })
 
@@ -39,7 +36,22 @@ describe('The `createUser` mutation', () => {
     )
     const expected = {
       field: 'email',
-      message: 'Your e-mail address does not seem to be valid.'
+      message: INVALID_EMAIL_ERROR
+    }
+
+    expect(actual.errors).toContainEqual(expected)
+    done()
+  })
+
+  it('should return errors if the email is already in use', async done => {
+    await database.seed.run()
+    const actual = await createUser(
+      {},
+      { name: '', email: 'email@inuse.com', passwordPlain: '' }
+    )
+    const expected = {
+      field: 'email',
+      message: EMAIL_ALREADY_IN_USE_ERROR
     }
 
     expect(actual.errors).toContainEqual(expected)
