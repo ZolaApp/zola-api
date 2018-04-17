@@ -1,0 +1,18 @@
+type User {
+  id: ID!
+  email: String!
+  name: String!
+}
+
+type CreateUserResponse {
+  user: User
+  errors: [ValidationError]!
+}
+
+extend type Mutation {
+  createUser(
+    email: String!
+    name: String!
+    passwordPlain: String!
+  ): CreateUserResponse
+}

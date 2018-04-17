@@ -5,12 +5,16 @@
       {
         "root": ["./"],
         "alias": {
+          "@api": "./src/api",
+          "@constants": "./src/constants",
+          "@models": "./src/models",
           "@server": "./src/server",
-          "@models": "./src/models"
+          "@types": "./src/types"
         }
       }
     ],
     "transform-es2015-modules-commonjs",
-    "transform-flow-strip-types"
+    "transform-flow-strip-types",
+    "inline-import-graphql-ast"
   ]
 }
