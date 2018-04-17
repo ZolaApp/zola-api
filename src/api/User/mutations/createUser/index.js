@@ -1,17 +1,10 @@
 // @flow
 import validator from 'validator'
-import bcrypt from 'bcrypt'
-import database from '@server/database'
-import type { User } from '@models/User'
+import UserModel from '@models/User'
+import type { User, CreateUserArgs } from '@models/User'
 import type { ValidationError } from '@types/ValidationError'
-import validateEmail from './validateEmail'
-import validatePassword from './validatePassword'
-
-type CreateUserArgs = {
-  email: string,
-  name: string,
-  passwordPlain: string
-}
+import validateEmail from './helpers/validateEmail'
+import validatePassword from './helpers/validatePassword'
 
 type CreateUserResponse = {
   user?: User,
@@ -26,10 +19,11 @@ const createUser = async (
   const trimmedName = name.trim()
 
   if (!validator.isLength(trimmedName, { min: 2, max: 30 })) {
+    const issue = trimmedName.length < 2 ? 'short' : 'long'
+
     errors.push({
       field: 'name',
-      message:
-        'Your name is too long. It should be between 2 and 30 characters.'
+      message: `Your name is too ${issue}. It should be between 2 and 30 characters.`
     })
   }
 
@@ -55,18 +49,14 @@ const createUser = async (
     return { errors }
   }
 
-  const passwordHash = await bcrypt.hash(passwordPlain, 10)
-  const user = {
+  const createUserArgs = {
     email: validator.normalizeEmail(trimmedEmail),
     name: trimmedName,
-    passwordHash
+    passwordPlain
   }
+  const user = await UserModel.createUser(createUserArgs)
 
-  const savedUser = await database('users')
-    .insert(user)
-    .returning('*')
-
-  return { user: savedUser[0] }
+  return { user }
 }
 
 export default createUser

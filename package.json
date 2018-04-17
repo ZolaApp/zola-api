@@ -20,10 +20,16 @@
       "git add"
     ]
   },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "src/server/database"
+    ]
+  },
   "scripts": {
+    "dev": "npx nodemon src/index.js -e js,json,graphql --exec babel-node",
     "docker": "docker exec -it zola-node",
     "knex": "npx babel-node --plugins=add-module-exports ./node_modules/.bin/knex --knexfile ./src/server/database/knexfile.js",
-    "dev": "npx nodemon src/index.js -e js,json,graphql --exec babel-node"
+    "test": "jest --verbose --forceExit"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
@@ -44,6 +50,7 @@
     "eslint-plugin-standard": "3.0.1",
     "flow-bin": "0.69.0",
     "husky": "0.15.0-rc.13",
+    "jest": "22.4.3",
     "lint-staged": "7.0.4",
     "prettier": "1.12.0"
   },
@@ -58,10 +65,9 @@
     "graphql-tools": "2.24.0",
     "helmet": "3.12.0",
     "knex": "0.14.6",
-    "lodash": "4.17.5",
     "nodemon": "1.17.3",
     "pg": "7.4.1",
     "validator": "9.4.1",
-    "zxcvbn": "^4.4.2"
+    "zxcvbn": "4.4.2"
   }
 }
