@@ -25,7 +25,13 @@ const createUser = async (
     errors.push({ field: 'name', message: nameValidation.error })
   }
 
-  const normalizedEmail = validator.normalizeEmail(email.trim())
+  const normalizedEmail = validator.normalizeEmail(email.trim(), {
+    gmail_remove_dots: false,
+    gmail_remove_subaddress: false,
+    outlookdotcom_remove_subaddress: false,
+    yahoo_remove_subaddress: false,
+    icloud_remove_subaddress: false
+  })
   const existingUsersWithEmail = await database('users')
     .where({ email })
     .count()
@@ -58,7 +64,7 @@ const createUser = async (
   }
   const user = await UserModel.createUser(createUserArgs)
 
-  return { user }
+  return { user, errors: [] }
 }
 
 export default createUser
