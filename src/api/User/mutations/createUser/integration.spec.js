@@ -16,11 +16,8 @@ describe('The `createUser` mutation', () => {
   })
 
   it('should return errors if the name is not valid', async done => {
-    const name = 'A'
-    const email = ''
-    const password = ''
     const response = await testClient.mutate({
-      variables: { email, name, password },
+      variables: { name: 'A', email: '', password: '' },
       mutation: gql`
         mutation($email: String!, $name: String!, $password: String!) {
           createUser(email: $email, name: $name, passwordPlain: $password) {
@@ -44,17 +41,15 @@ describe('The `createUser` mutation', () => {
       message:
         'Your name is too short. It should be between 2 and 30 characters.'
     }
+
     expect(user).toBe(null)
     expect(errors).toContainEqual(expected)
     done()
   })
 
   it('should return errors if the email is not valid', async done => {
-    const name = ''
-    const email = 'NOT_AN_EMAIL'
-    const password = ''
     const response = await testClient.mutate({
-      variables: { email, name, password },
+      variables: { name: '', email: 'NOT_AN_EMAIL', password: '' },
       mutation: gql`
         mutation($email: String!, $name: String!, $password: String!) {
           createUser(email: $email, name: $name, passwordPlain: $password) {
@@ -77,6 +72,7 @@ describe('The `createUser` mutation', () => {
       field: 'email',
       message: INVALID_EMAIL_ERROR
     }
+
     expect(user).toBe(null)
     expect(errors).toContainEqual(expected)
     done()
@@ -84,11 +80,8 @@ describe('The `createUser` mutation', () => {
 
   it('should return errors if the email is already in use', async done => {
     await database.seed.run()
-    const name = ''
-    const email = 'email@inuse.com'
-    const password = ''
     const response = await testClient.mutate({
-      variables: { email, name, password },
+      variables: { name: '', email: 'email@inuse.com', password: '' },
       mutation: gql`
         mutation($email: String!, $name: String!, $password: String!) {
           createUser(email: $email, name: $name, passwordPlain: $password) {
@@ -111,17 +104,15 @@ describe('The `createUser` mutation', () => {
       field: 'email',
       message: EMAIL_ALREADY_IN_USE_ERROR
     }
+
     expect(user).toBe(null)
     expect(errors).toContainEqual(expected)
     done()
   })
 
   it('should return errors if the password is not valid', async done => {
-    const name = ''
-    const email = ''
-    const password = 'password'
     const response = await testClient.mutate({
-      variables: { email, name, password },
+      variables: { name: '', email: '', password: 'password' },
       mutation: gql`
         mutation($email: String!, $name: String!, $password: String!) {
           createUser(email: $email, name: $name, passwordPlain: $password) {
@@ -145,17 +136,19 @@ describe('The `createUser` mutation', () => {
       message:
         'This is a top-10 common password. Add another word or two. Uncommon words are better.'
     }
+
     expect(user).toBe(null)
     expect(errors).toContainEqual(expected)
     done()
   })
 
   it('should return the created user on success, with normalized and trimmed values', async done => {
-    const name = '  Foo   '
-    const email = '  FOO@BaR.cOm  '
-    const password = '$uper$trongPa$$word'
     const response = await testClient.mutate({
-      variables: { email, name, password },
+      variables: {
+        name: '  Foo   ',
+        email: '  FOO@BaR.cOm  ',
+        password: '$uper$trongPa$$word'
+      },
       mutation: gql`
         mutation($email: String!, $name: String!, $password: String!) {
           createUser(email: $email, name: $name, passwordPlain: $password) {
@@ -179,6 +172,7 @@ describe('The `createUser` mutation', () => {
       name: 'Foo',
       email: 'foo@bar.com'
     }
+
     expect(errors.length).toBe(0)
     expect(user).toEqual(expected)
     done()
