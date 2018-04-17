@@ -1,8 +1,8 @@
 // @flow
-import users from './queries/users'
+import createUser from './mutations/createUser'
 
 export default {
-  Query: {
-    users
+  Mutation: {
+    createUser
   }
 }
