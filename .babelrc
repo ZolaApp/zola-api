@@ -9,7 +9,8 @@
           "@constants": "./src/constants",
           "@models": "./src/models",
           "@server": "./src/server",
-          "@types": "./src/types"
+          "@types": "./src/types",
+          "@tests": "./src/tests"
         }
       }
     ],
