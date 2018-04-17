@@ -1,8 +1,18 @@
 type User {
   id: ID!
-  email: String
+  email: String!
+  name: String!
 }
 
-extend type Query {
-  users: [User]
+type CreateUserResponse {
+  user: User
+  errors: [ValidationError]!
+}
+
+extend type Mutation {
+  createUser(
+    email: String!
+    name: String!
+    passwordPlain: String!
+  ): CreateUserResponse
 }

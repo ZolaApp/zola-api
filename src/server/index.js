@@ -6,7 +6,6 @@ import compression from 'compression'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { GRAPHQL_ENDPOINT, GRAPHIQL_ENDPOINT } from '@constants/api'
 import schema from '@api/schema'
-import indexRoute from './routes'
 
 export default (): express$Application => {
   const app = express()
@@ -19,7 +18,6 @@ export default (): express$Application => {
 
   // Routes
   app.use(GRAPHQL_ENDPOINT, graphqlExpress({ schema }))
-  app.get('/', indexRoute)
 
   if (process.env.NODE_ENV !== 'production') {
     app.get(

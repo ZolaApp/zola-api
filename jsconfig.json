@@ -5,7 +5,8 @@
       "@api/*": ["./src/api/*"],
       "@constants/*": ["./src/constants/*"],
       "@models/*": ["./src/models/*"],
-      "@server/*": ["./src/server/*"]
+      "@server/*": ["./src/server/*"],
+      "@types/*": ["./src/types/*"]
     }
   }
 }
