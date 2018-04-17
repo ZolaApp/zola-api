@@ -23,9 +23,7 @@
   "jest": {
     "coveragePathIgnorePatterns": [
       "src/server/database"
-    ],
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true
+    ]
   },
   "scripts": {
     "dev": "./scripts/dev.sh",
