@@ -42,7 +42,7 @@ describe('The `createUser` mutation', () => {
         'Your name is too short. It should be between 2 and 30 characters.'
     }
 
-    expect(user).toBe(null)
+    expect(user).toEqual(null)
     expect(errors).toContainEqual(expected)
     done()
   })
@@ -73,7 +73,7 @@ describe('The `createUser` mutation', () => {
       message: INVALID_EMAIL_ERROR
     }
 
-    expect(user).toBe(null)
+    expect(user).toEqual(null)
     expect(errors).toContainEqual(expected)
     done()
   })
@@ -105,7 +105,7 @@ describe('The `createUser` mutation', () => {
       message: EMAIL_ALREADY_IN_USE_ERROR
     }
 
-    expect(user).toBe(null)
+    expect(user).toEqual(null)
     expect(errors).toContainEqual(expected)
     done()
   })
@@ -137,7 +137,7 @@ describe('The `createUser` mutation', () => {
         'This is a top-10 common password. Add another word or two. Uncommon words are better.'
     }
 
-    expect(user).toBe(null)
+    expect(user).toEqual(null)
     expect(errors).toContainEqual(expected)
     done()
   })
@@ -173,7 +173,7 @@ describe('The `createUser` mutation', () => {
       email: 'foo@bar.com'
     }
 
-    expect(errors.length).toBe(0)
+    expect(errors.length).toEqual(0)
     expect(user).toEqual(expected)
     done()
   })
