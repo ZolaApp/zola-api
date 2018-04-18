@@ -4,7 +4,7 @@ import database from '@server/database'
 import {
   INVALID_EMAIL_ERROR,
   EMAIL_ALREADY_IN_USE_ERROR
-} from './helpers/validateEmail'
+} from '@models/User/createUser/validations/validateEmail'
 
 describe('The `createUser` mutation', () => {
   beforeAll(async () => {

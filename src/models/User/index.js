@@ -1,6 +1,6 @@
 // @flow
-import createUser from './helpers/createUser'
-export * from './helpers/createUser'
+import createUser from './createUser'
+export * from './createUser'
 
 export type User = {
   id: number,

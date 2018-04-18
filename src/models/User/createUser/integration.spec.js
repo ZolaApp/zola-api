@@ -4,7 +4,7 @@ import createUser from './index'
 const user = {
   name: 'Foo',
   email: 'foo@bar.com',
-  passwordPlain: 'password'
+  passwordPlain: '$uper$trongPa$$word'
 }
 
 describe('The User model’s `createUser` helper', () => {
@@ -18,7 +18,7 @@ describe('The User model’s `createUser` helper', () => {
 
   it('should add a user to the database and return it', async done => {
     const countBefore = await database('users').count()
-    const createdUser = await createUser(user)
+    const { user: createdUser } = await createUser(user)
     const countAfter = await database('users').count()
 
     expect(countBefore[0].count).toEqual('0')
@@ -32,7 +32,7 @@ describe('The User model’s `createUser` helper', () => {
   })
 
   it('should save a hash of the password and not the plain password', async done => {
-    const createdUser = await createUser(user)
+    const { user: createdUser } = await createUser(user)
     const userKeys = Object.keys(createdUser)
 
     expect(userKeys).not.toContain('passwordPlain')
