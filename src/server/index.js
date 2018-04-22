@@ -22,7 +22,7 @@ export default (): express$Application => {
   if (process.env.NODE_ENV !== 'production') {
     app.get(
       GRAPHIQL_ENDPOINT,
-      graphiqlExpress({ endpointURL: GRAPHIQL_ENDPOINT })
+      graphiqlExpress({ endpointURL: GRAPHQL_ENDPOINT })
     )
   }
 
