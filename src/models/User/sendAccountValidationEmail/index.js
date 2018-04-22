@@ -3,7 +3,7 @@ import sendGrid from '@server/sendGrid'
 import { EMAIL_VALIDATION_TEMPLATE_ID } from '@constants/sendGridTemplatesIDs'
 import type { User } from '@models/User'
 
-const sendValidationEmail = (user: User): void => {
+const sendAccountValidationEmail = (user: User): void => {
   const email = {
     to: user.email,
     from: 'noreply@zola.ink',
@@ -17,4 +17,4 @@ const sendValidationEmail = (user: User): void => {
   sendGrid.send(email)
 }
 
-export default sendValidationEmail
+export default sendAccountValidationEmail

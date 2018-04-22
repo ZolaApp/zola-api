@@ -70,7 +70,7 @@ const createUser = async ({
     .returning('*')
 
   const user = savedUser[0]
-  UserModel.sendValidationEmail(user)
+  UserModel.sendAccountValidationEmail(user)
 
   return { user, errors: [] }
 }

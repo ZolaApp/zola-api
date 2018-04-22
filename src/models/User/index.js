@@ -1,6 +1,6 @@
 // @flow
 import createUser from './createUser'
-import sendValidationEmail from './sendValidationEmail'
+import sendAccountValidationEmail from './sendAccountValidationEmail'
 export * from './createUser'
 
 export type User = {
@@ -14,5 +14,5 @@ export type User = {
 
 export default {
   createUser,
-  sendValidationEmail
+  sendAccountValidationEmail
 }

@@ -12,15 +12,17 @@ const validUser = {
   passwordPlain: '$uper$trongPa$$word'
 }
 
-jest.mock('@models/User/sendValidationEmail', () => jest.fn())
+jest.mock('@models/User/sendAccountValidationEmail', () => jest.fn())
 
 describe('The User model’s `createUser` helper', () => {
-  beforeAll(async () => {
+  beforeAll(async done => {
     await database.migrate.latest()
+    done()
   })
 
-  beforeEach(async () => {
+  beforeEach(async done => {
     await database('users').truncate()
+    done()
   })
 
   it('should return errors if the name is not valid', async done => {
@@ -105,10 +107,10 @@ describe('The User model’s `createUser` helper', () => {
     done()
   })
 
-  it('should send a validation e-mail to the user', async done => {
+  it('should send an account validation e-mail to the user', async done => {
     const { user } = await createUser(validUser)
 
-    expect(UserModel.sendValidationEmail).toHaveBeenCalledWith(user)
+    expect(UserModel.sendAccountValidationEmail).toHaveBeenCalledWith(user)
     done()
   })
 

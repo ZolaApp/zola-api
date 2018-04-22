@@ -19,9 +19,10 @@ const mutation = gql`
 `
 
 describe('The `createUser` mutation', () => {
-  beforeAll(async () => {
+  beforeAll(async done => {
     await database.migrate.latest()
     await database('users').truncate()
+    done()
   })
 
   it('should return errors', async done => {
