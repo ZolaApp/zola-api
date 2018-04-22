@@ -1,4 +1,5 @@
 import database from '@server/database'
+import UserModel from '@models/User'
 import {
   INVALID_EMAIL_ERROR,
   EMAIL_ALREADY_IN_USE_ERROR
@@ -10,6 +11,8 @@ const validUser = {
   email: 'foo@bar.com',
   passwordPlain: '$uper$trongPa$$word'
 }
+
+jest.mock('@models/User/sendValidationEmail', () => jest.fn())
 
 describe('The User model’s `createUser` helper', () => {
   beforeAll(async () => {
@@ -99,6 +102,13 @@ describe('The User model’s `createUser` helper', () => {
       name: 'Foo',
       email: 'foo@bar.com'
     })
+    done()
+  })
+
+  it('should send a validation e-mail to the user', async done => {
+    const { user } = await createUser(validUser)
+
+    expect(UserModel.sendValidationEmail).toHaveBeenCalledWith(user)
     done()
   })
 
