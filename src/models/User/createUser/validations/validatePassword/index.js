@@ -1,7 +1,7 @@
 // @flow
 import zxcvbn from 'zxcvbn'
 
-const MINIMUM_SCORE = 3
+const MINIMUM_SCORE = 2
 
 type PasswordValidationFeedback = {
   warning: string,
