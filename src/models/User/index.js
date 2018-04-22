@@ -1,5 +1,6 @@
 // @flow
 import createUser from './createUser'
+import sendValidationEmail from './sendValidationEmail'
 export * from './createUser'
 
 export type User = {
@@ -12,5 +13,6 @@ export type User = {
 }
 
 export default {
-  createUser
+  createUser,
+  sendValidationEmail
 }

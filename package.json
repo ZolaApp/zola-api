@@ -55,6 +55,7 @@
     "prettier": "1.12.1"
   },
   "dependencies": {
+    "@sendgrid/mail": "6.2.1",
     "apollo-cache-inmemory": "1.1.12",
     "apollo-client": "2.2.8",
     "apollo-link-schema": "1.1.0",
