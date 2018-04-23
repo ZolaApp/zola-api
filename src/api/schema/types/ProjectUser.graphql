@@ -1,0 +1,19 @@
+type ProjectUser {
+  id: ID!
+  userId: Int!
+  projectId: Int!
+  role: String!
+}
+
+type CreateProjectUserResponse {
+  projectUser: ProjectUser
+  errors: [ValidationError]!
+}
+
+extend type Mutation {
+  createProjectUser(
+    userId: Int!
+    projectId: Int!
+    role: String!
+  ): CreateProjectUserResponse
+}

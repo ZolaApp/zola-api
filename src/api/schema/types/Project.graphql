@@ -3,6 +3,7 @@ type Project {
   name: String!
   slug: String!
   description: String
+  userId: Int!
 }
 
 type CreateProjectResponse {
@@ -15,5 +16,6 @@ extend type Mutation {
     name: String!
     slug: String!
     description: String
+    userId: Int!
   ): CreateProjectResponse
 }
