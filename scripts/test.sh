@@ -14,4 +14,4 @@ elif [[ ! "${TYPES[@]}" =~ "${type}" ]]; then
   exit 1
 fi
 
-npx jest --verbose --forceExit "${type}.spec.js" ${args}
+npx jest --verbose --forceExit --runInBand "${type}.spec.js" ${args}
