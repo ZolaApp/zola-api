@@ -17,10 +17,12 @@ const validateEmail = async (
     return response.redirect(`${APP_HREF}/validate-email`)
   }
 
-  redis.del(redisKey)
-  await database('users')
-    .where({ id: tokenOwner })
-    .update({ isValidated: true })
+  await Promise.all([
+    redis.del(redisKey),
+    database('users')
+      .where({ id: tokenOwner })
+      .update({ isValidated: true })
+  ])
 
   return response.redirect(`${APP_HREF}/email-validated`)
 }

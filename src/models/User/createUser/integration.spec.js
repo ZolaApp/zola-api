@@ -107,10 +107,10 @@ describe('The User model’s `createUser` helper', () => {
   })
 
   it('should send a validation e-mail to the user', async done => {
-    const sendValidationEmail = jest.spyOn(UserModel, 'sendValidationEmail')
+    const sendValidationEmailSpy = jest.spyOn(UserModel, 'sendValidationEmail')
     await createUser(validUser)
 
-    expect(sendValidationEmail).toHaveBeenCalled()
+    expect(sendValidationEmailSpy).toHaveBeenCalled()
     done()
   })
 

@@ -1,8 +1,12 @@
 // @flow
 import { promisify } from 'util'
 import redis from 'redis'
+import redisMock from 'redis-mock'
 
-const client = redis.createClient()
+const client =
+  process.env.NODE_ENV === 'test'
+    ? redisMock.createClient()
+    : redis.createClient()
 client.on('error', error => console.error('Redis error:', error))
 
 const METHODS_TO_PROMISIFY = ['set', 'get', 'del']
