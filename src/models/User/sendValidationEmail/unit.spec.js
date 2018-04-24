@@ -1,5 +1,8 @@
 import { API_HREF } from '@constants/api'
-import { USER_VALIDATION_EMAIL_TEMPLATE_ID } from '@constants/sendGridTemplatesIDs'
+import {
+  NO_REPLY_EMAIL_ADDRESS,
+  USER_VALIDATION_EMAIL_TEMPLATE_ID
+} from '@constants/emails'
 import sendGrid from '@sendgrid/mail'
 import sendValidationEmail, { VALIDATE_PATH } from './index'
 
@@ -16,7 +19,7 @@ describe('The User model’s `sendValidationEmail` helper', () => {
 
     expect(sendSpy).toHaveBeenCalledWith({
       to: user.email,
-      from: 'noreply@zola.ink',
+      from: NO_REPLY_EMAIL_ADDRESS,
       templateId: USER_VALIDATION_EMAIL_TEMPLATE_ID,
       substitutions: {
         name: user.name,
