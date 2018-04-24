@@ -4,8 +4,8 @@ import type { ValidationError } from '@types/ValidationError'
 import database from '@server/database'
 
 export type CreateProjectUserArgs = {
-  projectId: number,
-  userId: number,
+  projectId: string,
+  userId: string,
   role: string
 }
 

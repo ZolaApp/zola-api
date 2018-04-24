@@ -3,9 +3,9 @@ import createProjectUser from './createProjectUser'
 export * from './createProjectUser'
 
 export type ProjectUser = {
-  id: number,
-  projectId: number,
-  userId: number,
+  id: string,
+  projectId: string,
+  userId: string,
   role: string
 }
 

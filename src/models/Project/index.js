@@ -3,7 +3,7 @@ import createProject from './createProject'
 export * from './createProject'
 
 export type Project = {
-  id: number,
+  id: string,
   name: string,
   slug: string
 }

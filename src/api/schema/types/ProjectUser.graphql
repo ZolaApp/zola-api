@@ -1,7 +1,7 @@
 type ProjectUser {
   id: ID!
-  userId: Int!
-  projectId: Int!
+  userId: ID!
+  projectId: ID!
   role: String!
 }
 
@@ -12,8 +12,8 @@ type CreateProjectUserResponse {
 
 extend type Mutation {
   createProjectUser(
-    userId: Int!
-    projectId: Int!
+    userId: ID!
+    projectId: ID!
     role: String!
   ): CreateProjectUserResponse
 }

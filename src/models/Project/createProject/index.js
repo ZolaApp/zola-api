@@ -8,7 +8,7 @@ export type CreateProjectArgs = {
   name: string,
   slug: string,
   description: string,
-  userId: number
+  userId: string
 }
 
 export type CreateProjectResponse = {
