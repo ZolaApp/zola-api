@@ -22,8 +22,9 @@
   },
   "jest": {
     "coveragePathIgnorePatterns": [
-      "src/server/database"
-    ]
+      "<rootDir>/src/server/database"
+    ],
+    "globalSetup": "<rootDir>/src/tests/globalSetup.js"
   },
   "scripts": {
     "dev": "./scripts/dev.sh",

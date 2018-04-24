@@ -1,8 +1,7 @@
 import path from 'path'
 import dotenv from 'dotenv'
 
-// Call dotenv again in case we’re in the context of a knex command or during
-// tests.
+// Call dotenv again in case we’re in the context of a knex command.
 dotenv.config({ path: '../../../.env' })
 
 export default {
