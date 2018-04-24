@@ -20,24 +20,24 @@ describe('The `validateEmail` route', () => {
   })
 
   it('should redirect to the `/validate-email` page if the token doesn’t exist', async done => {
-    const responseSpy = jest.spyOn(responseMock, 'redirect')
+    const redirectSpy = jest.spyOn(responseMock, 'redirect')
     await validateEmail(
       { params: { emailValidationToken: 'FOO_BAR' } },
       responseMock
     )
 
-    expect(responseSpy).toHaveBeenCalledWith(`${APP_HREF}/validate-email`)
+    expect(redirectSpy).toHaveBeenCalledWith(`${APP_HREF}/validate-email`)
     done()
   })
 
   it('should redirect to the `/email-validated` page if the token exists', async done => {
-    const responseSpy = jest.spyOn(responseMock, 'redirect')
+    const redirectSpy = jest.spyOn(responseMock, 'redirect')
     await validateEmail(
       { params: { emailValidationToken: 'DUMMY_VALIDATION_TOKEN' } },
       responseMock
     )
 
-    expect(responseSpy).toHaveBeenCalledWith(`${APP_HREF}/email-validated`)
+    expect(redirectSpy).toHaveBeenCalledWith(`${APP_HREF}/email-validated`)
     done()
   })
 
