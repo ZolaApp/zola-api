@@ -6,6 +6,7 @@ import compression from 'compression'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { GRAPHQL_ENDPOINT, GRAPHIQL_ENDPOINT } from '@constants/api'
 import schema from '@api/schema'
+import validateEmail from './routes/validateEmail'
 
 export default (): express$Application => {
   const app = express()
@@ -25,6 +26,8 @@ export default (): express$Application => {
       graphiqlExpress({ endpointURL: GRAPHQL_ENDPOINT })
     )
   }
+
+  app.get('/validate-email/:emailValidationToken', validateEmail)
 
   return app
 }

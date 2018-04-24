@@ -70,11 +70,11 @@ const createUser = async ({
   const savedUser: Array<User> = await database('users')
     .insert({ email: normalizedEmail, name: trimmedName, passwordHash })
     .returning('*')
-  const validationToken = crypto.randomBytes(24).toString('hex')
+  const emailValidationToken = crypto.randomBytes(24).toString('hex')
   const user = savedUser[0]
 
-  redis.set(`user:validationToken:${user.id}`, validationToken)
-  UserModel.sendValidationEmail(user)
+  redis.set(`user:emailValidationToken:${emailValidationToken}`, user.id)
+  UserModel.sendValidationEmail(user, emailValidationToken)
 
   return { user, errors: [] }
 }

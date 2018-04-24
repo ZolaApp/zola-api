@@ -1,6 +1,7 @@
+import { API_HREF } from '@constants/api'
 import { USER_VALIDATION_EMAIL_TEMPLATE_ID } from '@constants/sendGridTemplatesIDs'
 import sendGrid from '@sendgrid/mail'
-import sendValidationEmail from './index'
+import sendValidationEmail, { VALIDATE_PATH } from './index'
 
 const user = {
   name: 'Foo',
@@ -18,7 +19,7 @@ describe('The User model’s `sendValidationEmail` helper', () => {
       templateId: USER_VALIDATION_EMAIL_TEMPLATE_ID,
       substitutions: {
         name: user.name,
-        validationLink: 'https://zola.ink'
+        validationLink: API_HREF + VALIDATE_PATH
       }
     })
   })
