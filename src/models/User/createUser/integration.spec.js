@@ -12,8 +12,6 @@ const validUser = {
   passwordPlain: '$uper$trongPa$$word'
 }
 
-jest.mock('@models/User/sendValidationEmail', () => jest.fn())
-
 describe('The User model’s `createUser` helper', () => {
   beforeAll(async done => {
     await database.migrate.latest()
@@ -109,9 +107,10 @@ describe('The User model’s `createUser` helper', () => {
   })
 
   it('should send a validation e-mail to the user', async done => {
-    const { user } = await createUser(validUser)
+    const sendValidationEmail = jest.spyOn(UserModel, 'sendValidationEmail')
+    await createUser(validUser)
 
-    expect(UserModel.sendValidationEmail).toHaveBeenCalledWith(user)
+    expect(sendValidationEmail).toHaveBeenCalled()
     done()
   })
 

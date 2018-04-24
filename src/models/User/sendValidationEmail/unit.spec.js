@@ -11,7 +11,8 @@ const user = {
 describe('The User model’s `sendValidationEmail` helper', () => {
   it('should send an e-mail using SendGrid with the expected parameters', () => {
     const send = jest.spyOn(sendGrid, 'send')
-    sendValidationEmail(user)
+    const validationEmailToken = 'DUMMY_VALIDATION_EMAIL_TOKEN'
+    sendValidationEmail(user, validationEmailToken)
 
     expect(send).toHaveBeenCalledWith({
       to: user.email,
@@ -19,7 +20,7 @@ describe('The User model’s `sendValidationEmail` helper', () => {
       templateId: USER_VALIDATION_EMAIL_TEMPLATE_ID,
       substitutions: {
         name: user.name,
-        validationLink: API_HREF + VALIDATE_PATH
+        validationLink: API_HREF + VALIDATE_PATH + '/' + validationEmailToken
       }
     })
   })
