@@ -20,17 +20,11 @@ const createTokenString = (user: User): string => {
 }
 
 const createToken = async (user: User): Promise<CreateTokenResponse> => {
-  const errors: Array<ValidationError> = []
-
   if (user === null) {
     return {
       errors: [{ field: 'user', message: 'User should be defined' }],
       token: null
     }
-  }
-
-  if (errors.length) {
-    return { errors, token: null }
   }
 
   const tokenString: string = createTokenString(user)

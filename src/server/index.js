@@ -28,12 +28,6 @@ export default (): express$Application => {
       GRAPHIQL_ENDPOINT,
       graphiqlExpress({ endpointURL: GRAPHQL_ENDPOINT })
     )
-
-    app.get('/bla', (request: express$Request, response: express$Response) => {
-      response.send(
-        `Hello ${request.user.name} connected with token ${request.token}`
-      )
-    })
   }
 
   return app
