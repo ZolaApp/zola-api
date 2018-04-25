@@ -4,7 +4,8 @@ import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
-import { GRAPHQL_ENDPOINT, GRAPHIQL_ENDPOINT } from '@constants/api'
+import { GRAPHQL_ENDPOINT, GRAPHIQL_ENDPOINT, AUTH_LOGIN } from '@constants/api'
+import auth from '@server/auth'
 import schema from '@api/schema'
 
 export default (): express$Application => {
@@ -15,6 +16,8 @@ export default (): express$Application => {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use((compression(): express$Middleware))
+  app.use(auth.authMiddleWare)
+  app.post(AUTH_LOGIN, auth.authRouter.login)
 
   // Routes
   app.use(GRAPHQL_ENDPOINT, graphqlExpress({ schema }))
@@ -22,8 +25,14 @@ export default (): express$Application => {
   if (process.env.NODE_ENV !== 'production') {
     app.get(
       GRAPHIQL_ENDPOINT,
-      graphiqlExpress({ endpointURL: GRAPHIQL_ENDPOINT })
+      graphiqlExpress({ endpointURL: GRAPHQL_ENDPOINT })
     )
+
+    app.get('/bla', (request: express$Request, response: express$Response) => {
+      response.send(
+        `Hello ${request.user.name} connected with token ${request.token}`
+      )
+    })
   }
 
   return app
