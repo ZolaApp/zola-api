@@ -19,7 +19,7 @@ const sendValidationEmail = (
     templateId: USER_VALIDATION_EMAIL_TEMPLATE_ID,
     substitutions: {
       name: user.name,
-      validationLink: API_HREF + VALIDATE_PATH + '/' + emailValidationToken
+      validationLink: `${API_HREF + VALIDATE_PATH}/${emailValidationToken}`
     }
   }
 
