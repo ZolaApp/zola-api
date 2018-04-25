@@ -1,5 +1,4 @@
 // @flow
-
 import database from '@server/database'
 import type { Token } from '@models/Token'
 
@@ -8,11 +7,7 @@ const checkToken = async (inputToken: string): Promise<Token | null> => {
     token: inputToken
   })
 
-  if (typeof token[0] === 'undefined') {
-    return null
-  }
-
-  return token[0]
+  return token[0] || null
 }
 
 export default checkToken

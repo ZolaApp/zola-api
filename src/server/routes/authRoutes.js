@@ -1,5 +1,4 @@
 // @flow
-
 import bcrypt from 'bcrypt'
 import database from '@server/database'
 import TokenModel from '@models/Token'
@@ -24,40 +23,30 @@ const login = async (
   }
 
   const user = userArray[0]
-
-  const passwordMatch: Boolean = await bcrypt.compare(
+  const isPasswordMatching: Boolean = await bcrypt.compare(
     password,
     user.passwordHash
   )
 
-  if (!passwordMatch) {
+  if (!isPasswordMatching) {
     return response.status(401).send('Invalid credentials')
   }
 
   let token = await TokenModel.retrieveToken(user)
 
-  if (token == null) {
+  if (token === null) {
     const tokenResponse = await TokenModel.createToken(user)
 
-    if (tokenResponse.token !== null) {
-      token = tokenResponse.token
-    } else {
-      // @TODO : handle errors returned in tokenResponse
+    if (tokenResponse.token === null) {
       return response.status(500).send('An error occurred.')
     }
+
+    token = tokenResponse.token
   }
 
-  response.setHeader('Content-Type', 'application/json')
-  response.send(JSON.stringify(token.token))
+  response.json({ token })
 }
 
-const revokeToken = async (
-  request: express$Request,
-  response: express$Response,
-  next: express$NextFunction
-) => {}
-
 export default {
-  login,
-  revokeToken
+  login
 }

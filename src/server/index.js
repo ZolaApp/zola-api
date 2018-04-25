@@ -5,8 +5,9 @@ import bodyParser from 'body-parser'
 import compression from 'compression'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { GRAPHQL_ENDPOINT, GRAPHIQL_ENDPOINT, AUTH_LOGIN } from '@constants/api'
-import auth from '@server/auth'
 import schema from '@api/schema'
+import auth from '@server/middlewares/auth'
+import authRoutes from '@server/routes/authRoutes'
 
 export default (): express$Application => {
   const app = express()
@@ -16,8 +17,8 @@ export default (): express$Application => {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use((compression(): express$Middleware))
-  app.use(auth.authMiddleWare)
-  app.post(AUTH_LOGIN, auth.authRouter.login)
+  app.use(auth)
+  app.post(AUTH_LOGIN, authRoutes.login)
 
   // Routes
   app.use(GRAPHQL_ENDPOINT, graphqlExpress({ schema }))

@@ -1,19 +1,17 @@
 // @flow
-
 import createToken from './createToken'
 import retrieveToken from './retrieveToken'
-import checkToken from './checkToken'
+import validateToken from './validateToken'
 export * from './createToken'
 
 export type Token = {
   id: number,
   token: string,
-  userId: number,
-  table: 'tokens'
+  userId: number
 }
 
 export default {
   createToken,
   retrieveToken,
-  checkToken
+  validateToken
 }

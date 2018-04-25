@@ -1,5 +1,4 @@
 // @flow
-
 import database from '@server/database'
 import type { User } from '@models/User'
 import type { Token } from '@models/Token'
@@ -9,11 +8,7 @@ const retrieveToken = async (user: User): Promise<Token | null> => {
     userId: user.id
   })
 
-  if (typeof token[0] === 'undefined') {
-    return null
-  }
-
-  return token[0]
+  return token[0] || null
 }
 
 export default retrieveToken

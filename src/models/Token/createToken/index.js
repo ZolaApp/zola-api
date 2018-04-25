@@ -1,7 +1,5 @@
 // @flow
-
 import { createHash } from 'crypto'
-import btoa from 'btoa'
 import type { User } from '@models/User'
 import type { Token } from '@models/Token'
 import type { ValidationError } from '@types/ValidationError'
@@ -13,20 +11,22 @@ export type CreateTokenResponse = {
 }
 
 const createTokenString = (user: User): string => {
+  const now = Date.now()
+
   const hash = createHash('sha256')
-  const date = new Date()
+  const hashedEmail = hash.update(`${user.email}${now}`).digest('hex')
 
-  hash.update(`${user.email}${date.getTime()}`)
-  const hashedEmail = hash.digest('hex')
-
-  return btoa(`${hashedEmail}-${date.getTime()}`)
+  return Buffer.from(`${hashedEmail}-${now})`).toString('base64')
 }
 
 const createToken = async (user: User): Promise<CreateTokenResponse> => {
   const errors: Array<ValidationError> = []
 
-  if (user == null) {
-    errors.push({ field: 'user', message: 'User should be defined' })
+  if (user === null) {
+    return {
+      errors: [{ field: 'user', message: 'User should be defined' }],
+      token: null
+    }
   }
 
   if (errors.length) {
@@ -34,7 +34,6 @@ const createToken = async (user: User): Promise<CreateTokenResponse> => {
   }
 
   const tokenString: string = createTokenString(user)
-  console.log(tokenString)
   const savedToken: Array<Token> = await database('tokens')
     .insert({ token: tokenString, userId: user.id })
     .returning('*')

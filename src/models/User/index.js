@@ -6,8 +6,7 @@ export type User = {
   id: number,
   email: string,
   name: string,
-  passwordHash: string,
-  table: 'users'
+  passwordHash: string
 }
 
 export default {
