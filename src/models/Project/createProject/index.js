@@ -36,7 +36,7 @@ const createProject = async ({
   await ProjectUserModel.createProjectUser({
     projectId: savedProject[0].id,
     userId,
-    role: 'owner'
+    role: 'OWNER'
   })
 
   return { project: savedProject[0], errors: [] }

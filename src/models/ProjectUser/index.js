@@ -2,11 +2,13 @@
 import createProjectUser from './createProjectUser'
 export * from './createProjectUser'
 
+export type ProjectUserRole = 'OWNER' | 'CONTRIBUTOR'
+
 export type ProjectUser = {
   id: string,
   projectId: string,
   userId: string,
-  role: string
+  role: ProjectUserRole
 }
 
 export default {

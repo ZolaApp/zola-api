@@ -10,10 +10,15 @@ type CreateProjectUserResponse {
   errors: [ValidationError]!
 }
 
+enum ProjectUserRole {
+  OWNER
+  CONTRIBUTOR
+}
+
 extend type Mutation {
   createProjectUser(
     userId: ID!
     projectId: ID!
-    role: String!
+    role: ProjectUserRole!
   ): CreateProjectUserResponse
 }

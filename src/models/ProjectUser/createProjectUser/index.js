@@ -1,12 +1,12 @@
 // @flow
-import type { ProjectUser } from '@models/ProjectUser'
+import type { ProjectUser, ProjectUserRole } from '@models/ProjectUser'
 import type { ValidationError } from '@types/ValidationError'
 import database from '@server/database'
 
 export type CreateProjectUserArgs = {
   projectId: string,
   userId: string,
-  role: string
+  role: ProjectUserRole
 }
 
 export type CreateProjectUserResponse = {
@@ -25,7 +25,7 @@ const createProject = async ({
     return { errors }
   }
 
-  const savedProject: Array<ProjectUser> = await database('projects_users')
+  const savedProject: Array<ProjectUser> = await database('projectsUsers')
     .insert({ projectId, userId, role })
     .returning('*')
 
