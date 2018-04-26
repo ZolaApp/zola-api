@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 import testClient from '@tests/client'
-import database from '@server/database'
+import database from '@database/index'
 
 const mutation = gql`
   mutation($email: String!, $name: String!, $password: String!) {

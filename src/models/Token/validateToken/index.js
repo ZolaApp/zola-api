@@ -1,5 +1,5 @@
 // @flow
-import database from '@server/database'
+import database from '@database/index'
 import type { Token } from '@models/Token'
 
 const checkToken = async (inputToken: string): Promise<Token | null> => {

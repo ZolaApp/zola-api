@@ -1,6 +1,6 @@
 // @flow
 import bcrypt from 'bcrypt'
-import database from '@server/database'
+import database from '@database/index'
 import TokenModel from '@models/Token'
 import type { User } from '@models/User'
 
@@ -44,9 +44,7 @@ const login = async (
     token = tokenResponse.token
   }
 
-  response.json({ token })
+  return response.json({ token })
 }
 
-export default {
-  login
-}
+export default login

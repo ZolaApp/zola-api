@@ -1,6 +1,6 @@
 // @flow
 import { APP_HREF } from '@constants/api'
-import database from '@server/database'
+import database from '@database/index'
 import redis from '@server/redis'
 
 const validateEmail = async (

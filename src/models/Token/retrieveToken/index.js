@@ -1,5 +1,5 @@
 // @flow
-import database from '@server/database'
+import database from '@database/index'
 import type { User } from '@models/User'
 import type { Token } from '@models/Token'
 
