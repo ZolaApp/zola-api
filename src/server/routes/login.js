@@ -44,9 +44,7 @@ const login = async (
     token = tokenResponse.token
   }
 
-  response.json({ token })
+  return response.json({ token })
 }
 
-export default {
-  login
-}
+export default login

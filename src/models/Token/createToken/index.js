@@ -12,7 +12,6 @@ export type CreateTokenResponse = {
 
 const createTokenString = (user: User): string => {
   const now = Date.now()
-
   const hash = createHash('sha256')
   const hashedEmail = hash.update(`${user.email}${now}`).digest('hex')
 

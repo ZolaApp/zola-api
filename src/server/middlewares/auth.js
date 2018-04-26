@@ -1,5 +1,5 @@
 // @flow
-import { AUTH_WHITELIST, GRAPHQL_ENDPOINT } from '@constants/api'
+import { AUTH_MIDDLEWARE_WHITELIST, GRAPHQL_PATH } from '@constants/api'
 import TokenModel from '@models/Token'
 import type { User } from '@models/User'
 import database from '@server/database'
@@ -9,12 +9,12 @@ const auth: express$Middleware = async (
   response: express$Response,
   next: express$NextFunction
 ) => {
-  if (AUTH_WHITELIST.includes(request.path)) {
+  if (AUTH_MIDDLEWARE_WHITELIST.includes(request.path)) {
     return next()
   }
 
   if (!request.header('Authorization')) {
-    if (request.path === GRAPHQL_ENDPOINT) {
+    if (request.path === GRAPHQL_PATH) {
       request.user = null
 
       return next()
