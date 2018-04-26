@@ -1,4 +1,5 @@
 import database from '@server/database'
+import UserModel from '@models/User'
 import {
   INVALID_EMAIL_ERROR,
   EMAIL_ALREADY_IN_USE_ERROR
@@ -12,12 +13,14 @@ const validUser = {
 }
 
 describe('The User model’s `createUser` helper', () => {
-  beforeAll(async () => {
+  beforeAll(async done => {
     await database.migrate.latest()
+    done()
   })
 
-  beforeEach(async () => {
+  beforeEach(async done => {
     await database('users').truncate()
+    done()
   })
 
   it('should return errors if the name is not valid', async done => {
@@ -96,9 +99,18 @@ describe('The User model’s `createUser` helper', () => {
     expect(countAfter[0].count).toEqual('1')
     expect(user).toMatchObject({
       id: 1,
+      isValidated: false,
       name: 'Foo',
       email: 'foo@bar.com'
     })
+    done()
+  })
+
+  it('should send a validation e-mail to the user', async done => {
+    const sendValidationEmailSpy = jest.spyOn(UserModel, 'sendValidationEmail')
+    await createUser(validUser)
+
+    expect(sendValidationEmailSpy).toHaveBeenCalled()
     done()
   })
 

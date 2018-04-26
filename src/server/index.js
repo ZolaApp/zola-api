@@ -8,6 +8,7 @@ import { GRAPHQL_ENDPOINT, GRAPHIQL_ENDPOINT, AUTH_LOGIN } from '@constants/api'
 import schema from '@api/schema'
 import auth from '@server/middlewares/auth'
 import authRoutes from '@server/routes/authRoutes'
+import validateEmail from '@server/routes/validateEmail'
 
 export default (): express$Application => {
   const app = express()
@@ -29,6 +30,8 @@ export default (): express$Application => {
       graphiqlExpress({ endpointURL: GRAPHQL_ENDPOINT })
     )
   }
+
+  app.get('/validate-email/:emailValidationToken', validateEmail)
 
   return app
 }

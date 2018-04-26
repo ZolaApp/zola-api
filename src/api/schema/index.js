@@ -1,12 +1,14 @@
 // @flow
 import { makeExecutableSchema } from 'graphql-tools'
+import UserAPI from '@api/User'
 import Root from './types/Root.graphql'
 import ValidationError from './types/ValidationError.graphql'
 import User from './types/User.graphql'
-import UserAPI from '@api/User'
+import Scalars from './scalars/scalars.graphql'
+import ScalarsResolvers from './scalars/resolvers'
 
-const typeDefs = [Root, ValidationError, User]
-const resolvers = [UserAPI]
+const typeDefs = [Root, Scalars, ValidationError, User]
+const resolvers = [ScalarsResolvers, UserAPI]
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers

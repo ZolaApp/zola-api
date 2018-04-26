@@ -7,6 +7,7 @@ const mutation = gql`
     createUser(email: $email, name: $name, passwordPlain: $password) {
       user {
         id
+        isValidated
         name
         email
       }
@@ -19,9 +20,10 @@ const mutation = gql`
 `
 
 describe('The `createUser` mutation', () => {
-  beforeAll(async () => {
+  beforeAll(async done => {
     await database.migrate.latest()
     await database('users').truncate()
+    done()
   })
 
   it('should return errors', async done => {
@@ -49,6 +51,7 @@ describe('The `createUser` mutation', () => {
     const expected = {
       __typename: 'User',
       id: '1',
+      isValidated: false,
       name: 'Foo',
       email: 'foo@bar.com'
     }
