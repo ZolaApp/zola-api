@@ -28,9 +28,10 @@ const createToken = async (user: User): Promise<CreateTokenResponse> => {
   }
 
   const tokenString: string = createTokenString(user)
-  const savedToken: Array<Token> = await database('tokens')
-    .insert({ token: tokenString, userId: user.id })
-    .returning('*')
+  const savedToken: Array<Token> = await database('tokens').insert({
+    token: tokenString,
+    userId: user.id
+  })
 
   return { token: savedToken[0], errors: [] }
 }
