@@ -1,5 +1,5 @@
 // @flow
-import { AUTH_MIDDLEWARE_WHITELIST, GRAPHQL_PATH } from '@constants/api'
+import { AUTH_MIDDLEWARE_WHITELIST, GRAPHQL_PATH } from '@constants/routes'
 import TokenModel from '@models/Token'
 import type { User } from '@models/User'
 import database from '@server/database'

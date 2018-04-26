@@ -9,7 +9,7 @@ import {
   GRAPHIQL_PATH,
   LOGIN_PATH,
   VALIDATE_EMAIL_PATH
-} from '@constants/api'
+} from '@constants/routes'
 import schema from '@api/schema'
 import authMiddleware from '@server/middlewares/auth'
 import loginRoute from '@server/routes/login'
