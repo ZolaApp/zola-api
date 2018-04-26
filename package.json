@@ -52,7 +52,7 @@
     "flow-bin": "0.70.0",
     "husky": "0.15.0-rc.13",
     "jest": "22.4.3",
-    "lint-staged": "7.0.4",
+    "lint-staged": "7.0.5",
     "prettier": "1.12.1",
     "redis-mock": "0.21.0"
   },
