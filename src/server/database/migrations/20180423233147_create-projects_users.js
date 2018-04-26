@@ -1,5 +1,5 @@
 export const up = async knex => {
-  await knex.schema.createTable('projects_users', table => {
+  await knex.schema.createTable('projectsUsers', table => {
     table
       .increments('id')
       .unsigned()
@@ -19,5 +19,5 @@ export const up = async knex => {
 }
 
 export const down = async knex => {
-  await knex.schema.dropTableIfExists('projects_users')
+  await knex.schema.dropTableIfExists('projectsUsers')
 }
