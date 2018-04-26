@@ -4,9 +4,11 @@ import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
-import { GRAPHQL_ENDPOINT, GRAPHIQL_ENDPOINT } from '@constants/api'
+import { GRAPHQL_ENDPOINT, GRAPHIQL_ENDPOINT, AUTH_LOGIN } from '@constants/api'
 import schema from '@api/schema'
-import validateEmail from './routes/validateEmail'
+import auth from '@server/middlewares/auth'
+import authRoutes from '@server/routes/authRoutes'
+import validateEmail from '@server/routes/validateEmail'
 
 export default (): express$Application => {
   const app = express()
@@ -16,6 +18,8 @@ export default (): express$Application => {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use((compression(): express$Middleware))
+  app.use(auth)
+  app.post(AUTH_LOGIN, authRoutes.login)
 
   // Routes
   app.use(GRAPHQL_ENDPOINT, graphqlExpress({ schema }))

@@ -5,3 +5,5 @@ export const API_HREF = `http://${API_HOST}:${HTTP_PORT}`
 export const APP_HREF = process.env.APP_HREF || 'http://localhost:3000'
 export const GRAPHQL_ENDPOINT = '/graphql'
 export const GRAPHIQL_ENDPOINT = '/graphiql'
+export const AUTH_LOGIN = '/login'
+export const AUTH_WHITELIST = [AUTH_LOGIN, GRAPHIQL_ENDPOINT]
