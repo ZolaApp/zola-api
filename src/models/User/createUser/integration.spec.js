@@ -1,4 +1,4 @@
-import database from '@server/database'
+import database from '@database/index'
 import UserModel from '@models/User'
 import {
   INVALID_EMAIL_ERROR,

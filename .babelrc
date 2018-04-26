@@ -7,10 +7,11 @@
         "alias": {
           "@api": "./src/api",
           "@constants": "./src/constants",
+          "@database": "./src/database",
           "@models": "./src/models",
           "@server": "./src/server",
-          "@types": "./src/types",
-          "@tests": "./src/tests"
+          "@tests": "./src/tests",
+          "@types": "./src/types"
         }
       }
     ],

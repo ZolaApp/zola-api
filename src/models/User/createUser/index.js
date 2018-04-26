@@ -2,7 +2,7 @@
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import validator from 'validator'
-import database from '@server/database'
+import database from '@database/index'
 import redis from '@server/redis'
 import UserModel from '@models/User'
 import type { User } from '@models/User'
