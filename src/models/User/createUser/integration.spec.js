@@ -1,23 +1,15 @@
 import database from '@server/database'
+import resetDatabase from '@tests/resetDatabase'
 import {
   INVALID_EMAIL_ERROR,
   EMAIL_ALREADY_IN_USE_ERROR
 } from './validations/validateEmail'
 import createUser from './index'
 
-const validUser = {
-  name: 'Foo',
-  email: 'foo@bar.com',
-  passwordPlain: '$uper$trongPa$$word'
-}
-
 describe('The User model’s `createUser` helper', () => {
   beforeAll(async () => {
+    await resetDatabase()
     await database.migrate.latest()
-  })
-
-  beforeEach(async () => {
-    await database('users').truncate()
   })
 
   it('should return errors if the name is not valid', async done => {
@@ -89,13 +81,16 @@ describe('The User model’s `createUser` helper', () => {
 
   it('should add a user to the database and return it', async done => {
     const countBefore = await database('users').count()
-    const { user } = await createUser(validUser)
+    const { user } = await createUser({
+      name: 'Foo',
+      email: 'foo@bar.com',
+      passwordPlain: '$uper$trongPa$$word'
+    })
     const countAfter = await database('users').count()
 
-    expect(countBefore[0].count).toEqual('0')
-    expect(countAfter[0].count).toEqual('1')
+    expect(countBefore[0].count).toEqual('1')
+    expect(countAfter[0].count).toEqual('2')
     expect(user).toMatchObject({
-      id: 1,
       name: 'Foo',
       email: 'foo@bar.com'
     })
@@ -103,7 +98,11 @@ describe('The User model’s `createUser` helper', () => {
   })
 
   it('should save a hash of the password and not the plain password', async done => {
-    const { user } = await createUser(validUser)
+    const { user } = await createUser({
+      name: 'Foo',
+      email: 'foo2@bar.com',
+      passwordPlain: '$uper$trongPa$$word'
+    })
     const userKeys = Object.keys(user)
 
     expect(userKeys).not.toContain('passwordPlain')
