@@ -4,13 +4,8 @@ import database from '@server/database'
 import resetDatabase from '@tests/resetDatabase'
 
 const mutation = gql`
-  mutation($name: String!, $slug: String!, $description: String, $userId: ID!) {
-    createProject(
-      name: $name
-      slug: $slug
-      description: $description
-      userId: $userId
-    ) {
+  mutation($name: String!, $description: String, $userId: ID!) {
+    createProject(name: $name, description: $description, userId: $userId) {
       project {
         id
         name
@@ -36,7 +31,6 @@ describe('The `createProject` mutation', () => {
     const projectResponse = await testClient.mutate({
       variables: {
         name: 'My awesome project',
-        slug: 'my-awesome-project',
         userId: 1
       },
       mutation

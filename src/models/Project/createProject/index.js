@@ -1,4 +1,5 @@
 // @flow
+import slugify from 'slugify'
 import type { Project } from '@models/Project'
 import type { ValidationError } from '@types/ValidationError'
 import database from '@server/database'
@@ -6,7 +7,6 @@ import ProjectUserModel from '@models/ProjectUser'
 
 export type CreateProjectArgs = {
   name: string,
-  slug: string,
   description: string,
   userId: string
 }
@@ -18,12 +18,12 @@ export type CreateProjectResponse = {
 
 const createProject = async ({
   name,
-  slug,
   description,
   userId
 }: CreateProjectArgs): Promise<CreateProjectResponse> => {
   const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
+  const slug = slugify(trimmedName, { lower: true })
 
   if (errors.length) {
     return { errors }
