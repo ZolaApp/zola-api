@@ -19,11 +19,12 @@ export type CreateProjectResponse = {
 
 const createProject = async ({
   name,
-  description,
+  description = '',
   userId
 }: CreateProjectArgs): Promise<CreateProjectResponse> => {
   const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
+  const trimmedDescription = description.trim()
   const nameValidation = validateName(trimmedName)
 
   if (!nameValidation.isValid) {
@@ -37,7 +38,7 @@ const createProject = async ({
   }
 
   const savedProject: Array<Project> = await database('projects')
-    .insert({ name: trimmedName, slug, description })
+    .insert({ name: trimmedName, slug, description: trimmedDescription })
     .returning('*')
 
   await ProjectUserModel.createProjectUser({

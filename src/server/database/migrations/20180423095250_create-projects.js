@@ -9,7 +9,7 @@ export const up = async knex => {
       .string('slug')
       .unique()
       .notNull()
-    table.text('description')
+    table.text('description').notNull()
     table
       .timestamp('createdAt')
       .notNull()
