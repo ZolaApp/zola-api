@@ -4,6 +4,7 @@ import type { Project } from '@models/Project'
 import type { ValidationError } from '@types/ValidationError'
 import database from '@server/database'
 import ProjectUserModel from '@models/ProjectUser'
+import validateName from '@helpers/validateName'
 
 export type CreateProjectArgs = {
   name: string,
@@ -23,6 +24,12 @@ const createProject = async ({
 }: CreateProjectArgs): Promise<CreateProjectResponse> => {
   const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
+  const nameValidation = validateName(trimmedName)
+
+  if (!nameValidation.isValid) {
+    errors.push({ field: 'name', message: nameValidation.error })
+  }
+
   const slug = slugify(trimmedName, { lower: true })
 
   if (errors.length) {

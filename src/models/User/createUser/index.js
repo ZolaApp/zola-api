@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import type { User } from '@models/User'
 import type { ValidationError } from '@types/ValidationError'
 import database from '@server/database'
-import validateName from './validations/validateName'
+import validateName from '@helpers/validateName'
 import validateEmail from './validations/validateEmail'
 import validatePassword from './validations/validatePassword'
 
