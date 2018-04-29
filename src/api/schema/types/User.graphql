@@ -1,10 +1,10 @@
 type User {
-  id: ID!
-  createdAt: Date!
+  id: ID
+  createdAt: Date
   updatedAt: Date
-  isValidated: Boolean!
-  email: String!
-  name: String!
+  isValidated: Boolean
+  email: String
+  name: String
 }
 
 type CreateUserResponse {

@@ -1,9 +1,9 @@
 type Project {
-  id: ID!
-  name: String!
-  slug: String!
+  id: ID
+  userId: ID
+  name: String
+  slug: String
   description: String
-  userId: ID!
 }
 
 type CreateProjectResponse {

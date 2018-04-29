@@ -1,18 +1,18 @@
+enum ProjectUserRole {
+  OWNER
+  CONTRIBUTOR
+}
+
 type ProjectUser {
-  id: ID!
-  userId: ID!
-  projectId: ID!
-  role: String!
+  id: ID
+  userId: ID
+  projectId: ID
+  role: ProjectUserRole
 }
 
 type CreateProjectUserResponse {
   projectUser: ProjectUser
   errors: [ValidationError]!
-}
-
-enum ProjectUserRole {
-  OWNER
-  CONTRIBUTOR
 }
 
 extend type Mutation {
