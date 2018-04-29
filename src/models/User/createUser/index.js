@@ -29,7 +29,7 @@ const createUser = async ({
 }: CreateUserArgs): Promise<CreateUserResponse> => {
   const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
-  const nameValidation = validateName(trimmedName)
+  const nameValidation = validateName({ name: trimmedName })
 
   if (!nameValidation.isValid) {
     errors.push({ field: 'name', message: nameValidation.error })

@@ -25,7 +25,7 @@ const createProject = async ({
   const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
   const trimmedDescription = description.trim()
-  const nameValidation = validateName(trimmedName)
+  const nameValidation = validateName({ name: trimmedName })
 
   if (!nameValidation.isValid) {
     errors.push({ field: 'name', message: nameValidation.error })
