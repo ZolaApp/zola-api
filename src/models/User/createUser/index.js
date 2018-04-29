@@ -1,9 +1,12 @@
 // @flow
-import validator from 'validator'
+import crypto from 'crypto'
 import bcrypt from 'bcrypt'
+import validator from 'validator'
+import database from '@database/index'
+import redis from '@server/redis'
+import UserModel from '@models/User'
 import type { User } from '@models/User'
 import type { ValidationError } from '@types/ValidationError'
-import database from '@server/database'
 import validateName from '@helpers/validateName'
 import validateEmail from './validations/validateEmail'
 import validatePassword from './validations/validatePassword'
@@ -67,8 +70,13 @@ const createUser = async ({
   const savedUser: Array<User> = await database('users')
     .insert({ email: normalizedEmail, name: trimmedName, passwordHash })
     .returning('*')
+  const emailValidationToken = crypto.randomBytes(24).toString('hex')
+  const user = savedUser[0]
 
-  return { user: savedUser[0], errors: [] }
+  redis.set(`user:emailValidationToken:${emailValidationToken}`, user.id)
+  UserModel.sendValidationEmail(user, emailValidationToken)
+
+  return { user, errors: [] }
 }
 
 export default createUser

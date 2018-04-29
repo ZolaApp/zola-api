@@ -1,4 +1,4 @@
-import database from '@server/database'
+import database from '@database/index'
 
 // Recursively rollback migrations until there is none left
 const resetDatabase = async () => {

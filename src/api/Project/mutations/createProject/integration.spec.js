@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import testClient from '@tests/client'
-import database from '@server/database'
 import resetDatabase from '@tests/resetDatabase'
+import database from '@database/index'
 
 const mutation = gql`
   mutation($name: String!, $description: String, $userId: ID!) {
@@ -21,9 +21,10 @@ const mutation = gql`
 `
 
 describe('The `createProject` mutation', () => {
-  beforeAll(async () => {
+  beforeAll(async done => {
     await resetDatabase()
     await database.migrate.latest()
+    done()
   })
 
   it('should return the created project on success, with normalized and trimmed values', async done => {

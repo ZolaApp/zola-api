@@ -1,5 +1,5 @@
+import database from '@database/index'
 import User from '@models/User'
-import database from '@server/database'
 import resetDatabase from '@tests/resetDatabase'
 
 const TEST_ACCOUNTS = [

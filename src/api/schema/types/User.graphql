@@ -2,6 +2,7 @@ type User {
   id: ID!
   createdAt: Date!
   updatedAt: Date
+  isValidated: Boolean!
   email: String!
   name: String!
 }

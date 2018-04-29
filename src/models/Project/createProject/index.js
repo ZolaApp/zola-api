@@ -1,10 +1,10 @@
 // @flow
 import slugify from 'slugify'
+import database from '@database/index'
+import validateName from '@helpers/validateName'
+import ProjectUserModel from '@models/ProjectUser'
 import type { Project } from '@models/Project'
 import type { ValidationError } from '@types/ValidationError'
-import database from '@server/database'
-import ProjectUserModel from '@models/ProjectUser'
-import validateName from '@helpers/validateName'
 
 export type CreateProjectArgs = {
   name: string,

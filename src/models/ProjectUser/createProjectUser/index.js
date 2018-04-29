@@ -1,7 +1,7 @@
 // @flow
+import database from '@database/index'
 import type { ProjectUser, ProjectUserRole } from '@models/ProjectUser'
 import type { ValidationError } from '@types/ValidationError'
-import database from '@server/database'
 
 export type CreateProjectUserArgs = {
   projectId: string,

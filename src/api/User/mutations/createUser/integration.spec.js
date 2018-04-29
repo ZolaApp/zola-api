@@ -1,13 +1,14 @@
 import gql from 'graphql-tag'
 import testClient from '@tests/client'
-import database from '@server/database'
 import resetDatabase from '@tests/resetDatabase'
+import database from '@database/index'
 
-export const mutation = gql`
+const mutation = gql`
   mutation($email: String!, $name: String!, $password: String!) {
     createUser(email: $email, name: $name, passwordPlain: $password) {
       user {
         id
+        isValidated
         name
         email
       }
@@ -20,9 +21,10 @@ export const mutation = gql`
 `
 
 describe('The `createUser` mutation', () => {
-  beforeAll(async () => {
+  beforeAll(async done => {
     await resetDatabase()
     await database.migrate.latest()
+    done()
   })
 
   it('should return errors', async done => {
@@ -50,6 +52,7 @@ describe('The `createUser` mutation', () => {
     const expected = {
       __typename: 'User',
       id: '1',
+      isValidated: false,
       name: 'Foo',
       email: 'foo@bar.com'
     }

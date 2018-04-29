@@ -1,5 +1,6 @@
-import database from '@server/database'
 import resetDatabase from '@tests/resetDatabase'
+import database from '@database/index'
+import UserModel from '@models/User'
 import {
   INVALID_EMAIL_ERROR,
   EMAIL_ALREADY_IN_USE_ERROR
@@ -7,9 +8,10 @@ import {
 import createUser from './index'
 
 describe('The User model’s `createUser` helper', () => {
-  beforeAll(async () => {
+  beforeAll(async done => {
     await resetDatabase()
     await database.migrate.latest()
+    done()
   })
 
   it('should return errors if the name is not valid', async done => {
@@ -91,16 +93,29 @@ describe('The User model’s `createUser` helper', () => {
     expect(countBefore[0].count).toEqual('1')
     expect(countAfter[0].count).toEqual('2')
     expect(user).toMatchObject({
+      isValidated: false,
       name: 'Foo',
       email: 'foo@bar.com'
     })
     done()
   })
 
+  it('should send a validation e-mail to the user', async done => {
+    const sendValidationEmailSpy = jest.spyOn(UserModel, 'sendValidationEmail')
+    await createUser({
+      name: 'Foo',
+      email: 'foo2@bar.com',
+      passwordPlain: '$uper$trongPa$$word'
+    })
+
+    expect(sendValidationEmailSpy).toHaveBeenCalled()
+    done()
+  })
+
   it('should save a hash of the password and not the plain password', async done => {
     const { user } = await createUser({
       name: 'Foo',
-      email: 'foo2@bar.com',
+      email: 'foo3@bar.com',
       passwordPlain: '$uper$trongPa$$word'
     })
     const userKeys = Object.keys(user)

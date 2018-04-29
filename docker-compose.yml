@@ -18,6 +18,7 @@ services:
       - POSTGRES_DATABASE
       - POSTGRES_USER
       - POSTGRES_PASSWORD
+      - SENDGRID_API_KEY
     entrypoint: /bin/bash /zola-api/docker/node/entrypoint.sh
     restart: always
     # logging:
@@ -27,7 +28,7 @@ services:
     #     tag: "zola-node"
 
   postgres:
-    image: postgres:10@sha256:d5787305ec0a3b9a24d0108cb5fdbb4befbd809f85639bf04aa1941138df9701
+    image: postgres:10@sha256:3913a8fc7efb82eecf9c1b0085145bf6be78076e03e85cd049ba0b4da00a94b1
     container_name: "zola-postgres"
     ports:
       - "5432:5432"
