@@ -4,7 +4,7 @@ import sendValidationEmail from './sendValidationEmail'
 export * from './createUser'
 
 export type User = {
-  id: number,
+  id: string,
   createdAt: Date,
   updatedAt: Date,
   isValidated: boolean,

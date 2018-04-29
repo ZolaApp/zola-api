@@ -5,9 +5,9 @@ import validateToken from './validateToken'
 export * from './createToken'
 
 export type Token = {
-  id: number,
+  id: string,
   token: string,
-  userId: number
+  userId: string
 }
 
 export default {
