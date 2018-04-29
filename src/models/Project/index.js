@@ -4,7 +4,10 @@ export * from './createProject'
 
 export type Project = {
   id: string,
-  name: string
+  userId: string,
+  name: string,
+  slug: string,
+  description: string
 }
 
 export default {

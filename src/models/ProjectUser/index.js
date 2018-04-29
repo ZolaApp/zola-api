@@ -6,8 +6,8 @@ export type ProjectUserRole = 'OWNER' | 'CONTRIBUTOR'
 
 export type ProjectUser = {
   id: string,
-  projectId: string,
   userId: string,
+  projectId: string,
   role: ProjectUserRole
 }
 
