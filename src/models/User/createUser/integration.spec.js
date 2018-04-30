@@ -93,9 +93,11 @@ describe('The User model’s `createUser` helper', () => {
     expect(countBefore[0].count).toEqual('1')
     expect(countAfter[0].count).toEqual('2')
     expect(user).toMatchObject({
-      isValidated: false,
+      id: 2,
+      email: 'foo@bar.com',
       name: 'Foo',
-      email: 'foo@bar.com'
+      updatedAt: null,
+      isValidated: false
     })
     done()
   })

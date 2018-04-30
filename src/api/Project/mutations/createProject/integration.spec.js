@@ -39,11 +39,14 @@ describe('The `createProject` mutation', () => {
     const { project, errors } = projectResponse.data.createProject
     const expected = {
       __typename: 'Project',
-      name: 'My awesome project'
+      id: '1',
+      name: 'My awesome project',
+      slug: 'my-awesome-project',
+      description: ''
     }
 
     expect(errors.length).toEqual(0)
-    expect(project).toMatchObject(expected)
+    expect(project).toEqual(expected)
     done()
   })
 })
