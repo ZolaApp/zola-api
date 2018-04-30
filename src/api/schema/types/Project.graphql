@@ -7,8 +7,9 @@ type Project {
 }
 
 type CreateProjectResponse {
-  project: Project
+  status: Status!
   errors: [ValidationError]!
+  project: Project
 }
 
 extend type Mutation {

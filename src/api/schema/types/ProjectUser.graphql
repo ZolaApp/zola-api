@@ -11,8 +11,9 @@ type ProjectUser {
 }
 
 type CreateProjectUserResponse {
-  projectUser: ProjectUser
+  status: Status!
   errors: [ValidationError]!
+  projectUser: ProjectUser
 }
 
 extend type Mutation {

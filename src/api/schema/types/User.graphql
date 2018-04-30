@@ -8,8 +8,9 @@ type User {
 }
 
 type CreateUserResponse {
-  user: User
+  status: Status!
   errors: [ValidationError]!
+  user: User
 }
 
 extend type Mutation {
