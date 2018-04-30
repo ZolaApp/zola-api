@@ -8,7 +8,7 @@ type User {
 }
 
 type CreateUserResponse {
-  status: Status!
+  status: ResponseStatus!
   errors: [ValidationError]!
   user: User
 }

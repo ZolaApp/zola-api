@@ -7,7 +7,7 @@ type Project {
 }
 
 type CreateProjectResponse {
-  status: Status!
+  status: ResponseStatus!
   errors: [ValidationError]!
   project: Project
 }

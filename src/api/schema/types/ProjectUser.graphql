@@ -11,7 +11,7 @@ type ProjectUser {
 }
 
 type CreateProjectUserResponse {
-  status: Status!
+  status: ResponseStatus!
   errors: [ValidationError]!
   projectUser: ProjectUser
 }

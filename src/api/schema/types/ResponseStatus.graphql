@@ -1,4 +1,4 @@
-enum Status {
+enum ResponseStatus {
   FAILURE
   SUCCESS
 }
