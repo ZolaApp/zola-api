@@ -22,7 +22,7 @@
   },
   "jest": {
     "coveragePathIgnorePatterns": [
-      "<rootDir>/src/server/database"
+      "<rootDir>/src/database"
     ],
     "globalSetup": "<rootDir>/src/tests/globalSetup.js"
   },
@@ -75,6 +75,7 @@
     "nodemon": "1.17.3",
     "pg": "7.4.1",
     "redis": "2.8.0",
+    "slugify": "1.2.9",
     "validator": "9.4.1",
     "zxcvbn": "4.4.2"
   }

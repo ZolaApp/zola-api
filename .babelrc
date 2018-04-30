@@ -8,6 +8,7 @@
           "@api": "./src/api",
           "@constants": "./src/constants",
           "@database": "./src/database",
+          "@helpers": "./src/helpers",
           "@models": "./src/models",
           "@server": "./src/server",
           "@tests": "./src/tests",

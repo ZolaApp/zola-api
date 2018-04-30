@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 import testClient from '@tests/client'
+import resetDatabase from '@tests/resetDatabase'
 import database from '@database/index'
 
 const mutation = gql`
@@ -21,8 +22,8 @@ const mutation = gql`
 
 describe('The `createUser` mutation', () => {
   beforeAll(async done => {
+    await resetDatabase()
     await database.migrate.latest()
-    await database('users').truncate()
     done()
   })
 

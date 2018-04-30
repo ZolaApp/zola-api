@@ -7,7 +7,7 @@ import redis from '@server/redis'
 import UserModel from '@models/User'
 import type { User } from '@models/User'
 import type { ValidationError } from '@types/ValidationError'
-import validateName from './validations/validateName'
+import validateName from '@helpers/validateName'
 import validateEmail from './validations/validateEmail'
 import validatePassword from './validations/validatePassword'
 
@@ -29,7 +29,7 @@ const createUser = async ({
 }: CreateUserArgs): Promise<CreateUserResponse> => {
   const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
-  const nameValidation = validateName(trimmedName)
+  const nameValidation = validateName({ name: trimmedName })
 
   if (!nameValidation.isValid) {
     errors.push({ field: 'name', message: nameValidation.error })

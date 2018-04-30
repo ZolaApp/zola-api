@@ -1,0 +1,20 @@
+type Project {
+  id: ID
+  userId: ID
+  name: String
+  slug: String
+  description: String
+}
+
+type CreateProjectResponse {
+  project: Project
+  errors: [ValidationError]!
+}
+
+extend type Mutation {
+  createProject(
+    name: String!
+    description: String
+    userId: ID!
+  ): CreateProjectResponse
+}
