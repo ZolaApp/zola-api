@@ -6,6 +6,7 @@ import database from '@database/index'
 const mutation = gql`
   mutation($name: String!, $description: String, $userId: ID!) {
     createProject(name: $name, description: $description, userId: $userId) {
+      status
       project {
         id
         name
@@ -36,7 +37,7 @@ describe('The `createProject` mutation', () => {
       },
       mutation
     })
-    const { project, errors } = projectResponse.data.createProject
+    const { status, project, errors } = projectResponse.data.createProject
     const expected = {
       __typename: 'Project',
       id: '1',
@@ -45,6 +46,7 @@ describe('The `createProject` mutation', () => {
       description: ''
     }
 
+    expect(status).toEqual('SUCCESS')
     expect(errors.length).toEqual(0)
     expect(project).toEqual(expected)
     done()

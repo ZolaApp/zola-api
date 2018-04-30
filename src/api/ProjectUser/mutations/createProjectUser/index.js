@@ -1,21 +1,15 @@
 // @flow
 import ProjectUserModel from '@models/ProjectUser'
-import type {
-  CreateProjectUserArgs,
-  CreateProjectUserResponse
-} from '@models/ProjectUser'
+import type { CreateProjectUserArgs } from '@models/ProjectUser'
 
-const resolver = async (
-  _: any,
-  args: CreateProjectUserArgs
-): Promise<CreateProjectUserResponse> => {
+const resolver = async (_: any, args: CreateProjectUserArgs) => {
   const { errors, projectUser } = await ProjectUserModel.createProjectUser(args)
 
   if (errors.length > 0) {
-    return { errors }
+    return { status: 'FAILURE', errors }
   }
 
-  return { projectUser, errors }
+  return { status: 'SUCCESS', projectUser, errors }
 }
 
 export default resolver
