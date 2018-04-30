@@ -1,10 +1,12 @@
 // @flow
 import slugify from 'slugify'
 import database from '@database/index'
-import validateName from '@helpers/validateName'
+import validateString from '@helpers/validateString'
 import ProjectUserModel from '@models/ProjectUser'
 import type { Project } from '@models/Project'
 import type { ValidationError } from '@types/ValidationError'
+
+const validateName = validateString({ type: 'name' })
 
 export type CreateProjectArgs = {
   name: string,
@@ -25,7 +27,7 @@ const createProject = async ({
   const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
   const trimmedDescription = description.trim()
-  const nameValidation = validateName({ name: trimmedName })
+  const nameValidation = validateName(trimmedName)
 
   if (!nameValidation.isValid) {
     errors.push({ field: 'name', message: nameValidation.error })
