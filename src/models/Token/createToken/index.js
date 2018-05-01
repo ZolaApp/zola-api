@@ -10,10 +10,10 @@ export type CreateTokenResponse = {
   errors: Array<ValidationError>
 }
 
-const createTokenString = (user: User): string => {
+export const createTokenString = (userEmail: string): string => {
   const now = Date.now()
   const hash = createHash('sha256')
-  const hashedEmail = hash.update(`${user.email}${now}`).digest('hex')
+  const hashedEmail = hash.update(`${userEmail}${now}`).digest('hex')
 
   return Buffer.from(`${hashedEmail}-${now})`).toString('base64')
 }
@@ -26,7 +26,7 @@ const createToken = async (user: User): Promise<CreateTokenResponse> => {
     }
   }
 
-  const tokenString: string = createTokenString(user)
+  const tokenString: string = createTokenString(user.email)
   const savedToken: Array<Token> = await database('tokens').insert({
     token: tokenString,
     userId: user.id
