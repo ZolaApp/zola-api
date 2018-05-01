@@ -6,7 +6,7 @@ import redisMock from 'redis-mock'
 const client =
   process.env.NODE_ENV === 'test'
     ? redisMock.createClient()
-    : redis.createClient()
+    : redis.createClient(process.env.REDIS_HOST || '127.0.0.1')
 client.on('error', error => console.error('Redis error:', error))
 
 const METHODS_TO_PROMISIFY = ['set', 'get', 'del']
