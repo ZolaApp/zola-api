@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "apollo-cache-inmemory": "1.1.12",
-    "apollo-client": "2.2.8",
+    "apollo-client": "2.3.0",
     "apollo-link-schema": "1.1.0",
     "babel-cli": "6.26.0",
     "babel-eslint": "8.2.3",
