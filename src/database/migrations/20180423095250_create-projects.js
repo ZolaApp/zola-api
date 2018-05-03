@@ -4,7 +4,7 @@ export const up = async knex => {
       .increments('id')
       .unsigned()
       .primary()
-    table.string('name', 30).notNull()
+    table.string('name', 50).notNull()
     table
       .string('slug')
       .unique()
