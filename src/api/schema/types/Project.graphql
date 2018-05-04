@@ -1,6 +1,6 @@
 type Project {
   id: ID
-  userId: ID
+  ownerId: ID
   name: String
   slug: String
   description: String
@@ -16,6 +16,6 @@ extend type Mutation {
   createProject(
     name: String!
     description: String
-    userId: ID!
+    ownerId: ID!
   ): CreateProjectResponse
 }
