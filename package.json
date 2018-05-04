@@ -76,7 +76,7 @@
     "pg": "7.4.1",
     "redis": "2.8.0",
     "slugify": "1.2.9",
-    "validator": "10.0.0",
+    "validator": "10.1.0",
     "zxcvbn": "4.4.2"
   }
 }
