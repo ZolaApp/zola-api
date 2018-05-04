@@ -6,7 +6,7 @@ import ProjectUserModel from '@models/ProjectUser'
 import type { Project } from '@models/Project'
 import type { ValidationError } from '@types/ValidationError'
 
-const validateName = validateString({ type: 'name' })
+const validateName = validateString({ type: 'name', maxLength: 50 })
 const validateDescription = validateString({
   type: 'description',
   minLength: 0,
