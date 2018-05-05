@@ -33,7 +33,7 @@
     "test": "./scripts/test.sh"
   },
   "devDependencies": {
-    "apollo-cache-inmemory": "1.2.0",
+    "apollo-cache-inmemory": "1.2.1",
     "apollo-client": "2.3.0",
     "apollo-link-schema": "1.1.0",
     "babel-cli": "6.26.0",
