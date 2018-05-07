@@ -26,7 +26,17 @@ export default (): express$Application => {
   app.use(authMiddleware)
 
   // Routes
-  app.use(GRAPHQL_PATH, graphqlExpress({ schema }))
+  app.use(
+    GRAPHQL_PATH,
+    graphqlExpress(request => ({
+      schema,
+      context: {
+        // Pass down express’ `request` to the GraphQL context.
+        request
+      },
+      debug: process.env.node_ENV !== 'production'
+    }))
+  )
 
   if (process.env.NODE_ENV !== 'production') {
     app.get(GRAPHIQL_PATH, graphiqlExpress({ endpointURL: GRAPHQL_PATH }))
