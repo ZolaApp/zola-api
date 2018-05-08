@@ -1,7 +1,7 @@
 // @flow
 import bcrypt from 'bcrypt'
-import database from '@database/index'
-import Token from '@models/Token'
+import createToken from '@models/Token/createToken'
+import retrieveToken from '@models/Token/retrieveToken'
 import User from '@models/User'
 
 const login = async (
@@ -16,13 +16,12 @@ const login = async (
     return response.send('No params')
   }
 
-  const userArray: Array<User> = await database('users').where({ email })
+  const user: User = await User.query().findOne({ email })
 
-  if (!userArray.length) {
+  if (user === null) {
     return response.status(401).send('Invalid credentials')
   }
 
-  const user = userArray[0]
   const isPasswordMatching: Boolean = await bcrypt.compare(
     password,
     user.passwordHash
@@ -32,19 +31,19 @@ const login = async (
     return response.status(401).send('Invalid credentials')
   }
 
-  let token = await Token.retrieveToken(user)
+  let token = await retrieveToken(user)
 
   if (token === null) {
-    const tokenResponse = await Token.createToken(user)
+    const tokenResponse = await createToken(user)
 
-    if (tokenResponse.token === null) {
+    if (tokenResponse.token === null || tokenResponse.errors.length > 0) {
       return response.status(500).send('An error occurred.')
     }
 
     token = tokenResponse.token
   }
 
-  return response.json({ token })
+  return response.json({ token: token.token })
 }
 
 export default login

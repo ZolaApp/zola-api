@@ -30,6 +30,12 @@ export default (): express$Application => {
 
   if (process.env.NODE_ENV !== 'production') {
     app.get(GRAPHIQL_PATH, graphiqlExpress({ endpointURL: GRAPHQL_PATH }))
+    app.get(
+      '/test',
+      (request: express$Request, response: express$Response): void => {
+        response.send(`Debugging user auth :  ${request.user.name}`)
+      }
+    )
   }
 
   app.post(LOGIN_PATH, loginRoute)

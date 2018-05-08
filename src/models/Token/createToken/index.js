@@ -1,9 +1,8 @@
 // @flow
 import { createHash } from 'crypto'
 import type User from '@models/User'
-import type Token from '@models/Token'
+import Token from '@models/Token'
 import type { ValidationError } from '@types/ValidationError'
-import database from '@database/index'
 
 export type CreateTokenResponse = {
   token: Token | null,
@@ -27,12 +26,12 @@ const createToken = async (user: User): Promise<CreateTokenResponse> => {
   }
 
   const tokenString: string = createTokenString(user)
-  const savedToken: Array<Token> = await database('tokens').insert({
+  const savedToken: Token = await Token.query().insertAndFetch({
     token: tokenString,
     userId: user.id
   })
 
-  return { token: savedToken[0], errors: [] }
+  return { token: savedToken, errors: [] }
 }
 
 export default createToken
