@@ -47,7 +47,7 @@ services:
 
 
   redis:
-    image: redis:4.0-alpine@sha256:8782054ba81c3b8b969dae4822263a97fc241a06f8f1fe1acacd7c077ec60831
+    image: redis:4.0-alpine@sha256:aab35d6ec4c49ef5c1674f0582eeb2f6e90ee0fd3010d8a806d8833f36cc0525
     container_name: "zola-redis"
     restart: always
     volumes:
