@@ -1,7 +1,7 @@
 // @flow
 import bcrypt from 'bcrypt'
 import database from '@database/index'
-import TokenModel from '@models/Token'
+import Token from '@models/Token'
 import User from '@models/User'
 
 const login = async (
@@ -32,10 +32,10 @@ const login = async (
     return response.status(401).send('Invalid credentials')
   }
 
-  let token = await TokenModel.retrieveToken(user)
+  let token = await Token.retrieveToken(user)
 
   if (token === null) {
-    const tokenResponse = await TokenModel.createToken(user)
+    const tokenResponse = await Token.createToken(user)
 
     if (tokenResponse.token === null) {
       return response.status(500).send('An error occurred.')

@@ -2,6 +2,7 @@
 import { Model } from 'objection'
 import knex from '@database/index'
 import Token from '@models/Token'
+import Project from '@models/Project'
 
 Model.knex(knex)
 
@@ -25,6 +26,7 @@ class User extends Model {
   passwordHash: string
   isValidated: boolean
   token: Token
+  projects: Array<Project>
 
   static relationMappings = {
     token: {
@@ -33,6 +35,14 @@ class User extends Model {
       join: {
         from: 'users.id',
         to: 'tokens.userId'
+      }
+    },
+    projects: {
+      relation: Model.HasManyRelation,
+      modelClass: Project,
+      join: {
+        from: 'users.id',
+        to: 'projects.ownerId'
       }
     }
   }
