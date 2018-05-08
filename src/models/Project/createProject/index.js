@@ -1,15 +1,21 @@
 // @flow
 import slugify from 'slugify'
 import database from '@database/index'
-import validateName from '@helpers/validateName'
-import ProjectUserModel from '@models/ProjectUser'
+import validateString from '@helpers/validateString'
 import type { Project } from '@models/Project'
 import type { ValidationError } from '@types/ValidationError'
+
+const validateName = validateString({ type: 'name', maxLength: 50 })
+const validateDescription = validateString({
+  type: 'description',
+  minLength: 0,
+  maxLength: 255
+})
 
 export type CreateProjectArgs = {
   name: string,
   description: string,
-  userId: string
+  ownerId: string
 }
 
 export type CreateProjectResponse = {
@@ -20,32 +26,36 @@ export type CreateProjectResponse = {
 const createProject = async ({
   name,
   description = '',
-  userId
+  ownerId
 }: CreateProjectArgs): Promise<CreateProjectResponse> => {
   const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
-  const trimmedDescription = description.trim()
-  const nameValidation = validateName({ name: trimmedName })
+  const nameValidation = validateName(trimmedName)
 
   if (!nameValidation.isValid) {
     errors.push({ field: 'name', message: nameValidation.error })
   }
 
-  const slug = slugify(trimmedName, { lower: true })
+  const trimmedDescription = description.trim()
+  const descriptionValidation = validateDescription(trimmedDescription)
+
+  if (!descriptionValidation.isValid) {
+    errors.push({ field: 'description', message: descriptionValidation.error })
+  }
 
   if (errors.length) {
     return { errors }
   }
 
+  const slug = slugify(trimmedName, { lower: true })
   const savedProject: Array<Project> = await database('projects')
-    .insert({ name: trimmedName, slug, description: trimmedDescription })
+    .insert({
+      name: trimmedName,
+      slug,
+      description: trimmedDescription,
+      ownerId
+    })
     .returning('*')
-
-  await ProjectUserModel.createProjectUser({
-    projectId: savedProject[0].id,
-    userId,
-    role: 'OWNER'
-  })
 
   return { project: savedProject[0], errors: [] }
 }

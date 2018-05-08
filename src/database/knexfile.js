@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 // Call dotenv again in case we’re in the context of a knex command.
 // We need to specify a path since the current working directory is not the root
 // directory.
-dotenv.config({ path: '../../../.env' })
+dotenv.config({ path: '../../.env' })
 
 export default {
   client: 'pg',

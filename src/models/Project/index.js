@@ -4,7 +4,7 @@ export * from './createProject'
 
 export type Project = {
   id: string,
-  userId: string,
+  ownerId: string,
   name: string,
   slug: string,
   description: string

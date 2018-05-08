@@ -1,7 +1,7 @@
 version: '3'
 services:
   nodejs:
-    image: node:9@sha256:84defd39d4694815086f11e3f293b7dbc3bae0742ad9691824111420954920b1
+    image: node:9@sha256:f1d26f827bb796baf568203f8d42c20cb59fb55a81ab35de3d1dd09dd010c816
     container_name: "zola-node"
     working_dir: /zola-api
     ports:
