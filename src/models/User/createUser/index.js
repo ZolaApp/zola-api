@@ -2,11 +2,11 @@
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import validator from 'validator'
-import database from '@database/index'
 import redis from '@server/redis'
-import UserModel from '@models/User'
+import User from '@models/User'
 import type { ValidationError } from '@types/ValidationError'
 import validateString from '@helpers/validateString'
+import sendValidationEmail from '@models/User/sendValidationEmail'
 import validateEmail from './validations/validateEmail'
 import validatePassword from './validations/validatePassword'
 
@@ -19,7 +19,7 @@ export type CreateUserArgs = {
 }
 
 export type CreateUserResponse = {
-  user?: UserModel,
+  user?: User,
   errors: Array<ValidationError>
 }
 
@@ -42,9 +42,11 @@ const createUser = async ({
     yahoo_remove_subaddress: false,
     icloud_remove_subaddress: false
   })
-  const existingUsersWithEmail = await database('users')
-    .where({ email })
+
+  const existingUsersWithEmail = await User.query()
+    .where('email', '=', email)
     .count()
+
   const isEmailInUse = existingUsersWithEmail[0].count > 0
   const emailValidation = validateEmail(normalizedEmail, isEmailInUse)
 
@@ -68,14 +70,18 @@ const createUser = async ({
   }
 
   const passwordHash: string = await bcrypt.hash(passwordPlain, 10)
-  const savedUser: Array<User> = await database('users')
-    .insert({ email: normalizedEmail, name: trimmedName, passwordHash })
-    .returning('*')
+
+  const savedUser = User.query().insert({
+    email: normalizedEmail,
+    name: trimmedName,
+    passwordHash
+  })
+
   const emailValidationToken = crypto.randomBytes(24).toString('hex')
-  const user = savedUser[0]
+  const user = savedUser
 
   redis.set(`user:emailValidationToken:${emailValidationToken}`, user.id)
-  UserModel.sendValidationEmail(user, emailValidationToken)
+  sendValidationEmail(user, emailValidationToken)
 
   return { user, errors: [] }
 }

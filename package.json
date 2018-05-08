@@ -31,7 +31,7 @@
     "docker": "./scripts/docker.sh",
     "knex": "./scripts/knex.sh",
     "test": "./scripts/test.sh",
-    "start": "./scripts/dev.sh"
+    "start": "node dist/index.js"
   },
   "devDependencies": {
     "apollo-cache-inmemory": "1.2.1",

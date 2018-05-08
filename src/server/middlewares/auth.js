@@ -1,8 +1,7 @@
 // @flow
 import { AUTH_MIDDLEWARE_WHITELIST, GRAPHQL_PATH } from '@constants/routes'
-import TokenModel from '@models/Token'
-import type User from '@models/User'
-import database from '@database/index'
+import Token from '@models/Token'
+import User from '@models/User'
 
 const auth: express$Middleware = async (
   request: express$Request,
@@ -28,12 +27,14 @@ const auth: express$Middleware = async (
   const [, rawToken] = (request.header('Authorization') || '').split(' ')
 
   if (rawToken !== null) {
-    const token = await TokenModel.validateToken(rawToken)
+    const token = await Token.validateToken(rawToken)
 
     if (token !== null) {
-      const userArray: Array<User> = await database('users').where({
-        id: token.userId
-      })
+      const userArray: Array<User> = await await User.query().where(
+        'id',
+        '=',
+        token.user.id
+      )
 
       if (userArray.length) {
         request.token = rawToken
