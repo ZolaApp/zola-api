@@ -5,7 +5,7 @@ import {
   USER_VALIDATION_EMAIL_TEMPLATE_ID
 } from '@constants/emails'
 import sendGrid from '@server/sendGrid'
-import type { User } from '@models/User'
+import User from '@models/User'
 
 export const VALIDATE_PATH = '/validate-email'
 
@@ -26,4 +26,4 @@ const sendValidationEmail = (
   sendGrid.send(email)
 }
 
-export default sendValidationEmail
+export default { sendValidationEmail }

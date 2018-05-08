@@ -1,17 +1,45 @@
 // @flow
-import createToken from './createToken'
-import retrieveToken from './retrieveToken'
-import validateToken from './validateToken'
-export * from './createToken'
+import { Model } from 'objection'
+import User from '@models/User'
 
-export type Token = {
-  id: string,
-  token: string,
-  userId: string
+class Token extends Model {
+  $beforeInsert() {
+    this.createdAt = new Date().toISOString()
+  }
+
+  $beforeUpdate() {
+    this.updatedAt = new Date().toISOString()
+  }
+
+  static tableName: string = 'tokens'
+
+  static idColumn: string = 'id'
+
+  static updatedAt: Date
+  static createdAt: Date
+  static token: string
+
+  static relationMappings = {
+    user: {
+      relation: Model.BelongsToOneRelation,
+      modelClass: User,
+      join: {
+        from: 'tokens.userId',
+        to: 'users.id'
+      }
+    }
+  }
+
+  static jsonSchema = {
+    type: 'object',
+
+    properties: {
+      id: { type: 'string' },
+      createdAt: { type: 'date' },
+      updatedAt: { type: 'date' },
+      token: { type: 'string' }
+    }
+  }
 }
 
-export default {
-  createToken,
-  retrieveToken,
-  validateToken
-}
+export default Token

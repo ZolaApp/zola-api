@@ -2,7 +2,7 @@
 import bcrypt from 'bcrypt'
 import database from '@database/index'
 import TokenModel from '@models/Token'
-import type { User } from '@models/User'
+import User from '@models/User'
 
 const login = async (
   request: express$Request,

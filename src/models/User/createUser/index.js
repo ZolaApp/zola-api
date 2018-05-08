@@ -5,7 +5,6 @@ import validator from 'validator'
 import database from '@database/index'
 import redis from '@server/redis'
 import UserModel from '@models/User'
-import type { User } from '@models/User'
 import type { ValidationError } from '@types/ValidationError'
 import validateName from '@helpers/validateName'
 import validateEmail from './validations/validateEmail'
@@ -18,7 +17,7 @@ export type CreateUserArgs = {
 }
 
 export type CreateUserResponse = {
-  user?: User,
+  user?: UserModel,
   errors: Array<ValidationError>
 }
 

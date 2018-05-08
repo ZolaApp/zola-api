@@ -1,7 +1,7 @@
 // @flow
 import { createHash } from 'crypto'
-import type { User } from '@models/User'
-import type { Token } from '@models/Token'
+import type User from '@models/User'
+import type Token from '@models/Token'
 import type { ValidationError } from '@types/ValidationError'
 import database from '@database/index'
 

@@ -1,19 +1,55 @@
 // @flow
-import createUser from './createUser'
-import sendValidationEmail from './sendValidationEmail'
-export * from './createUser'
+import { Model } from 'objection'
+import knex from '@database/index'
+import Token from '@models/Token'
 
-export type User = {
-  id: string,
-  createdAt: Date,
-  updatedAt: Date,
-  isValidated: boolean,
-  email: string,
-  name: string,
+Model.knex(knex)
+
+class User extends Model {
+  $beforeInsert() {
+    this.createdAt = new Date()
+  }
+
+  $beforeUpdate() {
+    this.updatedAt = new Date()
+  }
+
+  static tableName: string = 'users'
+
+  static idColumn: string = 'id'
+
+  updatedAt: Date
+  createdAt: Date
+  name: string
+  email: string
   passwordHash: string
+  isValidated: boolean
+  token: Token
+
+  static relationMappings = {
+    token: {
+      relation: Model.HasOneRelation,
+      modelClass: Token,
+      join: {
+        from: 'users.id',
+        to: 'tokens.userId'
+      }
+    }
+  }
+
+  static jsonSchema = {
+    type: 'object',
+
+    properties: {
+      id: { type: 'string' },
+      createdAt: { type: 'date' },
+      updatedAt: { type: 'date' },
+      name: { type: 'string' },
+      email: { type: 'string' },
+      passwordHash: { type: 'string' },
+      isValidated: { type: 'boolean' }
+    }
+  }
 }
 
-export default {
-  createUser,
-  sendValidationEmail
-}
+export default User
