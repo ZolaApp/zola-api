@@ -11,33 +11,41 @@ class Token extends Model {
     this.updatedAt = new Date().toISOString()
   }
 
-  static tableName: string = 'tokens'
+  static get tableName(): string {
+    return 'tokens'
+  }
 
-  static idColumn: string = 'id'
+  static get idColumn(): string {
+    return 'id'
+  }
 
   static updatedAt: Date
   static createdAt: Date
   static token: string
 
-  static relationMappings = {
-    user: {
-      relation: Model.BelongsToOneRelation,
-      modelClass: User,
-      join: {
-        from: 'tokens.userId',
-        to: 'users.id'
+  static get relationMappings(): any {
+    return {
+      user: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: 'tokens.userId',
+          to: 'users.id'
+        }
       }
     }
   }
 
-  static jsonSchema = {
-    type: 'object',
+  static get jsonSchema(): any {
+    return {
+      type: 'object',
 
-    properties: {
-      id: { type: 'string' },
-      createdAt: { type: 'date' },
-      updatedAt: { type: 'date' },
-      token: { type: 'string' }
+      properties: {
+        id: { type: 'string' },
+        createdAt: { type: 'date' },
+        updatedAt: { type: 'date' },
+        token: { type: 'string' }
+      }
     }
   }
 }

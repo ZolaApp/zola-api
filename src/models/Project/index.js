@@ -14,9 +14,13 @@ class Project extends Model {
     this.updatedAt = new Date()
   }
 
-  static tableName: string = 'projects'
+  static get tableName(): string {
+    return 'projects'
+  }
 
-  static idColumn: string = 'id'
+  static get idColumn(): string {
+    return 'id'
+  }
 
   updatedAt: Date
   createdAt: Date
@@ -25,26 +29,30 @@ class Project extends Model {
   description: string
   owner: User
 
-  static relationMappings = {
-    owner: {
-      relation: Model.HasOneRelation,
-      modelClass: User,
-      join: {
-        from: 'projects.ownerId',
-        to: 'users.id'
+  static get relationMappings(): any {
+    return {
+      owner: {
+        relation: Model.HasOneRelation,
+        modelClass: User,
+        join: {
+          from: 'projects.ownerId',
+          to: 'users.id'
+        }
       }
     }
   }
 
-  static jsonSchema = {
-    type: 'object',
+  static get jsonSchema(): any {
+    return {
+      type: 'object',
 
-    properties: {
-      id: { type: 'string' },
-      createdAt: { type: 'date' },
-      updatedAt: { type: 'date' },
-      name: { type: 'string' },
-      slug: { type: 'string' }
+      properties: {
+        id: { type: 'string' },
+        createdAt: { type: 'date' },
+        updatedAt: { type: 'date' },
+        name: { type: 'string' },
+        slug: { type: 'string' }
+      }
     }
   }
 }

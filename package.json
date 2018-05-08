@@ -30,7 +30,8 @@
     "dev": "./scripts/dev.sh",
     "docker": "./scripts/docker.sh",
     "knex": "./scripts/knex.sh",
-    "test": "./scripts/test.sh"
+    "test": "./scripts/test.sh",
+    "start": "./scripts/dev.sh"
   },
   "devDependencies": {
     "apollo-cache-inmemory": "1.2.1",

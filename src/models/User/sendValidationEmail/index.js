@@ -26,4 +26,4 @@ const sendValidationEmail = (
   sendGrid.send(email)
 }
 
-export default { sendValidationEmail }
+export default sendValidationEmail

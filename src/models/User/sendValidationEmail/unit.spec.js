@@ -4,12 +4,13 @@ import {
   USER_VALIDATION_EMAIL_TEMPLATE_ID
 } from '@constants/emails'
 import sendGrid from '@sendgrid/mail'
+import User from '@models/User'
 import sendValidationEmail, { VALIDATE_PATH } from './index'
 
-const user = {
-  name: 'Foo',
-  email: 'foo@bar.com'
-}
+const user = new User()
+
+user.name = 'Foo'
+user.email = 'foo@bar.com'
 
 describe('The User model’s `sendValidationEmail` helper', () => {
   it('should send an e-mail using SendGrid with the expected parameters', () => {
