@@ -56,7 +56,7 @@
     "graphql-tag": "2.9.2",
     "husky": "0.15.0-rc.13",
     "jest": "22.4.3",
-    "lint-staged": "7.0.5",
+    "lint-staged": "7.1.0",
     "prettier": "1.12.1",
     "redis-mock": "0.21.0"
   },
