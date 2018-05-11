@@ -2,37 +2,24 @@
 import { createHash } from 'crypto'
 import type { User } from '@models/User'
 import type { Token } from '@models/Token'
-import type { ValidationError } from '@types/ValidationError'
 import database from '@database/index'
 
-export type CreateTokenResponse = {
-  token: Token | null,
-  errors: Array<ValidationError>
-}
-
-export const createTokenString = (userEmail: string): string => {
+export const generateToken = (email: string): string => {
   const now = Date.now()
   const hash = createHash('sha256')
-  const hashedEmail = hash.update(`${userEmail}${now}`).digest('hex')
+  const hashedEmail = hash.update(`${email}${now}`).digest('hex')
 
   return Buffer.from(`${hashedEmail}-${now})`).toString('base64')
 }
 
-const createToken = async (user: User): Promise<CreateTokenResponse> => {
-  if (user === null) {
-    return {
-      errors: [{ field: 'user', message: 'User should be defined' }],
-      token: null
-    }
-  }
-
-  const tokenString: string = createTokenString(user.email)
+const createToken = async (user: User): Promise<Token> => {
+  const tokenString: string = generateToken(user.email)
   const savedToken: Array<Token> = await database('tokens').insert({
     token: tokenString,
     userId: user.id
   })
 
-  return { token: savedToken[0], errors: [] }
+  return savedToken[0]
 }
 
 export default createToken

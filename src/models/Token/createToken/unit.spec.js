@@ -1,19 +1,17 @@
-import { createTokenString } from './index'
+import { generateToken } from './index'
 
-describe('The `createTokenString` helper', () => {
+describe('The `generateToken` helper', () => {
   it('should return a token longer than 40 characters when provided with an email', () => {
     const userEmail = 'test@zola.ink'
-    const actual = createTokenString(userEmail)
+    const actual = generateToken(userEmail)
 
     expect(actual.length).toBeGreaterThan(40)
   })
 
   it('should return a token that is obfuscated (does not directly contain the email of the bearer)', () => {
     const userEmail = 'test@zola.ink'
-    const actual = createTokenString(userEmail)
+    const token = generateToken(userEmail)
 
-    const search = actual.search(userEmail)
-
-    expect(search).toEqual(-1)
+    expect(token.includes(userEmail)).toEqual(false)
   })
 })
