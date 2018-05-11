@@ -61,7 +61,7 @@ const createUser = async ({
     errors.push({ field: 'password', message: passwordValidation.feedback })
   }
 
-  if (errors.length) {
+  if (errors.length > 0) {
     return { errors }
   }
 

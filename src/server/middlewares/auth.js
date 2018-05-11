@@ -20,35 +20,24 @@ const auth: express$Middleware = async (
       return next()
     }
 
-    return response
-      .status(401)
-      .send('No credentials provided, please login to access this page')
+    return response.status(401).send('Please login to access this page.')
   }
 
   const [, rawToken] = (request.header('Authorization') || '').split(' ')
+  const token = await TokenModel.validateToken(rawToken)
 
-  if (rawToken !== null) {
-    const token = await TokenModel.validateToken(rawToken)
+  if (token !== null) {
+    const userArray: Array<User> = await database('users').where({
+      id: token.userId
+    })
+    request.user = userArray[0]
 
-    if (token !== null) {
-      const userArray: Array<User> = await database('users').where({
-        id: token.userId
-      })
-
-      if (userArray.length) {
-        request.token = rawToken
-        request.user = userArray[0]
-
-        return next()
-      }
-    }
-
-    return response
-      .status(403)
-      .send(
-        'Invalid authentication token provided. Please try logging in again'
-      )
+    return next()
   }
+
+  return response
+    .status(403)
+    .send('Invalid authentication token provided. Please try logging in again.')
 }
 
 export default auth

@@ -53,7 +53,6 @@ declare class express$Request extends http$IncomingMessage
 
   // Custom request properties.
   user: User;
-  token: string;
 }
 
 declare type express$CookieOptions = {
