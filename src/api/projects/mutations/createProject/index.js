@@ -1,6 +1,6 @@
 // @flow
 import ProjectModel from '@models/Project'
-import type { CreateProjectArgs } from '@models/Project'
+import type { CreateProjectArgs } from '@models/Project/createProject'
 
 type Context = {
   request: express$Request
