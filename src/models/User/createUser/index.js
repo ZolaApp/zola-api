@@ -16,7 +16,7 @@ export type CreateUserArgs = {
   passwordPlain: string
 }
 
-export type CreateUserResponse = {
+type CreateUserResponse = {
   user?: User,
   errors: Array<ValidationError>
 }

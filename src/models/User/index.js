@@ -1,6 +1,5 @@
 // @flow
 import createUser from './createUser'
-export * from './createUser'
 
 export type User = {
   id: string,

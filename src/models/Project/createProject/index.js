@@ -18,7 +18,7 @@ export type CreateProjectArgs = {
   ownerId: string
 }
 
-export type CreateProjectResponse = {
+type CreateProjectResponse = {
   project?: Project,
   errors: Array<ValidationError>
 }
