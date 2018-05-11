@@ -14,10 +14,12 @@ export const generateToken = (email: string): string => {
 
 const createToken = async (user: User): Promise<Token> => {
   const tokenString: string = generateToken(user.email)
-  const savedToken: Array<Token> = await database('tokens').insert({
-    token: tokenString,
-    userId: user.id
-  })
+  const savedToken: Array<Token> = await database('tokens')
+    .insert({
+      token: tokenString,
+      userId: user.id
+    })
+    .returning('*')
 
   return savedToken[0]
 }
