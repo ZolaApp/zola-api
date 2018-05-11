@@ -8,7 +8,6 @@ services:
       - "3001:3001"
     links:
       - "postgres:postgres.host"
-      - "redis:redis.host"
     volumes:
       - "${APP_DIR}:/zola-api:rw"
     environment:
@@ -18,7 +17,6 @@ services:
       - POSTGRES_DATABASE
       - POSTGRES_USER
       - POSTGRES_PASSWORD
-      - SENDGRID_API_KEY
     entrypoint: /bin/bash /zola-api/docker/node/entrypoint.sh
     restart: always
     # logging:
@@ -44,16 +42,3 @@ services:
     #   options:
     #     syslog-facility: "local0"
     #     tag: "zola-postgres"
-
-
-  redis:
-    image: redis:4.0-alpine@sha256:aab35d6ec4c49ef5c1674f0582eeb2f6e90ee0fd3010d8a806d8833f36cc0525
-    container_name: "zola-redis"
-    restart: always
-    volumes:
-      - "${REDIS_DATA_DIR}:/data"
-    # logging:
-    #   driver: "syslog"
-    #   options:
-    #     syslog-facility: "local0"
-    #     tag: "zola-redis"
