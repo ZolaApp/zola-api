@@ -18,7 +18,7 @@ export type CreateProjectArgs = {
   ownerId: string
 }
 
-export type CreateProjectResponse = {
+type CreateProjectResponse = {
   project?: Project,
   errors: Array<ValidationError>
 }
@@ -43,7 +43,7 @@ const createProject = async ({
     errors.push({ field: 'description', message: descriptionValidation.error })
   }
 
-  if (errors.length) {
+  if (errors.length > 0) {
     return { errors }
   }
 

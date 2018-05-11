@@ -1,6 +1,6 @@
 // @flow
 import UserModel from '@models/User'
-import type { CreateUserArgs } from '@models/User'
+import type { CreateUserArgs } from '@models/User/createUser'
 
 const resolver = async (_: any, args: CreateUserArgs) => {
   const { errors, user } = await UserModel.createUser(args)

@@ -4,6 +4,8 @@ import database from '@database/index'
 import TokenModel from '@models/Token'
 import type { User } from '@models/User'
 
+const INVALID_CREDENTIALS_ERROR = 'Invalid credentials.'
+
 const login = async (
   request: express$Request,
   response: express$Response,
@@ -19,7 +21,7 @@ const login = async (
   const userArray: Array<User> = await database('users').where({ email })
 
   if (!userArray.length) {
-    return response.status(401).send('Invalid credentials')
+    return response.status(401).send(INVALID_CREDENTIALS_ERROR)
   }
 
   const user = userArray[0]
@@ -29,22 +31,16 @@ const login = async (
   )
 
   if (!isPasswordMatching) {
-    return response.status(401).send('Invalid credentials')
+    return response.status(401).send(INVALID_CREDENTIALS_ERROR)
   }
 
   let token = await TokenModel.retrieveToken(user)
 
   if (token === null) {
-    const tokenResponse = await TokenModel.createToken(user)
-
-    if (tokenResponse.token === null) {
-      return response.status(500).send('An error occurred.')
-    }
-
-    token = tokenResponse.token
+    token = await TokenModel.createToken(user)
   }
 
-  return response.json({ token })
+  return response.json({ token: token.token })
 }
 
 export default login

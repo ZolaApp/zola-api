@@ -1,6 +1,6 @@
 // @flow
 import ProjectModel from '@models/Project'
-import type { CreateProjectArgs } from '@models/Project'
+import type { CreateProjectArgs } from '@models/Project/createProject'
 
 const resolver = async (_: any, args: CreateProjectArgs) => {
   const { errors, project } = await ProjectModel.createProject(args)
