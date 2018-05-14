@@ -41,7 +41,7 @@ const createUser = async ({
   })
 
   const existingUsersWithEmail = await User.query()
-    .where('email', '=', email)
+    .where({ email })
     .count()
 
   const isEmailInUse = existingUsersWithEmail[0].count > 0
