@@ -7,7 +7,7 @@ class Project extends Model {
   static idColumn = 'id'
   static relationMappings = {
     owner: {
-      relation: Model.HasOneRelation,
+      relation: Model.BelongsToOneRelation,
       modelClass: User,
       join: {
         from: 'projects.ownerId',
