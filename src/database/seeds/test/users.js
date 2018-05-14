@@ -1,5 +1,5 @@
 import database from '@database/index'
-import User from '@models/User'
+import createUser from '@models/User/createUser'
 import resetDatabase from '@tests/resetDatabase'
 
 const TEST_ACCOUNTS = [
@@ -13,5 +13,5 @@ const TEST_ACCOUNTS = [
 export const seed = async knex => {
   await resetDatabase()
   await database.migrate.latest()
-  await Promise.all(TEST_ACCOUNTS.map(User.createUser))
+  await Promise.all(TEST_ACCOUNTS.map(createUser))
 }

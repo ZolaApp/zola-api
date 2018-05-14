@@ -1,10 +1,7 @@
 // @flow
 import { Model } from 'objection'
-import knex from '@database/index'
 import Token from '@models/Token'
 import Project from '@models/Project'
-
-Model.knex(knex)
 
 class User extends Model {
   static tableName = 'users'

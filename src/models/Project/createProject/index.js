@@ -1,8 +1,7 @@
 // @flow
 import slugify from 'slugify'
-import database from '@database/index'
 import validateString from '@helpers/validateString'
-import type Project from '@models/Project'
+import Project from '@models/Project'
 import type { ValidationError } from '@types/ValidationError'
 
 const validateName = validateString({ type: 'name', maxLength: 50 })
@@ -48,16 +47,14 @@ const createProject = async ({
   }
 
   const slug = slugify(trimmedName, { lower: true })
-  const savedProject: Array<Project> = await database('projects')
-    .insert({
-      name: trimmedName,
-      slug,
-      description: trimmedDescription,
-      ownerId
-    })
-    .returning('*')
+  const project = await Project.query().insertAndFetch({
+    name: trimmedName,
+    slug,
+    description: trimmedDescription,
+    ownerId
+  })
 
-  return { project: savedProject[0], errors: [] }
+  return { project, errors: [] }
 }
 
 export default createProject
