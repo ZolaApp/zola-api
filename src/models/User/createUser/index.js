@@ -1,8 +1,7 @@
 // @flow
 import bcrypt from 'bcrypt'
 import validator from 'validator'
-import database from '@database/index'
-import type { User } from '@models/User'
+import User from '@models/User'
 import type { ValidationError } from '@types/ValidationError'
 import validateString from '@helpers/validateString'
 import validateEmail from './validations/validateEmail'
@@ -40,9 +39,11 @@ const createUser = async ({
     yahoo_remove_subaddress: false,
     icloud_remove_subaddress: false
   })
-  const existingUsersWithEmail = await database('users')
+
+  const existingUsersWithEmail = await User.query()
     .where({ email })
     .count()
+
   const isEmailInUse = existingUsersWithEmail[0].count > 0
   const emailValidation = validateEmail(normalizedEmail, isEmailInUse)
 
@@ -66,10 +67,11 @@ const createUser = async ({
   }
 
   const passwordHash: string = await bcrypt.hash(passwordPlain, 10)
-  const savedUser: Array<User> = await database('users')
-    .insert({ email: normalizedEmail, name: trimmedName, passwordHash })
-    .returning('*')
-  const user = savedUser[0]
+  const user = await User.query().insertAndFetch({
+    email: normalizedEmail,
+    name: trimmedName,
+    passwordHash
+  })
 
   return { user, errors: [] }
 }

@@ -3,7 +3,9 @@
     [
       "module-resolver",
       {
-        "root": ["./"],
+        "root": [
+          "./"
+        ],
         "alias": {
           "@api": "./src/api",
           "@constants": "./src/constants",
@@ -18,6 +20,7 @@
     ],
     "transform-es2015-modules-commonjs",
     "transform-object-rest-spread",
+    "transform-class-properties",
     "transform-flow-strip-types",
     "inline-import-graphql-ast"
   ]

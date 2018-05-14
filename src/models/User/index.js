@@ -1,15 +1,61 @@
 // @flow
-import createUser from './createUser'
+import path from 'path'
+import { Model } from 'objection'
+import Token from '@models/Token'
+import Project from '@models/Project'
 
-export type User = {
-  id: string,
-  createdAt: Date,
-  updatedAt: Date,
-  email: string,
-  name: string,
+class User extends Model {
+  static tableName = 'users'
+  static idColumn = 'id'
+  static relationMappings = {
+    token: {
+      relation: Model.HasOneRelation,
+      modelClass: path.resolve(__dirname, '../Token'),
+      join: {
+        from: 'users.id',
+        to: 'tokens.userId'
+      }
+    },
+    projects: {
+      relation: Model.HasManyRelation,
+      modelClass: path.resolve(__dirname, '../Project'),
+      join: {
+        from: 'users.id',
+        to: 'projects.ownerId'
+      }
+    }
+  }
+  static jsonSchema = {
+    type: 'object',
+
+    properties: {
+      id: { type: 'string' },
+      createdAt: { type: 'date' },
+      updatedAt: { type: 'date' },
+      name: { type: 'string' },
+      email: { type: 'string' },
+      passwordHash: { type: 'string' },
+      isValidated: { type: 'boolean' }
+    }
+  }
+
+  id: string
+  updatedAt: Date
+  createdAt: Date
+  name: string
+  email: string
   passwordHash: string
+  isValidated: boolean
+  token: Token
+  projects: Array<Project>
+
+  $beforeInsert() {
+    this.createdAt = new Date()
+  }
+
+  $beforeUpdate() {
+    this.updatedAt = new Date()
+  }
 }
 
-export default {
-  createUser
-}
+export default User

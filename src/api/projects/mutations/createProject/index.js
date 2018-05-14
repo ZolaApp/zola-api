@@ -1,5 +1,5 @@
 // @flow
-import ProjectModel from '@models/Project'
+import createProject from '@models/Project/createProject'
 import type { CreateProjectArgs } from '@models/Project/createProject'
 
 type Context = {
@@ -15,7 +15,7 @@ const resolver = async (
     throw new Error('Please log in.')
   }
 
-  const { errors, project } = await ProjectModel.createProject({
+  const { errors, project } = await createProject({
     ...args,
     ownerId: request.user.id
   })

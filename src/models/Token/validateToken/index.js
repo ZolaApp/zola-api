@@ -1,11 +1,10 @@
 // @flow
-import database from '@database/index'
-import type { Token } from '@models/Token'
+import Token from '@models/Token'
 
 const validateToken = async (token: string): Promise<Token | null> => {
-  const retrievedToken: Array<Token> = await database('tokens').where({ token })
+  const retrievedToken = await Token.query().findOne({ token })
 
-  return retrievedToken[0] || null
+  return retrievedToken || null
 }
 
 export default validateToken

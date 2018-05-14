@@ -4,7 +4,10 @@ export const up = async knex => {
       .timestamp('createdAt')
       .notNull()
       .defaultTo(knex.fn.now())
-    table.timestamp('updatedAt').nullable()
+    table
+      .timestamp('updatedAt')
+      .notNull()
+      .defaultTo(knex.fn.now())
   })
 }
 
