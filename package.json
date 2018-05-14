@@ -2,6 +2,10 @@
   "name": "zola-api",
   "description": "zola.ink’s API",
   "version": "0.1.1",
+  "engines": {
+    "node": "9",
+    "npm": ">5.6"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "flow check && lint-staged",
