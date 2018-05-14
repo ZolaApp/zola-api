@@ -1,4 +1,5 @@
 // @flow
+import path from 'path'
 import { Model } from 'objection'
 import Token from '@models/Token'
 import Project from '@models/Project'
@@ -9,7 +10,7 @@ class User extends Model {
   static relationMappings = {
     token: {
       relation: Model.HasOneRelation,
-      modelClass: Token,
+      modelClass: path.resolve(__dirname, '../Token'),
       join: {
         from: 'users.id',
         to: 'tokens.userId'
@@ -17,7 +18,7 @@ class User extends Model {
     },
     projects: {
       relation: Model.HasManyRelation,
-      modelClass: Project,
+      modelClass: path.resolve(__dirname, '../Project'),
       join: {
         from: 'users.id',
         to: 'projects.ownerId'
