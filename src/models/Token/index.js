@@ -4,11 +4,11 @@ import User from '@models/User'
 
 class Token extends Model {
   $beforeInsert() {
-    this.createdAt = new Date().toISOString()
+    this.createdAt = new Date()
   }
 
   $beforeUpdate() {
-    this.updatedAt = new Date().toISOString()
+    this.updatedAt = new Date()
   }
 
   static get tableName(): string {
@@ -19,9 +19,11 @@ class Token extends Model {
     return 'id'
   }
 
-  static updatedAt: Date
-  static createdAt: Date
-  static token: string
+  id: string
+  updatedAt: Date
+  createdAt: Date
+  token: string
+  user: User
 
   static get relationMappings(): any {
     return {

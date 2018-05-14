@@ -17,6 +17,7 @@
       }
     ],
     "transform-es2015-modules-commonjs",
+    "transform-object-rest-spread",
     "transform-flow-strip-types",
     "inline-import-graphql-ast"
   ]

@@ -1,4 +1,4 @@
-// flow-typed signature: 0ed41fce4ed05bd55db35b65f9a85a34
+// flow-typed signature: 5d3ed832fc8e2688f65f6e5105526d44
 // flow-typed version: <<STUB>>/babel-plugin-inline-import-graphql-ast_v2.3.7/flow_v0.71.0
 
 /**
@@ -30,6 +30,10 @@ declare module 'babel-plugin-inline-import-graphql-ast/build/multi-op' {
   declare module.exports: any
 }
 
+declare module 'babel-plugin-inline-import-graphql-ast/build/requireGql' {
+  declare module.exports: any
+}
+
 // Filename aliases
 declare module 'babel-plugin-inline-import-graphql-ast/build/index.js' {
   declare module.exports: $Exports<
@@ -39,5 +43,10 @@ declare module 'babel-plugin-inline-import-graphql-ast/build/index.js' {
 declare module 'babel-plugin-inline-import-graphql-ast/build/multi-op.js' {
   declare module.exports: $Exports<
     'babel-plugin-inline-import-graphql-ast/build/multi-op'
+  >
+}
+declare module 'babel-plugin-inline-import-graphql-ast/build/requireGql.js' {
+  declare module.exports: $Exports<
+    'babel-plugin-inline-import-graphql-ast/build/requireGql'
   >
 }

@@ -13,9 +13,5 @@ type CreateProjectResponse {
 }
 
 extend type Mutation {
-  createProject(
-    name: String!
-    description: String
-    ownerId: ID!
-  ): CreateProjectResponse
+  createProject(name: String!, description: String): CreateProjectResponse
 }

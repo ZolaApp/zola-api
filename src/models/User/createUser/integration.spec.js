@@ -1,6 +1,5 @@
 import resetDatabase from '@tests/resetDatabase'
 import database from '@database/index'
-import UserModel from '@models/User'
 import {
   INVALID_EMAIL_ERROR,
   EMAIL_ALREADY_IN_USE_ERROR
@@ -96,21 +95,8 @@ describe('The User model’s `createUser` helper', () => {
       id: 2,
       email: 'foo@bar.com',
       name: 'Foo',
-      updatedAt: null,
-      isValidated: false
+      updatedAt: null
     })
-    done()
-  })
-
-  it('should send a validation e-mail to the user', async done => {
-    const sendValidationEmailSpy = jest.spyOn(UserModel, 'sendValidationEmail')
-    await createUser({
-      name: 'Foo',
-      email: 'foo2@bar.com',
-      passwordPlain: '$uper$trongPa$$word'
-    })
-
-    expect(sendValidationEmailSpy).toHaveBeenCalled()
     done()
   })
 

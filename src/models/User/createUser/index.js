@@ -1,12 +1,9 @@
 // @flow
-import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import validator from 'validator'
-import redis from '@server/redis'
 import User from '@models/User'
 import type { ValidationError } from '@types/ValidationError'
 import validateString from '@helpers/validateString'
-import sendValidationEmail from '@models/User/sendValidationEmail'
 import validateEmail from './validations/validateEmail'
 import validatePassword from './validations/validatePassword'
 
@@ -18,7 +15,7 @@ export type CreateUserArgs = {
   passwordPlain: string
 }
 
-export type CreateUserResponse = {
+type CreateUserResponse = {
   user?: User,
   errors: Array<ValidationError>
 }
@@ -65,23 +62,16 @@ const createUser = async ({
     errors.push({ field: 'password', message: passwordValidation.feedback })
   }
 
-  if (errors.length) {
+  if (errors.length > 0) {
     return { errors }
   }
 
   const passwordHash: string = await bcrypt.hash(passwordPlain, 10)
-
-  const savedUser = User.query().insertAndFetch({
+  const user = User.query().insertAndFetch({
     email: normalizedEmail,
     name: trimmedName,
     passwordHash
   })
-
-  const emailValidationToken = crypto.randomBytes(24).toString('hex')
-  const user = savedUser
-
-  redis.set(`user:emailValidationToken:${emailValidationToken}`, user.id)
-  sendValidationEmail(user, emailValidationToken)
 
   return { user, errors: [] }
 }

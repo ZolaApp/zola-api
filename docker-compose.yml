@@ -1,14 +1,13 @@
 version: '3'
 services:
   nodejs:
-    image: node:9@sha256:f1d26f827bb796baf568203f8d42c20cb59fb55a81ab35de3d1dd09dd010c816
+    image: node:9@sha256:e9311a4a7beacb1e655b459d1320931a87ccb69ece3bfa6444928c24173bb992
     container_name: "zola-node"
     working_dir: /zola-api
     ports:
       - "3001:3001"
     links:
       - "postgres:postgres.host"
-      - "redis:redis.host"
     volumes:
       - "${APP_DIR}:/zola-api:rw"
     environment:
@@ -18,7 +17,6 @@ services:
       - POSTGRES_DATABASE
       - POSTGRES_USER
       - POSTGRES_PASSWORD
-      - SENDGRID_API_KEY
     entrypoint: /bin/bash /zola-api/docker/node/entrypoint.sh
     restart: always
     # logging:
@@ -28,7 +26,7 @@ services:
     #     tag: "zola-node"
 
   postgres:
-    image: postgres:10@sha256:1c2cc88d0573332ff1584f72f0cf066b1db764166786d85f5541b3fc1e362aee
+    image: postgres:10@sha256:4bee009f05db292e794d4c288b587be60c3a526cc3bf669100be981ef0551284
     container_name: "zola-postgres"
     ports:
       - "5432:5432"
@@ -44,15 +42,3 @@ services:
     #   options:
     #     syslog-facility: "local0"
     #     tag: "zola-postgres"
-
-  redis:
-    image: redis:4.0-alpine@sha256:8782054ba81c3b8b969dae4822263a97fc241a06f8f1fe1acacd7c077ec60831
-    container_name: "zola-redis"
-    restart: always
-    volumes:
-      - "${REDIS_DATA_DIR}:/data"
-    # logging:
-    #   driver: "syslog"
-    #   options:
-    #     syslog-facility: "local0"
-    #     tag: "zola-redis"

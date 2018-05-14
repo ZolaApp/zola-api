@@ -4,16 +4,10 @@ import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
-import {
-  GRAPHQL_PATH,
-  GRAPHIQL_PATH,
-  LOGIN_PATH,
-  VALIDATE_EMAIL_PATH
-} from '@constants/routes'
+import { GRAPHQL_PATH, GRAPHIQL_PATH, LOGIN_PATH } from '@constants/routes'
 import schema from '@api/schema'
 import authMiddleware from '@server/middlewares/auth'
 import loginRoute from '@server/routes/login'
-import validateEmailRoute from '@server/routes/validateEmail'
 
 export default (): express$Application => {
   const app = express()
@@ -26,7 +20,17 @@ export default (): express$Application => {
   app.use(authMiddleware)
 
   // Routes
-  app.use(GRAPHQL_PATH, graphqlExpress({ schema }))
+  app.use(
+    GRAPHQL_PATH,
+    graphqlExpress(request => ({
+      schema,
+      context: {
+        // Pass down express’ `request` to the GraphQL context.
+        request
+      },
+      debug: process.env.node_ENV !== 'production'
+    }))
+  )
 
   if (process.env.NODE_ENV !== 'production') {
     app.get(GRAPHIQL_PATH, graphiqlExpress({ endpointURL: GRAPHQL_PATH }))
@@ -39,7 +43,6 @@ export default (): express$Application => {
   }
 
   app.post(LOGIN_PATH, loginRoute)
-  app.get(`${VALIDATE_EMAIL_PATH}/:emailValidationToken`, validateEmailRoute)
 
   return app
 }

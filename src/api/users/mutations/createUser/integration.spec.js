@@ -9,7 +9,6 @@ const mutation = gql`
       status
       user {
         id
-        isValidated
         name
         email
       }
@@ -54,7 +53,6 @@ describe('The `createUser` mutation', () => {
     const expected = {
       __typename: 'User',
       id: '1',
-      isValidated: false,
       name: 'Foo',
       email: 'foo@bar.com'
     }

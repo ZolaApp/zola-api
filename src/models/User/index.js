@@ -23,6 +23,7 @@ class User extends Model {
     return 'id'
   }
 
+  id: string
   updatedAt: Date
   createdAt: Date
   name: string

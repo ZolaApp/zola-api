@@ -2,12 +2,10 @@
 import database from '@database/index'
 import type Token from '@models/Token'
 
-const checkToken = async (inputToken: string): Promise<Token | null> => {
-  const token: Array<Token> = await database('tokens').where({
-    token: inputToken
-  })
+const validateToken = async (token: string): Promise<Token | null> => {
+  const retrievedToken: Array<Token> = await database('tokens').where({ token })
 
-  return token[0] || null
+  return retrievedToken[0] || null
 }
 
-export default checkToken
+export default validateToken

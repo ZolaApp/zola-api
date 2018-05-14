@@ -8,5 +8,9 @@ import schema from '@api/schema'
 // if we were making a request directly to an API.
 export default new ApolloClient({
   cache: new InMemoryCache(),
-  link: new SchemaLink({ schema })
+  link: new SchemaLink({
+    schema,
+    // @TODO spin up an actual server instead of mocking the request.
+    context: { request: { user: { id: 1 } } }
+  })
 })

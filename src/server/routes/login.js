@@ -4,6 +4,8 @@ import createToken from '@models/Token/createToken'
 import retrieveToken from '@models/Token/retrieveToken'
 import User from '@models/User'
 
+const INVALID_CREDENTIALS_ERROR = 'Invalid credentials.'
+
 const login = async (
   request: express$Request,
   response: express$Response,
@@ -19,7 +21,7 @@ const login = async (
   const user: User = await User.query().findOne({ email })
 
   if (user === null) {
-    return response.status(401).send('Invalid credentials')
+    return response.status(401).send(INVALID_CREDENTIALS_ERROR)
   }
 
   const isPasswordMatching: Boolean = await bcrypt.compare(
@@ -28,19 +30,13 @@ const login = async (
   )
 
   if (!isPasswordMatching) {
-    return response.status(401).send('Invalid credentials')
+    return response.status(401).send(INVALID_CREDENTIALS_ERROR)
   }
 
   let token = await retrieveToken(user)
 
   if (token === null) {
-    const tokenResponse = await createToken(user)
-
-    if (tokenResponse.token === null || tokenResponse.errors.length > 0) {
-      return response.status(500).send('An error occurred.')
-    }
-
-    token = tokenResponse.token
+    token = await createToken(user)
   }
 
   return response.json({ token: token.token })

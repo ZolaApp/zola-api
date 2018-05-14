@@ -4,8 +4,8 @@ import resetDatabase from '@tests/resetDatabase'
 import database from '@database/index'
 
 const mutation = gql`
-  mutation($name: String!, $description: String, $ownerId: ID!) {
-    createProject(name: $name, description: $description, ownerId: $ownerId) {
+  mutation($name: String!, $description: String) {
+    createProject(name: $name, description: $description) {
       status
       project {
         id
