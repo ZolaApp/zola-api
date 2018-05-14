@@ -6,20 +6,27 @@ import User from '@models/Token'
 Model.knex(knex)
 
 class Project extends Model {
-  $beforeInsert() {
-    this.createdAt = new Date()
+  static tableName = 'projects'
+  static idColumn = 'id'
+  static relationMappings = {
+    owner: {
+      relation: Model.HasOneRelation,
+      modelClass: User,
+      join: {
+        from: 'projects.ownerId',
+        to: 'users.id'
+      }
+    }
   }
-
-  $beforeUpdate() {
-    this.updatedAt = new Date()
-  }
-
-  static get tableName(): string {
-    return 'projects'
-  }
-
-  static get idColumn(): string {
-    return 'id'
+  static jsonSchema = {
+    type: 'object',
+    properties: {
+      id: { type: 'string' },
+      createdAt: { type: 'date' },
+      updatedAt: { type: 'date' },
+      name: { type: 'string' },
+      slug: { type: 'string' }
+    }
   }
 
   id: string
@@ -30,31 +37,12 @@ class Project extends Model {
   description: string
   owner: User
 
-  static get relationMappings(): any {
-    return {
-      owner: {
-        relation: Model.HasOneRelation,
-        modelClass: User,
-        join: {
-          from: 'projects.ownerId',
-          to: 'users.id'
-        }
-      }
-    }
+  $beforeInsert() {
+    this.createdAt = new Date()
   }
 
-  static get jsonSchema(): any {
-    return {
-      type: 'object',
-
-      properties: {
-        id: { type: 'string' },
-        createdAt: { type: 'date' },
-        updatedAt: { type: 'date' },
-        name: { type: 'string' },
-        slug: { type: 'string' }
-      }
-    }
+  $beforeUpdate() {
+    this.updatedAt = new Date()
   }
 }
 
