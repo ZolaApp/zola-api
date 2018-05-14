@@ -67,7 +67,7 @@ const createUser = async ({
   }
 
   const passwordHash: string = await bcrypt.hash(passwordPlain, 10)
-  const user = User.query().insertAndFetch({
+  const user = await User.query().insertAndFetch({
     email: normalizedEmail,
     name: trimmedName,
     passwordHash
