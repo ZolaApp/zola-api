@@ -94,8 +94,7 @@ describe('The User model’s `createUser` helper', () => {
     expect(user).toMatchObject({
       id: 2,
       email: 'foo@bar.com',
-      name: 'Foo',
-      updatedAt: null
+      name: 'Foo'
     })
     done()
   })
