@@ -8,7 +8,7 @@ export const generateToken = (email: string): string => {
   const hash = createHash('sha256')
   const hashedEmail = hash.update(`${email}${now}`).digest('hex')
 
-  return Buffer.from(`${hashedEmail}-${now})`).toString('base64')
+  return Buffer.from(`${hashedEmail}-${now}`).toString('base64')
 }
 
 const createToken = async (user: User): Promise<Token> => {
