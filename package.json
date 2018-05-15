@@ -31,6 +31,7 @@
     "globalSetup": "<rootDir>/src/tests/globalSetup.js"
   },
   "scripts": {
+    "heroku-prebuild": "npm install --only=dev",
     "dev": "./scripts/dev.sh",
     "docker": "./scripts/docker.sh",
     "knex": "./scripts/knex.sh",
