@@ -1,5 +1,9 @@
 // @flow
 import { AUTH_MIDDLEWARE_WHITELIST, GRAPHQL_PATH } from '@constants/routes'
+import {
+  AUTHENTICATION_ERROR_INVALID_LOGIN,
+  AUTHENTICATION_ERROR_NO_USER
+} from '@constants/errors'
 import validateToken from '@models/Token/validateToken'
 import User from '@models/User'
 
@@ -19,7 +23,7 @@ const auth: express$Middleware = async (
       return next()
     }
 
-    return response.status(401).send('Please login to access this page.')
+    return response.status(401).send(AUTHENTICATION_ERROR_NO_USER)
   }
 
   const [, rawToken] = (request.header('Authorization') || '').split(' ')
@@ -32,9 +36,7 @@ const auth: express$Middleware = async (
     return next()
   }
 
-  return response
-    .status(403)
-    .send('Invalid authentication token provided. Please try logging in again.')
+  return response.status(403).send(AUTHENTICATION_ERROR_INVALID_LOGIN)
 }
 
 export default auth

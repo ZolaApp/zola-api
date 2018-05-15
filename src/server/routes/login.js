@@ -3,8 +3,7 @@ import bcrypt from 'bcrypt'
 import createToken from '@models/Token/createToken'
 import retrieveToken from '@models/Token/retrieveToken'
 import User from '@models/User'
-
-const INVALID_CREDENTIALS_ERROR = 'Invalid credentials.'
+import { AUTHENTICATION_ERROR_INVALID_CREDENTIALS } from '@constants/errors'
 
 const login = async (
   request: express$Request,
@@ -21,7 +20,7 @@ const login = async (
   const user: User = await User.query().findOne({ email })
 
   if (user === null) {
-    return response.status(401).send(INVALID_CREDENTIALS_ERROR)
+    return response.status(401).send(AUTHENTICATION_ERROR_INVALID_CREDENTIALS)
   }
 
   const isPasswordMatching: Boolean = await bcrypt.compare(
@@ -30,7 +29,7 @@ const login = async (
   )
 
   if (!isPasswordMatching) {
-    return response.status(401).send(INVALID_CREDENTIALS_ERROR)
+    return response.status(401).send(AUTHENTICATION_ERROR_INVALID_CREDENTIALS)
   }
 
   let token = await retrieveToken(user)

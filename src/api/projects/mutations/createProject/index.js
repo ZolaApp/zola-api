@@ -1,6 +1,7 @@
 // @flow
 import createProject from '@models/Project/createProject'
 import type { CreateProjectArgs } from '@models/Project/createProject'
+import { AUTHENTICATION_ERROR_NO_USER } from '@constants/errors'
 
 type Context = {
   request: express$Request
@@ -12,7 +13,7 @@ const resolver = async (
   { request }: Context
 ) => {
   if (request.user === null) {
-    throw new Error('Please log in.')
+    throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
   const { errors, project } = await createProject({
