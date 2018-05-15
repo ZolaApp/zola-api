@@ -31,8 +31,8 @@
     "globalSetup": "<rootDir>/src/tests/globalSetup.js"
   },
   "scripts": {
-    "heroku-prebuild": "npm install --only=dev && npx babel-cli ./src --out-dir ./dist --ignore spec.js,tests",
-    "heroku-postbuild": "npm run knex migrate:latest",
+    "heroku-prebuild": "npm install --only=dev",
+    "heroku-postbuild": "npx babel-cli ./src --out-dir ./dist --ignore spec.js,tests && npm run knex migrate:latest",
     "dev": "./scripts/dev.sh",
     "docker": "./scripts/docker.sh",
     "knex": "./scripts/knex.sh",
