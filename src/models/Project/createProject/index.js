@@ -1,5 +1,5 @@
 // @flow
-import slugify from 'slugify'
+import slugify from 'slug'
 import validateString from '@helpers/validateString'
 import Project from '@models/Project'
 import type { ValidationError } from '@types/ValidationError'
@@ -35,7 +35,7 @@ const createProject = async ({
     errors.push({ field: 'name', message: nameValidation.error })
   }
 
-  const slug = slugify(trimmedName, { lower: true })
+  const slug = slugify(trimmedName)
   const existingProjectsWithSlug = await Project.query()
     .where({ ownerId, slug })
     .count()
