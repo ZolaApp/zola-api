@@ -12,10 +12,17 @@ type CreateUserResponse {
   user: User
 }
 
+type LoginUserResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+  token: String
+}
+
 extend type Mutation {
   createUser(
     email: String!
     name: String!
     passwordPlain: String!
   ): CreateUserResponse
+  loginUser(email: String!, password: String!): LoginUserResponse
 }
