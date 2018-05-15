@@ -7,7 +7,7 @@ import dotenv from 'dotenv'
 dotenv.config({ path: '../../.env' })
 
 const connection = process.env.NODE_ENV === 'preprod'
-  ? process.env.DATABASE_URL
+  ? `${process.env.DATABASE_URL}?ssl=true`
   : {
     host: process.env.POSTGRES_HOST,
     database:
