@@ -24,35 +24,20 @@ const resolver = async (
   const email: string = args.email
   const password: string = args.password
 
-  if (!email) {
-    errors.push({ field: 'email', message: 'This field must not be empty' })
-  }
-
-  if (!password) {
-    errors.push({ field: 'password', message: 'This field must not be empty' })
-  }
-
   const user: User = await User.query().findOne({ email })
-
-  if (user === undefined) {
-    errors.push({
-      field: 'generic',
-      message: AUTHENTICATION_ERROR_INVALID_CREDENTIALS
-    })
-
-    return { status: 'FAILURE', errors }
-  }
 
   const isPasswordMatching: Boolean = await bcrypt.compare(
     password,
     user.passwordHash
   )
 
-  if (!isPasswordMatching) {
+  if (!user || !isPasswordMatching) {
     errors.push({
       field: 'generic',
       message: AUTHENTICATION_ERROR_INVALID_CREDENTIALS
     })
+
+    return { status: 'FAILURE', errors }
   }
 
   let token = await retrieveToken(user)
