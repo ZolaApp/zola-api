@@ -2,6 +2,10 @@
   "name": "zola-api",
   "description": "zola.ink’s API",
   "version": "0.1.1",
+  "engines": {
+    "node": "9",
+    "npm": ">5.6"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "flow check && lint-staged",
@@ -27,10 +31,13 @@
     "globalSetup": "<rootDir>/src/tests/globalSetup.js"
   },
   "scripts": {
+    "heroku-prebuild": "./scripts/heroku-prebuild.sh",
+    "heroku-postbuild": "npm run knex migrate:latest",
     "dev": "./scripts/dev.sh",
     "docker": "./scripts/docker.sh",
     "knex": "./scripts/knex.sh",
-    "test": "./scripts/test.sh"
+    "test": "./scripts/test.sh",
+    "start": "node dist/index.js"
   },
   "devDependencies": {
     "apollo-cache-inmemory": "1.2.1",
