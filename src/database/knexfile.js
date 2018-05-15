@@ -6,11 +6,9 @@ import dotenv from 'dotenv'
 // directory.
 dotenv.config({ path: '../../.env' })
 
-export default {
-  client: 'pg',
-  version: '10',
-
-  connection: {
+const connection = process.env.NODE_ENV === 'preprod'
+  ? process.env.DATABASE_URL
+  : {
     host: process.env.POSTGRES_HOST,
     database:
       process.env.NODE_ENV === 'test'
@@ -18,8 +16,13 @@ export default {
         : process.env.POSTGRES_DATABASE,
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD
-  },
+  }
 
+
+export default {
+  client: 'pg',
+  version: '10',
+  connection,
   migrations: {
     directory: path.join(__dirname, 'migrations')
   },
