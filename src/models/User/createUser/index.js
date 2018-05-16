@@ -43,8 +43,8 @@ const createUser = async ({
   const existingUsersWithEmail = await User.query()
     .where({ email })
     .count()
-
-  const isEmailInUse = existingUsersWithEmail[0].count > 0
+    .first()
+  const isEmailInUse = existingUsersWithEmail.count > 0
   const emailValidation = validateEmail(normalizedEmail, isEmailInUse)
 
   if (!emailValidation.isValid) {
