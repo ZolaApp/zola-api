@@ -5,8 +5,8 @@ type User {
   firstName: String
   lastName: String
   fullName: String
-  email: String
   job: String
+  email: String
 }
 
 type CreateUserResponse {
@@ -23,8 +23,10 @@ type LoginUserResponse {
 
 extend type Mutation {
   createUser(
+    firstName: String!
+    lastName: String!
+    job: String!
     email: String!
-    name: String!
     passwordPlain: String!
   ): CreateUserResponse
   loginUser(email: String!, password: String!): LoginUserResponse

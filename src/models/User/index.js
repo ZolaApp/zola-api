@@ -32,8 +32,8 @@ class User extends Model {
   createdAt: Date
   firstName: string
   lastName: string
-  email: string
   job: string
+  email: string
   passwordHash: string
   isValidated: boolean
   token: Token

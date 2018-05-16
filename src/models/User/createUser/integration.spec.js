@@ -13,16 +13,56 @@ describe('The User model’s `createUser` helper', () => {
     done()
   })
 
-  it('should return errors if the name is not valid', async done => {
+  it('should return errors if the firstName is not valid', async done => {
     const { user, errors } = await createUser({
-      name: 'F',
+      firstName: 'F',
+      lastName: '',
+      job: '',
       email: '',
       passwordPlain: ''
     })
     const expected = {
-      field: 'name',
+      field: 'firstName',
       message:
-        'Your name is too short. It should be between 2 and 30 characters.'
+        'Your first name is too short. It should be between 2 and 30 characters.'
+    }
+
+    expect(user).toEqual(undefined)
+    expect(errors).toContainEqual(expected)
+    done()
+  })
+
+  it('should return errors if the lastName is not valid', async done => {
+    const { user, errors } = await createUser({
+      firstName: '',
+      lastName: 'O',
+      job: '',
+      email: '',
+      passwordPlain: ''
+    })
+    const expected = {
+      field: 'lastName',
+      message:
+        'Your last name is too short. It should be between 2 and 30 characters.'
+    }
+
+    expect(user).toEqual(undefined)
+    expect(errors).toContainEqual(expected)
+    done()
+  })
+
+  it('should return errors if the job is not valid', async done => {
+    const { user, errors } = await createUser({
+      firstName: '',
+      lastName: '',
+      job: 'O',
+      email: '',
+      passwordPlain: ''
+    })
+    const expected = {
+      field: 'job',
+      message:
+        'Your job is too short. It should be between 2 and 50 characters.'
     }
 
     expect(user).toEqual(undefined)
@@ -32,7 +72,9 @@ describe('The User model’s `createUser` helper', () => {
 
   it('should return errors if the email is not valid', async done => {
     const { user, errors } = await createUser({
-      name: '',
+      firstName: '',
+      lastName: '',
+      job: '',
       email: 'NOT_AN_EMAIL',
       passwordPlain: ''
     })
@@ -49,7 +91,9 @@ describe('The User model’s `createUser` helper', () => {
   it('should return errors if the email is already in use', async done => {
     await database.seed.run()
     const { user, errors } = await createUser({
-      name: '',
+      firstName: '',
+      lastName: '',
+      job: '',
       email: 'email@inuse.com',
       passwordPlain: ''
     })
@@ -65,7 +109,9 @@ describe('The User model’s `createUser` helper', () => {
 
   it('should return errors if the password is not valid', async done => {
     const { user, errors } = await createUser({
-      name: '',
+      firstName: '',
+      lastName: '',
+      job: '',
       email: '',
       passwordPlain: 'password'
     })
@@ -83,7 +129,9 @@ describe('The User model’s `createUser` helper', () => {
   it('should add a user to the database and return it', async done => {
     const countBefore = await database('users').count()
     const { user } = await createUser({
-      name: 'Foo',
+      firstName: 'Foo',
+      lastName: 'Bar',
+      job: 'Baz',
       email: 'foo@bar.com',
       passwordPlain: '$uper$trongPa$$word'
     })
@@ -93,15 +141,19 @@ describe('The User model’s `createUser` helper', () => {
     expect(countAfter[0].count).toEqual('2')
     expect(user).toMatchObject({
       id: 2,
-      email: 'foo@bar.com',
-      name: 'Foo'
+      firstName: 'Foo',
+      lastName: 'Bar',
+      job: 'Baz',
+      email: 'foo@bar.com'
     })
     done()
   })
 
   it('should save a hash of the password and not the plain password', async done => {
     const { user } = await createUser({
-      name: 'Foo',
+      firstName: 'Foo',
+      lastName: 'Bar',
+      job: 'Baz',
       email: 'foo3@bar.com',
       passwordPlain: '$uper$trongPa$$word'
     })

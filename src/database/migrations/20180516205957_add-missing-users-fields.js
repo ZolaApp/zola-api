@@ -1,7 +1,6 @@
 export const up = async knex => {
   await knex.schema.table('users', table => {
-    table.dropColumn('name')
-    table.string('firstName', 30).notNull()
+    table.renameColumn('name', 'firstName')
     table.string('lastName', 30).notNull()
     table.string('job', 50).notNull()
   })
@@ -9,8 +8,8 @@ export const up = async knex => {
 
 export const down = async knex => {
   await knex.schema.table('users', table => {
-    table.dropColumn('firstName')
+    table.renameColumn('firstName', 'name')
     table.dropColumn('lastName')
-    table.string('name', 30).notNull()
+    table.dropColumn('job')
   })
 }

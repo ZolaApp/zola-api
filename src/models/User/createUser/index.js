@@ -7,15 +7,15 @@ import validateString from '@helpers/validateString'
 import validateEmail from './validations/validateEmail'
 import validatePassword from './validations/validatePassword'
 
-const validateFirstName = validateString({ type: 'firstName' })
-const validateLastName = validateString({ type: 'lastName' })
+const validateFirstName = validateString({ type: 'first name' })
+const validateLastName = validateString({ type: 'last name' })
 const validateJob = validateString({ type: 'job', maxLength: 50 })
 
 export type CreateUserArgs = {
-  email: string,
   firstName: string,
   lastName: string,
   job: string,
+  email: string,
   passwordPlain: string
 }
 
@@ -27,8 +27,8 @@ type CreateUserResponse = {
 const createUser = async ({
   firstName,
   lastName,
-  email,
   job,
+  email,
   passwordPlain
 }: CreateUserArgs): Promise<CreateUserResponse> => {
   const errors: Array<ValidationError> = []
@@ -36,14 +36,14 @@ const createUser = async ({
   const firstNameValidation = validateFirstName(trimmedFirstName)
 
   if (!firstNameValidation.isValid) {
-    errors.push({ field: 'name', message: firstNameValidation.error })
+    errors.push({ field: 'firstName', message: firstNameValidation.error })
   }
 
   const trimmedLastName = lastName.trim()
   const lastNameValidation = validateLastName(trimmedLastName)
 
   if (!lastNameValidation.isValid) {
-    errors.push({ field: 'name', message: lastNameValidation.error })
+    errors.push({ field: 'lastName', message: lastNameValidation.error })
   }
 
   const trimmedJob = job.trim()
@@ -92,8 +92,8 @@ const createUser = async ({
   const user = await User.query().insertAndFetch({
     firstName: trimmedFirstName,
     lastName: trimmedLastName,
-    email: normalizedEmail,
     job: trimmedJob,
+    email: normalizedEmail,
     passwordHash
   })
 
