@@ -2,8 +2,10 @@ type User {
   id: ID
   createdAt: Date
   updatedAt: Date
+  firstName: String
+  lastName: String
   email: String
-  name: String
+  job: String
 }
 
 type CreateUserResponse {
