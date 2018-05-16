@@ -4,6 +4,7 @@ type User {
   updatedAt: Date
   firstName: String
   lastName: String
+  fullName: String
   email: String
   job: String
 }

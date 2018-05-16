@@ -25,6 +25,7 @@ class User extends Model {
       }
     }
   }
+  static virtualAttributes = ['fullName']
 
   id: string
   updatedAt: Date
@@ -37,6 +38,10 @@ class User extends Model {
   isValidated: boolean
   token: Token
   projects: Array<Project>
+
+  fullName() {
+    return `${this.firstName} ${this.lastName}`
+  }
 
   $beforeInsert() {
     this.createdAt = new Date()
