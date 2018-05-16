@@ -36,21 +36,12 @@ const resolver = async (
 
   const user: User = await User.query().findOne({ email })
 
-  if (!user) {
-    errors.push({
-      field: 'generic',
-      message: AUTHENTICATION_ERROR_INVALID_CREDENTIALS
-    })
-
-    return { status: 'FAILURE', errors }
-  }
-
   const isPasswordMatching: Boolean = await bcrypt.compare(
     password,
-    user.passwordHash
+    user && user.passwordHash
   )
 
-  if (!isPasswordMatching) {
+  if (!user || !isPasswordMatching) {
     errors.push({
       field: 'generic',
       message: AUTHENTICATION_ERROR_INVALID_CREDENTIALS
