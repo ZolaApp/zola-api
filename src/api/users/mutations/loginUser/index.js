@@ -4,7 +4,10 @@ import type { ValidationError } from '@types/ValidationError'
 import createToken from '@models/Token/createToken'
 import retrieveToken from '@models/Token/retrieveToken'
 import User from '@models/User'
-import { AUTHENTICATION_ERROR_INVALID_CREDENTIALS } from '@constants/errors'
+import {
+  AUTHENTICATION_ERROR_INVALID_CREDENTIALS,
+  ERROR_MISSING_FIELD
+} from '@constants/errors'
 
 export type LoginUserArgs = {
   email: string,
@@ -18,20 +21,36 @@ type LoginUserResponse = {
 
 const resolver = async (
   _: any,
-  args: LoginUserArgs
+  { email, password }: LoginUserArgs
 ): Promise<LoginUserResponse> => {
   const errors: Array<ValidationError> = []
-  const email: string = args.email
-  const password: string = args.password
+
+  if (!email || !password) {
+    errors.push({
+      field: !email ? 'email' : 'password',
+      message: ERROR_MISSING_FIELD
+    })
+
+    return { status: 'FAILURE', errors }
+  }
 
   const user: User = await User.query().findOne({ email })
+
+  if (!user) {
+    errors.push({
+      field: 'generic',
+      message: AUTHENTICATION_ERROR_INVALID_CREDENTIALS
+    })
+
+    return { status: 'FAILURE', errors }
+  }
 
   const isPasswordMatching: Boolean = await bcrypt.compare(
     password,
     user.passwordHash
   )
 
-  if (!user || !isPasswordMatching) {
+  if (!isPasswordMatching) {
     errors.push({
       field: 'generic',
       message: AUTHENTICATION_ERROR_INVALID_CREDENTIALS
@@ -44,10 +63,6 @@ const resolver = async (
 
   if (token === null) {
     token = await createToken(user)
-  }
-
-  if (errors.length > 0) {
-    return { status: 'FAILURE', errors }
   }
 
   return { status: 'SUCCESS', token: token.token, errors }

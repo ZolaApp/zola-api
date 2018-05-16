@@ -1,4 +1,9 @@
 // @flow
+
+// Global errors
+export const ERROR_MISSING_FIELD = 'This field should not be empty'
+
+// Authentication errors
 export const AUTHENTICATION_ERROR_NO_USER =
   'Please login to perform this action'
 export const AUTHENTICATION_ERROR_INVALID_LOGIN =
