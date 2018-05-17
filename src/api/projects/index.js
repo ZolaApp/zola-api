@@ -1,8 +1,14 @@
 // @flow
 import createProject from './mutations/createProject'
+import addLocaleToProject from './mutations/addLocaleToProject'
+import getProjects from './queries/getProjects'
 
 export default {
   Mutation: {
-    createProject
+    createProject,
+    addLocaleToProject
+  },
+  Query: {
+    getProjects
   }
 }

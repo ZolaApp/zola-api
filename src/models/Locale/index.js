@@ -7,14 +7,14 @@ class Locale extends Model {
   static tableName = 'locales'
   static idColumn = 'id'
   static relationMappings = {
-    movies: {
+    projects: {
       relation: Model.ManyToManyRelation,
       modelClass: path.resolve(__dirname, '../Project'),
       join: {
         from: 'locales.id',
         through: {
-          from: 'project_locale.locale_id',
-          to: 'project_locale.project_id'
+          from: 'project_locale.localeId',
+          to: 'project_locale.projectId'
         },
         to: 'projects.id'
       }
