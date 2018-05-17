@@ -16,7 +16,11 @@ const resolver = async (
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  const { errors, project } = await addLocaleToProject({ projectId, localeId })
+  const { errors, project } = await addLocaleToProject({
+    projectId,
+    localeId,
+    userId: request.user.id
+  })
 
   if (errors.length > 0) {
     return { status: 'FAILURE', errors }

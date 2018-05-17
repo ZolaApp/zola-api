@@ -5,7 +5,8 @@ import type { ValidationError } from '@types/ValidationError'
 
 export type AddLocaleToProjectArgs = {
   projectId: string,
-  localeId: string
+  localeId: string,
+  userId: string
 }
 
 type AddProjectToLocaleResponse = {
@@ -15,13 +16,14 @@ type AddProjectToLocaleResponse = {
 
 const addLocaleToProject = async ({
   projectId,
-  localeId
+  localeId,
+  userId
 }: AddLocaleToProjectArgs): Promise<AddProjectToLocaleResponse> => {
   const errors: Array<ValidationError> = []
 
   const project = await Project.query()
     .eager('locales')
-    .findById(projectId)
+    .findOne({ id: projectId, ownerId: userId })
   const locale = await Locale.query().findById(localeId)
 
   if (!project || !locale) {

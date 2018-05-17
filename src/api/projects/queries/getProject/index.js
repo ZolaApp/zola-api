@@ -23,6 +23,10 @@ const resolver = async (
     .eager('locales')
     .findOne({ id: projectId, ownerId: request.user.id })
 
+  if (!project) {
+    throw new Error('This project was not found')
+  }
+
   return project
 }
 
