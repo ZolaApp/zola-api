@@ -16,7 +16,8 @@ export type CreateUserArgs = {
   lastName: string,
   job: string,
   email: string,
-  passwordPlain: string
+  passwordPlain: string,
+  passwordConfirmation: string
 }
 
 type CreateUserResponse = {
@@ -29,7 +30,8 @@ const createUser = async ({
   lastName,
   job,
   email,
-  passwordPlain
+  passwordPlain,
+  passwordConfirmation
 }: CreateUserArgs): Promise<CreateUserResponse> => {
   const errors: Array<ValidationError> = []
   const trimmedFirstName = firstName.trim()
@@ -81,6 +83,13 @@ const createUser = async ({
 
   if (!passwordValidation.isValid) {
     errors.push({ field: 'password', message: passwordValidation.feedback })
+  }
+
+  if (passwordPlain !== passwordConfirmation) {
+    errors.push({
+      field: 'passwordConfirmation',
+      message: 'Your two passwords do not match.'
+    })
   }
 
   if (errors.length > 0) {

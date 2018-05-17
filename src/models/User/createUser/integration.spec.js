@@ -19,7 +19,8 @@ describe('The User model’s `createUser` helper', () => {
       lastName: '',
       job: '',
       email: '',
-      passwordPlain: ''
+      passwordPlain: '',
+      passwordConfirmation: ''
     })
     const expected = {
       field: 'firstName',
@@ -38,7 +39,8 @@ describe('The User model’s `createUser` helper', () => {
       lastName: 'O',
       job: '',
       email: '',
-      passwordPlain: ''
+      passwordPlain: '',
+      passwordConfirmation: ''
     })
     const expected = {
       field: 'lastName',
@@ -57,7 +59,8 @@ describe('The User model’s `createUser` helper', () => {
       lastName: '',
       job: 'O',
       email: '',
-      passwordPlain: ''
+      passwordPlain: '',
+      passwordConfirmation: ''
     })
     const expected = {
       field: 'job',
@@ -76,7 +79,8 @@ describe('The User model’s `createUser` helper', () => {
       lastName: '',
       job: '',
       email: 'NOT_AN_EMAIL',
-      passwordPlain: ''
+      passwordPlain: '',
+      passwordConfirmation: ''
     })
     const expected = {
       field: 'email',
@@ -95,7 +99,8 @@ describe('The User model’s `createUser` helper', () => {
       lastName: '',
       job: '',
       email: 'email@inuse.com',
-      passwordPlain: ''
+      passwordPlain: '',
+      passwordConfirmation: ''
     })
     const expected = {
       field: 'email',
@@ -113,7 +118,8 @@ describe('The User model’s `createUser` helper', () => {
       lastName: '',
       job: '',
       email: '',
-      passwordPlain: 'password'
+      passwordPlain: 'password',
+      passwordConfirmation: ''
     })
     const expected = {
       field: 'password',
@@ -126,14 +132,35 @@ describe('The User model’s `createUser` helper', () => {
     done()
   })
 
+  it('should return errors if the passwords do not match', async done => {
+    const { user, errors } = await createUser({
+      firstName: '',
+      lastName: '',
+      job: '',
+      email: '',
+      passwordPlain: '$uper$trongPa$$word',
+      passwordConfirmation: 'FOO_BAR'
+    })
+    const expected = {
+      field: 'passwordConfirmation',
+      message: 'Your two passwords do not match.'
+    }
+
+    expect(user).toEqual(undefined)
+    expect(errors).toContainEqual(expected)
+    done()
+  })
+
   it('should add a user to the database and return it', async done => {
     const countBefore = await database('users').count()
+    const password = '$uper$trongPa$$word'
     const { user } = await createUser({
       firstName: 'Foo',
       lastName: 'Bar',
       job: 'Baz',
       email: 'foo@bar.com',
-      passwordPlain: '$uper$trongPa$$word'
+      passwordPlain: password,
+      passwordConfirmation: password
     })
     const countAfter = await database('users').count()
 
@@ -150,12 +177,14 @@ describe('The User model’s `createUser` helper', () => {
   })
 
   it('should save a hash of the password and not the plain password', async done => {
+    const password = '$uper$trongPa$$word'
     const { user } = await createUser({
       firstName: 'Foo',
       lastName: 'Bar',
       job: 'Baz',
       email: 'foo3@bar.com',
-      passwordPlain: '$uper$trongPa$$word'
+      passwordPlain: password,
+      passwordConfirmation: password
     })
     const userKeys = Object.keys(user)
 
