@@ -25,19 +25,6 @@ class User extends Model {
       }
     }
   }
-  static jsonSchema = {
-    type: 'object',
-
-    properties: {
-      id: { type: 'string' },
-      createdAt: { type: 'date' },
-      updatedAt: { type: 'date' },
-      name: { type: 'string' },
-      email: { type: 'string' },
-      passwordHash: { type: 'string' },
-      isValidated: { type: 'boolean' }
-    }
-  }
 
   id: string
   updatedAt: Date

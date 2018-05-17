@@ -16,16 +16,6 @@ class Token extends Model {
       }
     }
   }
-  static jsonSchema = {
-    type: 'object',
-
-    properties: {
-      id: { type: 'string' },
-      createdAt: { type: 'date' },
-      updatedAt: { type: 'date' },
-      token: { type: 'string' }
-    }
-  }
 
   id: string
   updatedAt: Date
