@@ -8,7 +8,8 @@ const TEST_ACCOUNTS = [
     lastName: 'Account',
     job: 'Robot',
     email: 'email@inuse.com',
-    passwordPlain: 'EMAIL_IN_USE_ACCOUNT'
+    passwordPlain: 'EMAIL_IN_USE_ACCOUNT',
+    passwordConfirmation: 'EMAIL_IN_USE_ACCOUNT'
   }
 ]
 

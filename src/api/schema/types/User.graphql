@@ -28,6 +28,7 @@ extend type Mutation {
     job: String!
     email: String!
     passwordPlain: String!
+    passwordConfirmation: String!
   ): CreateUserResponse
   loginUser(email: String!, password: String!): LoginUserResponse
 }

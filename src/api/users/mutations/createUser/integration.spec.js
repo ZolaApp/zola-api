@@ -10,6 +10,7 @@ const mutation = gql`
     $job: String!
     $email: String!
     $passwordPlain: String!
+    $passwordConfirmation: String!
   ) {
     createUser(
       firstName: $firstName
@@ -17,6 +18,7 @@ const mutation = gql`
       job: $job
       email: $email
       passwordPlain: $passwordPlain
+      passwordConfirmation: $passwordConfirmation
     ) {
       status
       user {
@@ -49,7 +51,8 @@ describe('The `createUser` mutation', () => {
         lastName: '',
         job: '',
         email: '',
-        passwordPlain: ''
+        passwordPlain: 'FOO',
+        passwordConfirmation: 'BAR'
       },
       mutation
     })
@@ -57,18 +60,20 @@ describe('The `createUser` mutation', () => {
 
     expect(status).toEqual('FAILURE')
     expect(user).toEqual(null)
-    expect(errors.length).toEqual(5)
+    expect(errors.length).toEqual(6)
     done()
   })
 
   it('should return the created user on success, with normalized and trimmed values', async done => {
+    const password = '$uper$trongPa$$word'
     const response = await testClient.mutate({
       variables: {
         firstName: '  Foo   ',
         lastName: ' Bar ',
         job: 'Baz',
         email: '  FOO@BaR.cOm  ',
-        passwordPlain: '$uper$trongPa$$word'
+        passwordPlain: password,
+        passwordConfirmation: password
       },
       mutation
     })
