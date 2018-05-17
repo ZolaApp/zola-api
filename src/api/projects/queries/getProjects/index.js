@@ -11,7 +11,9 @@ const resolver = async (_: any, args: Array<any>, { request }: Context) => {
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  const projects = await Project.query().where({ ownerId: request.user.id })
+  const projects = await Project.query()
+    .eager('locales')
+    .where({ ownerId: request.user.id })
 
   return projects
 }

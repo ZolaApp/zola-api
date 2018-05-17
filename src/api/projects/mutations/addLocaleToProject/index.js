@@ -9,14 +9,14 @@ type Context = {
 
 const resolver = async (
   _: any,
-  { localeId, projectId }: AddLocaleToProjectArgs,
+  { projectId, localeId }: AddLocaleToProjectArgs,
   { request }: Context
 ) => {
   if (request.user === null) {
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  const { errors, project } = await addLocaleToProject({ localeId, projectId })
+  const { errors, project } = await addLocaleToProject({ projectId, localeId })
 
   if (errors.length > 0) {
     return { status: 'FAILURE', errors }

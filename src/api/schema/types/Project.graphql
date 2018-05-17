@@ -21,7 +21,7 @@ type AddLocaleToProjectResponse {
 
 extend type Mutation {
   createProject(name: String!, description: String): CreateProjectResponse
-  addLocaleToProject(projectId: ID!, localeID: ID!): AddLocaleToProjectResponse
+  addLocaleToProject(projectId: ID!, localeId: ID!): AddLocaleToProjectResponse
 }
 
 extend type Query {

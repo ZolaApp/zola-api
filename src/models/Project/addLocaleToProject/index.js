@@ -13,17 +13,19 @@ type AddProjectToLocaleResponse = {
   errors: Array<ValidationError>
 }
 
-const createProject = async ({
+const addLocaleToProject = async ({
   projectId,
   localeId
 }: AddLocaleToProjectArgs): Promise<AddProjectToLocaleResponse> => {
   const errors: Array<ValidationError> = []
 
-  const project = await Project.query().findById(projectId)
+  const project = await Project.query()
+    .eager('locales')
+    .findById(projectId)
   const locale = await Locale.query().findById(localeId)
 
   if (!project || !locale) {
-    const notFound = !project ? 'locale' : 'project'
+    const notFound = !project ? 'project' : 'locale'
     errors.push({
       field: notFound,
       message: `This ${notFound} could not be found.`
@@ -32,12 +34,23 @@ const createProject = async ({
     return { errors }
   }
 
+  project.locales.map(({ id }) => {
+    if (locale.id === id) {
+      errors.push({
+        field: 'locale',
+        message: 'This locale is already activated for this project'
+      })
+
+      return { errors }
+    }
+  })
+
   project.locales.push(locale)
 
   try {
-    const returnProject = await Project.query().upsertGraphAndFetch(project)
+    await Project.query().upsertGraphAndFetch(project, { relate: true })
 
-    return { returnProject, errors }
+    return { project, errors }
   } catch (error) {
     errors.push({ field: 'generic', message: error.message })
 
@@ -45,4 +58,4 @@ const createProject = async ({
   }
 }
 
-export default createProject
+export default addLocaleToProject

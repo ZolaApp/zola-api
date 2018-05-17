@@ -13,8 +13,8 @@ class Locale extends Model {
       join: {
         from: 'locales.id',
         through: {
-          from: 'project_locale.localeId',
-          to: 'project_locale.projectId'
+          from: 'projects_locales.localeId',
+          to: 'projects_locales.projectId'
         },
         to: 'projects.id'
       }

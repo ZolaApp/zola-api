@@ -22,8 +22,8 @@ class Project extends Model {
       join: {
         from: 'projects.id',
         through: {
-          from: 'project_locale.projectId',
-          to: 'project_locale.localeId'
+          from: 'projects_locales.projectId',
+          to: 'projects_locales.localeId'
         },
         to: 'locales.id'
       }
