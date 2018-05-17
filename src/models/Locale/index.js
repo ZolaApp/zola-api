@@ -13,7 +13,6 @@ class Locale extends Model {
       join: {
         from: 'locales.id',
         through: {
-          // persons_movies is the join table.
           from: 'project_locale.locale_id',
           to: 'project_locale.project_id'
         },
