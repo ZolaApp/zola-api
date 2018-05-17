@@ -4,7 +4,9 @@ import resetDatabase from '@tests/resetDatabase'
 
 const TEST_ACCOUNTS = [
   {
-    name: 'Email in use account',
+    firstName: 'Email in use',
+    lastName: 'Account',
+    job: 'Robot',
     email: 'email@inuse.com',
     passwordPlain: 'EMAIL_IN_USE_ACCOUNT'
   }

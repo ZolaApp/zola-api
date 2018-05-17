@@ -4,12 +4,27 @@ import resetDatabase from '@tests/resetDatabase'
 import database from '@database/index'
 
 const mutation = gql`
-  mutation($email: String!, $name: String!, $password: String!) {
-    createUser(email: $email, name: $name, passwordPlain: $password) {
+  mutation createUser(
+    $firstName: String!
+    $lastName: String!
+    $job: String!
+    $email: String!
+    $passwordPlain: String!
+  ) {
+    createUser(
+      firstName: $firstName
+      lastName: $lastName
+      job: $job
+      email: $email
+      passwordPlain: $passwordPlain
+    ) {
       status
       user {
         id
-        name
+        firstName
+        lastName
+        fullName
+        job
         email
       }
       errors {
@@ -29,23 +44,31 @@ describe('The `createUser` mutation', () => {
 
   it('should return errors', async done => {
     const response = await testClient.mutate({
-      variables: { name: '', email: '', password: '' },
+      variables: {
+        firstName: '',
+        lastName: '',
+        job: '',
+        email: '',
+        passwordPlain: ''
+      },
       mutation
     })
     const { status, user, errors } = response.data.createUser
 
     expect(status).toEqual('FAILURE')
     expect(user).toEqual(null)
-    expect(errors.length).toEqual(3)
+    expect(errors.length).toEqual(5)
     done()
   })
 
   it('should return the created user on success, with normalized and trimmed values', async done => {
     const response = await testClient.mutate({
       variables: {
-        name: '  Foo   ',
+        firstName: '  Foo   ',
+        lastName: ' Bar ',
+        job: 'Baz',
         email: '  FOO@BaR.cOm  ',
-        password: '$uper$trongPa$$word'
+        passwordPlain: '$uper$trongPa$$word'
       },
       mutation
     })
@@ -53,7 +76,10 @@ describe('The `createUser` mutation', () => {
     const expected = {
       __typename: 'User',
       id: '1',
-      name: 'Foo',
+      firstName: 'Foo',
+      lastName: 'Bar',
+      fullName: 'Foo Bar',
+      job: 'Baz',
       email: 'foo@bar.com'
     }
 

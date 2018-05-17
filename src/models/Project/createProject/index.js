@@ -35,7 +35,7 @@ const createProject = async ({
     errors.push({ field: 'name', message: nameValidation.error })
   }
 
-  const slug = slugify(trimmedName)
+  const slug = slugify(trimmedName, { lower: true })
   const existingProjectsWithSlug = await Project.query()
     .where({ ownerId, slug })
     .count()
