@@ -7,11 +7,15 @@ import validateString from '@helpers/validateString'
 import validateEmail from './validations/validateEmail'
 import validatePassword from './validations/validatePassword'
 
-const validateName = validateString({ type: 'name' })
+const validateFirstName = validateString({ type: 'first name' })
+const validateLastName = validateString({ type: 'last name' })
+const validateJob = validateString({ type: 'job', maxLength: 50 })
 
 export type CreateUserArgs = {
+  firstName: string,
+  lastName: string,
+  job: string,
   email: string,
-  name: string,
   passwordPlain: string
 }
 
@@ -21,16 +25,32 @@ type CreateUserResponse = {
 }
 
 const createUser = async ({
+  firstName,
+  lastName,
+  job,
   email,
-  name,
   passwordPlain
 }: CreateUserArgs): Promise<CreateUserResponse> => {
   const errors: Array<ValidationError> = []
-  const trimmedName = name.trim()
-  const nameValidation = validateName(trimmedName)
+  const trimmedFirstName = firstName.trim()
+  const firstNameValidation = validateFirstName(trimmedFirstName)
 
-  if (!nameValidation.isValid) {
-    errors.push({ field: 'name', message: nameValidation.error })
+  if (!firstNameValidation.isValid) {
+    errors.push({ field: 'firstName', message: firstNameValidation.error })
+  }
+
+  const trimmedLastName = lastName.trim()
+  const lastNameValidation = validateLastName(trimmedLastName)
+
+  if (!lastNameValidation.isValid) {
+    errors.push({ field: 'lastName', message: lastNameValidation.error })
+  }
+
+  const trimmedJob = job.trim()
+  const jobValidation = validateJob(trimmedJob)
+
+  if (!jobValidation.isValid) {
+    errors.push({ field: 'job', message: jobValidation.error })
   }
 
   const normalizedEmail = validator.normalizeEmail(email.trim(), {
@@ -55,7 +75,8 @@ const createUser = async ({
 
   const passwordValidation = validatePassword(passwordPlain, [
     normalizedEmail,
-    trimmedName
+    trimmedFirstName,
+    trimmedLastName
   ])
 
   if (!passwordValidation.isValid) {
@@ -66,10 +87,13 @@ const createUser = async ({
     return { errors }
   }
 
+  // Saving user
   const passwordHash: string = await bcrypt.hash(passwordPlain, 10)
   const user = await User.query().insertAndFetch({
+    firstName: trimmedFirstName,
+    lastName: trimmedLastName,
+    job: trimmedJob,
     email: normalizedEmail,
-    name: trimmedName,
     passwordHash
   })
 
