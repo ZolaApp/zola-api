@@ -38,7 +38,7 @@ const resolver = async (
 
   const isPasswordMatching: Boolean = await bcrypt.compare(
     password,
-    user && user.passwordHash
+    user ? user.passwordHash : ''
   )
 
   if (!user || !isPasswordMatching) {
