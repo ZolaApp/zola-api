@@ -1,6 +1,7 @@
 // @flow
 import express from 'express'
 import helmet from 'helmet'
+import cors from 'cors'
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
@@ -13,6 +14,7 @@ export default (): express$Application => {
 
   // Middlewares
   app.use(helmet())
+  app.use(cors())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use((compression(): express$Middleware))
@@ -33,12 +35,6 @@ export default (): express$Application => {
 
   if (process.env.NODE_ENV !== 'production') {
     app.get(GRAPHIQL_PATH, graphiqlExpress({ endpointURL: GRAPHQL_PATH }))
-    app.get(
-      '/test',
-      (request: express$Request, response: express$Response): void => {
-        response.send(`Debugging user auth :  ${request.user.name}`)
-      }
-    )
   }
 
   return app
