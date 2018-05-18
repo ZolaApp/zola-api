@@ -82,7 +82,10 @@ const createUser = async ({
   ])
 
   if (!passwordValidation.isValid) {
-    errors.push({ field: 'password', message: passwordValidation.feedback })
+    errors.push({
+      field: 'passwordPlain',
+      message: passwordValidation.feedback
+    })
   }
 
   if (passwordPlain !== passwordConfirmation) {
