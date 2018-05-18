@@ -28,31 +28,18 @@ const addLocaleToProject = async ({
 
   if (!project || !locale) {
     const notFound = !project ? 'project' : 'locale'
-    errors.push({
-      field: notFound,
-      message: `This ${notFound} could not be found.`
-    })
 
-    return { errors }
+    throw new Error(`This ${notFound} could not be found.`)
   }
-
-  project.locales.map(({ id }) => {
-    if (locale.id === id) {
-      errors.push({
-        field: 'locale',
-        message: 'This locale is already activated for this project'
-      })
-
-      return { errors }
-    }
-  })
 
   project.locales.push(locale)
 
   try {
-    await Project.query().upsertGraphAndFetch(project, { relate: true })
+    const updatedProject = await Project.query().upsertGraphAndFetch(project, {
+      relate: true
+    })
 
-    return { project, errors }
+    return { project: updatedProject, errors }
   } catch (error) {
     errors.push({ field: 'generic', message: error.message })
 

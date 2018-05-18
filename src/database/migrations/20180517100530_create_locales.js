@@ -1,4 +1,4 @@
-import localesJson from '../seeds/locales.json'
+import localesJson from './data/locales.json'
 
 export const up = async knex => {
   await knex.schema.createTable('locales', table => {
@@ -43,15 +43,15 @@ export const up = async knex => {
     table.unique(['projectId', 'localeId'])
   })
 
-  const localesArray = []
+  const localesToSave = Object.entries(localesJson).map(([key, value]) => ({
+    code: key,
+    name: value
+  }))
 
-  Object.entries(localesJson).map(([key, value]) => {
-    localesArray.push({ code: key, name: value })
-  })
-
-  await knex('locales').insert(localesArray)
+  await knex('locales').insert(localesToSave)
 }
 
 export const down = async knex => {
-  await knex.schema.dropTableIfExists('tokens')
+  await knex.schema.dropTableIfExists('locales')
+  await knex.schema.dropTableIfExists('projects_locales')
 }
