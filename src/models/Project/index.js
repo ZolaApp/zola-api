@@ -2,6 +2,7 @@
 import path from 'path'
 import { Model } from 'objection'
 import User from '@models/User'
+import Locale from '@models/Locale'
 
 class Project extends Model {
   static tableName = 'projects'
@@ -14,6 +15,18 @@ class Project extends Model {
         from: 'projects.ownerId',
         to: 'users.id'
       }
+    },
+    locales: {
+      relation: Model.ManyToManyRelation,
+      modelClass: path.resolve(__dirname, '../Locale'),
+      join: {
+        from: 'projects.id',
+        through: {
+          from: 'projects_locales.projectId',
+          to: 'projects_locales.localeId'
+        },
+        to: 'locales.id'
+      }
     }
   }
 
@@ -24,6 +37,7 @@ class Project extends Model {
   slug: string
   description: string
   owner: User
+  locales: Array<Locale>
 
   $beforeInsert() {
     this.createdAt = new Date()

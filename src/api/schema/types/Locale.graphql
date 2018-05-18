@@ -1,0 +1,9 @@
+type Locale {
+  id: ID
+  name: String
+  code: String
+}
+
+extend type Query {
+  getLocales: [Locale]
+}
