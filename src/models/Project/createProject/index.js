@@ -2,7 +2,7 @@
 import slugify from 'slug'
 import validateString from '@helpers/validateString'
 import Project from '@models/Project'
-import type { ValidationError } from '@types/ValidationError'
+import { type ValidationError } from '@types/ValidationError'
 
 const validateName = validateString({ type: 'name', maxLength: 50 })
 const validateDescription = validateString({
