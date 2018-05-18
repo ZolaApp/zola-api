@@ -1,6 +1,7 @@
 // @flow
-import createProject from '@models/Project/createProject'
-import type { CreateProjectArgs } from '@models/Project/createProject'
+import createProject, {
+  type CreateProjectArgs
+} from '@models/Project/createProject'
 import { AUTHENTICATION_ERROR_NO_USER } from '@constants/errors'
 
 type Context = {

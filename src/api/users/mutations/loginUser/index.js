@@ -1,6 +1,6 @@
 // @flow
 import bcrypt from 'bcrypt'
-import type { ValidationError } from '@types/ValidationError'
+import { type ValidationError } from '@types/ValidationError'
 import createToken from '@models/Token/createToken'
 import retrieveToken from '@models/Token/retrieveToken'
 import User from '@models/User'
