@@ -3,6 +3,7 @@ import path from 'path'
 import { Model } from 'objection'
 import User from '@models/User'
 import Locale from '@models/Locale'
+import TranslationKey from '@models/TranslationKey'
 
 class Project extends Model {
   static tableName = 'projects'
@@ -27,6 +28,14 @@ class Project extends Model {
         },
         to: 'locales.id'
       }
+    },
+    translationKeys: {
+      relation: Model.HasManyRelation,
+      modelClass: path.resolve(__dirname, '../TranslationValue'),
+      join: {
+        from: 'projects.id',
+        to: 'translationKeys.projectId'
+      }
     }
   }
 
@@ -38,6 +47,7 @@ class Project extends Model {
   description: string
   owner: User
   locales: Array<Locale>
+  translationKeys: Array<TranslationKey>
 
   $beforeInsert() {
     this.createdAt = new Date()

@@ -4,19 +4,15 @@ import { Model } from 'objection'
 import Project from '@models/Project'
 import TranslationValue from '@models/TranslationValue'
 
-class Locale extends Model {
-  static tableName = 'locales'
+class TranslationKey extends Model {
+  static tableName = 'translationKeys'
   static idColumn = 'id'
   static relationMappings = {
-    projects: {
-      relation: Model.ManyToManyRelation,
+    project: {
+      relation: Model.BelongsToOneRelation,
       modelClass: path.resolve(__dirname, '../Project'),
       join: {
-        from: 'locales.id',
-        through: {
-          from: 'projects_locales.localeId',
-          to: 'projects_locales.projectId'
-        },
+        from: 'translationKeys.projectId',
         to: 'projects.id'
       }
     },
@@ -24,8 +20,8 @@ class Locale extends Model {
       relation: Model.HasManyRelation,
       modelClass: path.resolve(__dirname, '../TranslationValue'),
       join: {
-        from: 'users.id',
-        to: 'projects.ownerId'
+        from: 'translationKeys.id',
+        to: 'translationValues.translationKeyId'
       }
     }
   }
@@ -33,9 +29,8 @@ class Locale extends Model {
   id: string
   updatedAt: Date
   createdAt: Date
-  code: string
-  name: string
-  projects: Array<Project>
+  key: string
+  project: Project
   translationValues: Array<TranslationValue>
 
   $beforeInsert() {
@@ -47,4 +42,4 @@ class Locale extends Model {
   }
 }
 
-export default Locale
+export default TranslationKey
