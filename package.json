@@ -80,7 +80,7 @@
     "graphql-tools": "3.0.2",
     "helmet": "3.12.1",
     "knex": "0.14.6",
-    "nodemon": "1.17.4",
+    "nodemon": "1.17.5",
     "objection": "1.1.8",
     "pg": "7.4.3",
     "slug": "0.9.1",
