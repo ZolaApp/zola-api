@@ -56,7 +56,7 @@ const resolver = async (
     token = await createToken(user)
   }
 
-  return { status: 'SUCCESS', token: token.token, errors }
+  return { status: 'SUCCESS', token: token.token, id: user.id, errors }
 }
 
 export default resolver
