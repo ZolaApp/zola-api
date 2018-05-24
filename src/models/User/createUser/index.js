@@ -2,7 +2,7 @@
 import bcrypt from 'bcrypt'
 import validator from 'validator'
 import User from '@models/User'
-import type { ValidationError } from '@types/ValidationError'
+import { type ValidationError } from '@types/ValidationError'
 import validateString from '@helpers/validateString'
 import validateEmail from './validations/validateEmail'
 import validatePassword from './validations/validatePassword'
@@ -82,7 +82,10 @@ const createUser = async ({
   ])
 
   if (!passwordValidation.isValid) {
-    errors.push({ field: 'password', message: passwordValidation.feedback })
+    errors.push({
+      field: 'passwordPlain',
+      message: passwordValidation.feedback
+    })
   }
 
   if (passwordPlain !== passwordConfirmation) {

@@ -122,7 +122,7 @@ describe('The User model’s `createUser` helper', () => {
       passwordConfirmation: ''
     })
     const expected = {
-      field: 'password',
+      field: 'passwordPlain',
       message:
         'This is a top-10 common password. Add another word or two. Uncommon words are better.'
     }
