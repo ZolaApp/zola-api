@@ -26,7 +26,7 @@ services:
     #     tag: "zola-node"
 
   postgres:
-    image: postgres:10@sha256:a1301bdf8b6b578e024a367df2e4ff93298f5eaa346413351bde9fee32c7d9e5
+    image: postgres:10@sha256:eb8e809480d43a0719192a0265bcc9f7411ba534f00bc8fabfcf3abad982e434
     container_name: "zola-postgres"
     ports:
       - "5432:5432"
