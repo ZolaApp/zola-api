@@ -31,7 +31,7 @@ class Project extends Model {
     },
     translationKeys: {
       relation: Model.HasManyRelation,
-      modelClass: path.resolve(__dirname, '../TranslationValue'),
+      modelClass: path.resolve(__dirname, '../TranslationKey'),
       join: {
         from: 'projects.id',
         to: 'translationKeys.projectId'

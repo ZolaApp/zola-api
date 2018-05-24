@@ -33,6 +33,12 @@ class TranslationKey extends Model {
   project: Project
   translationValues: Array<TranslationValue>
 
+  constructor(key: string, project: Project) {
+    super()
+    this.key = key
+    this.project = project
+  }
+
   $beforeInsert() {
     this.createdAt = new Date()
   }

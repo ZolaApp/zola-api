@@ -5,6 +5,7 @@ type Project {
   slug: String
   description: String
   locales: [Locale]
+  translationKeys: [TranslationKey]
 }
 
 type CreateProjectResponse {
@@ -19,9 +20,19 @@ type AddLocaleToProjectResponse {
   project: Project
 }
 
+type AddTranslationKeyToProjectResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+  project: Project
+}
+
 extend type Mutation {
   createProject(name: String!, description: String): CreateProjectResponse
   addLocaleToProject(projectId: ID!, localeId: ID!): AddLocaleToProjectResponse
+  addTranslationKeyToProject(
+    projectId: ID!
+    key: String
+  ): AddTranslationKeyToProjectResponse
 }
 
 extend type Query {

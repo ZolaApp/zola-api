@@ -11,6 +11,8 @@ import ValidationError from './types/ValidationError.graphql'
 import User from './types/User.graphql'
 import Project from './types/Project.graphql'
 import Locale from './types/Locale.graphql'
+import TranslationKey from './types/TranslationKey.graphql'
+import TranslationValue from './types/TranslationValue.graphql'
 
 const typeDefs = [
   Root,
@@ -19,7 +21,9 @@ const typeDefs = [
   ValidationError,
   User,
   Project,
-  Locale
+  Locale,
+  TranslationKey,
+  TranslationValue
 ]
 const resolvers = [scalarsResolvers, usersAPI, projectsAPI, localesAPI]
 const schema = makeExecutableSchema({

@@ -13,14 +13,15 @@ type GetProjectArgs = {
 const resolver = async (
   _: any,
   { projectId }: GetProjectArgs,
-  { request }: Context
+  { request }: Context,
+  ast: any
 ) => {
   if (request.user === null) {
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
   const project = await Project.query()
-    .eager('locales')
+    .eager('[locales, translationKeys]')
     .findOne({ id: projectId, ownerId: request.user.id })
 
   if (!project) {

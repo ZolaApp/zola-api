@@ -1,0 +1,6 @@
+type TranslationKey {
+  id: ID
+  key: String
+  project: Project
+  translationValues: [TranslationValue]
+}
