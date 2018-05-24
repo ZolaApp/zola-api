@@ -57,8 +57,12 @@ const createTranslationKey = async ({
 
     return { project: updatedProject, errors }
   } catch (err) {
-    throw err
-    // throw new Error(`Mr. Stark, I'm not feeling so well...`)
+    const message =
+      err.routine === '_bt_check_unique'
+        ? `A key with code "${key}" already exists for this project`
+        : `Something went wrong while adding this key to the project`
+
+    throw new Error(message)
   }
 }
 
