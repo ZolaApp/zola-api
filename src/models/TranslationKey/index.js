@@ -33,10 +33,9 @@ class TranslationKey extends Model {
   project: Project
   translationValues: Array<TranslationValue>
 
-  constructor(key: string, project: Project) {
+  constructor(key: string) {
     super()
     this.key = key
-    this.project = project
   }
 
   $beforeInsert() {

@@ -36,8 +36,6 @@ const createTranslationKey = async ({
     .findById(projectId)
     .eager('translationKeys')
 
-  console.log(project)
-
   if (!project || (project && project.ownerId !== ownerId)) {
     errors.push({ field: 'generic', message: 'This project was not found' })
   }
@@ -52,14 +50,15 @@ const createTranslationKey = async ({
 
   // Saving key
   try {
-    const translationKey = new TranslationKey(key, project)
+    const translationKey = new TranslationKey(key)
     project.translationKeys.push(translationKey)
 
-    const updatedProject = await Project.query().upsertGraphAndFetch(project)
+    const updatedProject = await Project.query().upsertGraph(project)
 
     return { project: updatedProject, errors }
   } catch (err) {
-    throw new Error(`Mr. Stark, I'm not feeling so well...`)
+    throw err
+    // throw new Error(`Mr. Stark, I'm not feeling so well...`)
   }
 }
 
