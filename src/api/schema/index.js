@@ -3,6 +3,7 @@ import { makeExecutableSchema } from 'graphql-tools'
 import usersAPI from '@api/users'
 import projectsAPI from '@api/projects'
 import localesAPI from '@api/locales'
+import translationKeysApi from '@api/translationKey'
 import Root from './types/Root.graphql'
 import Scalars from './scalars/scalars.graphql'
 import scalarsResolvers from './scalars/resolvers'
@@ -25,7 +26,13 @@ const typeDefs = [
   TranslationKey,
   TranslationValue
 ]
-const resolvers = [scalarsResolvers, usersAPI, projectsAPI, localesAPI]
+const resolvers = [
+  scalarsResolvers,
+  usersAPI,
+  projectsAPI,
+  localesAPI,
+  translationKeysApi
+]
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers

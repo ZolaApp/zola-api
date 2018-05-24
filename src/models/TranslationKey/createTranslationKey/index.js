@@ -32,12 +32,12 @@ const createTranslationKey = async ({
   const keyValidation = validateKey(key)
 
   //  First some authorization stuff
-  const project = await Project.query()
+  const project: Project = await Project.query()
     .findById(projectId)
     .eager('translationKeys')
 
   if (!project || (project && project.ownerId !== ownerId)) {
-    errors.push({ field: 'generic', message: 'This project was not found' })
+    throw new Error('This project was not found')
   }
 
   if (!keyValidation.isValid) {

@@ -33,6 +33,12 @@ class TranslationValue extends Model {
   translationKey: TranslationKey
   locale: Locale
 
+  constructor(value: string, locale: Locale) {
+    super()
+    this.value = value
+    this.locale = locale
+  }
+
   $beforeInsert() {
     this.createdAt = new Date()
   }

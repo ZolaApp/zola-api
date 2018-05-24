@@ -4,3 +4,17 @@ type TranslationKey {
   project: Project
   translationValues: [TranslationValue]
 }
+
+type AddTranslationValueToTranslationKeyResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+  translationKey: TranslationKey
+}
+
+extend type Mutation {
+  addTranslationValueToTranslationKey(
+    value: String
+    translationKeyId: ID!
+    localeId: ID!
+  ): AddTranslationValueToTranslationKeyResponse
+}
