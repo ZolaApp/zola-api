@@ -19,6 +19,7 @@ type LoginUserResponse {
   status: ResponseStatus!
   errors: [ValidationError]!
   token: String
+  id: ID
 }
 
 extend type Mutation {
