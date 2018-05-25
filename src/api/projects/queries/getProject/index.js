@@ -13,8 +13,7 @@ type GetProjectArgs = {
 const resolver = async (
   _: any,
   { projectId }: GetProjectArgs,
-  { request }: Context,
-  ast: any
+  { request }: Context
 ) => {
   if (request.user === null) {
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
