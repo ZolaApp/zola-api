@@ -26,5 +26,5 @@ extend type Mutation {
 
 extend type Query {
   getProjects: [Project]
-  getProject(projectId: ID!): Project
+  getProject(projectSlug: String!): Project
 }

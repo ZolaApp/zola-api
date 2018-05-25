@@ -7,12 +7,12 @@ type Context = {
 }
 
 type GetProjectArgs = {
-  projectId: string
+  projectSlug: string
 }
 
 const resolver = async (
   _: any,
-  { projectId }: GetProjectArgs,
+  { projectSlug }: GetProjectArgs,
   { request }: Context
 ) => {
   if (request.user === null) {
@@ -21,7 +21,7 @@ const resolver = async (
 
   const project = await Project.query()
     .eager('locales')
-    .findOne({ id: projectId, ownerId: request.user.id })
+    .findOne({ slug: projectSlug, ownerId: request.user.id })
 
   if (!project) {
     throw new Error('This project was not found')
