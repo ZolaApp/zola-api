@@ -1,7 +1,7 @@
 // @flow
 import createTranslationKey, {
   type AddTranslationKeyToProjectArgs
-} from '@models/TranslationKey/createTranslationKey'
+} from '@models/TranslationKey/addTranslationKeyToProject'
 import { AUTHENTICATION_ERROR_NO_USER } from '@constants/errors'
 
 type Context = {

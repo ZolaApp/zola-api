@@ -3,6 +3,7 @@ import TranslationKey from '@models/TranslationKey'
 import type { ValidationError } from '@types/ValidationError'
 import validateString from '@helpers/validateString'
 import Project from '@models/Project'
+import { DUPLICATE_ENTRY_ERROR_TYPE } from '@constants/errors'
 
 const validateKey = validateString({
   type: 'translation key',
@@ -21,7 +22,7 @@ type AddTranslationKeyToProjectResponse = {
   errors: Array<ValidationError>
 }
 
-const createTranslationKey = async ({
+const addTranslationKeyToProject = async ({
   key,
   projectId,
   ownerId
@@ -31,21 +32,19 @@ const createTranslationKey = async ({
   const errors: Array<ValidationError> = []
   const keyValidation = validateKey(key)
 
+  if (!keyValidation.isValid) {
+    errors.push({ field: 'key', message: keyValidation.error })
+
+    return { errors }
+  }
+
   //  First some authorization stuff
   const project: Project = await Project.query()
     .findById(projectId)
     .eager('translationKeys')
 
-  if (!project || (project && project.ownerId !== ownerId)) {
+  if (!project || (project && !project.hasOwnerId(ownerId))) {
     throw new Error('This project was not found')
-  }
-
-  if (!keyValidation.isValid) {
-    errors.push({ field: 'key', message: keyValidation.error })
-  }
-
-  if (errors.length > 0) {
-    return { errors }
   }
 
   // Saving key
@@ -58,12 +57,12 @@ const createTranslationKey = async ({
     return { project: updatedProject, errors }
   } catch (err) {
     const message =
-      err.routine === '_bt_check_unique'
-        ? `A key with code "${key}" already exists for this project`
+      err.routine === DUPLICATE_ENTRY_ERROR_TYPE
+        ? `A key with value "${key}" already exists for this project`
         : `Something went wrong while adding this key to the project`
 
     throw new Error(message)
   }
 }
 
-export default createTranslationKey
+export default addTranslationKeyToProject

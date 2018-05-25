@@ -49,6 +49,10 @@ class Project extends Model {
   locales: Array<Locale>
   translationKeys: Array<TranslationKey>
 
+  hasOwnerId(ownerId: string): boolean {
+    return this.ownerId === ownerId
+  }
+
   $beforeInsert() {
     this.createdAt = new Date()
   }

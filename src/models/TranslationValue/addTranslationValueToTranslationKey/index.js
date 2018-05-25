@@ -2,7 +2,15 @@
 import TranslationValue from '@models/TranslationValue'
 import TranslationKey from '@models/TranslationKey'
 import Locale from '@models/Locale'
+import validateString from '@helpers/validateString'
 import type { ValidationError } from '@types/ValidationError'
+import { DUPLICATE_ENTRY_ERROR_TYPE } from '@constants/errors'
+
+const validateValue = validateString({
+  type: 'translation value',
+  minLenght: 1,
+  maxLength: Infinity
+})
 
 export type AddTranslationValueToTranslationKeyArgs = {
   value: string,
@@ -37,8 +45,12 @@ const addTranslationValueToTranslationKey = async ({
   const project = translationKey.project
   const locale = await Locale.query().findById(localeId)
 
-  if ((project && project.ownerId !== ownerId) || !locale) {
+  if (project && !project.hasOwnerId(ownerId)) {
     throw new Error('This project was not found.')
+  }
+
+  if (!locale) {
+    throw new Error('This locale doesn’t exist.')
   }
 
   let isLocaleActivated = false
@@ -52,10 +64,12 @@ const addTranslationValueToTranslationKey = async ({
     throw new Error('This locale is not activated for this project')
   }
 
-  if (value.length < 1) {
+  const valueValidation = validateValue(value)
+
+  if (!valueValidation.isValid) {
     errors.push({
       field: 'value',
-      message: 'Your value should be at least 1 character'
+      message: valueValidation.error
     })
 
     return { errors }
@@ -66,10 +80,6 @@ const addTranslationValueToTranslationKey = async ({
     const translationValue = new TranslationValue(value, locale)
     translationKey.translationValues.push(translationValue)
 
-    console.log('========================> DEBUG')
-    console.log(translationKey)
-    console.log('========================> END')
-
     const updatedTranslationKey = await TranslationKey.query()
       .upsertGraphAndFetch(translationKey, { relate: true })
       .eager('translationValues.locale')
@@ -77,7 +87,7 @@ const addTranslationValueToTranslationKey = async ({
     return { translationKey: updatedTranslationKey, errors }
   } catch (err) {
     const message =
-      err.routine === '_bt_check_unique'
+      err.routine === DUPLICATE_ENTRY_ERROR_TYPE
         ? `A value already exists for the key "${
             translationKey.key
           }" and locale ${locale.name}`
