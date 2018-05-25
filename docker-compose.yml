@@ -1,7 +1,7 @@
 version: '3'
 services:
   nodejs:
-    image: node:9@sha256:e9311a4a7beacb1e655b459d1320931a87ccb69ece3bfa6444928c24173bb992
+    image: node:9@sha256:66c14485aa09d55b8707c062093fc0700c97e18780b98c5089502d7eee89e351
     container_name: "zola-node"
     working_dir: /zola-api
     ports:
@@ -26,7 +26,7 @@ services:
     #     tag: "zola-node"
 
   postgres:
-    image: postgres:10@sha256:a1301bdf8b6b578e024a367df2e4ff93298f5eaa346413351bde9fee32c7d9e5
+    image: postgres:10@sha256:eb8e809480d43a0719192a0265bcc9f7411ba534f00bc8fabfcf3abad982e434
     container_name: "zola-postgres"
     ports:
       - "5432:5432"
