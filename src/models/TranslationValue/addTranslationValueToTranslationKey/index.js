@@ -8,7 +8,7 @@ import { DUPLICATE_ENTRY_ERROR_TYPE } from '@constants/errors'
 
 const validateValue = validateString({
   type: 'translation value',
-  minLenght: 1,
+  minLength: 1,
   maxLength: Infinity
 })
 
@@ -53,12 +53,9 @@ const addTranslationValueToTranslationKey = async ({
     throw new Error('This locale doesn’t exist.')
   }
 
-  let isLocaleActivated = false
-  project.locales.forEach(projectLocale => {
-    if (projectLocale.id === locale.id) {
-      isLocaleActivated = true
-    }
-  })
+  const isLocaleActivated = !!project.locales.find(
+    projectLocale => projectLocale.id === locale.id
+  )
 
   if (!isLocaleActivated) {
     throw new Error('This locale is not activated for this project')

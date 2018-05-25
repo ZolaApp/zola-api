@@ -1,5 +1,5 @@
 // @flow
-import createTranslationKey, {
+import addTranslationKeyToProject, {
   type AddTranslationKeyToProjectArgs
 } from '@models/TranslationKey/addTranslationKeyToProject'
 import { AUTHENTICATION_ERROR_NO_USER } from '@constants/errors'
@@ -17,7 +17,7 @@ const resolver = async (
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  const { errors, project } = await createTranslationKey({
+  const { errors, project } = await addTranslationKeyToProject({
     ...args,
     ownerId: request.user.id
   })

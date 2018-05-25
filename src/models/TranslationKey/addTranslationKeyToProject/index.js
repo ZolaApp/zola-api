@@ -8,7 +8,7 @@ import { DUPLICATE_ENTRY_ERROR_TYPE } from '@constants/errors'
 const validateKey = validateString({
   type: 'translation key',
   minLength: 1,
-  maxLength: 55
+  maxLength: 255
 })
 
 export type AddTranslationKeyToProjectArgs = {
@@ -43,7 +43,7 @@ const addTranslationKeyToProject = async ({
     .findById(projectId)
     .eager('translationKeys')
 
-  if (!project || (project && !project.hasOwnerId(ownerId))) {
+  if (project && !project.hasOwnerId(ownerId)) {
     throw new Error('This project was not found')
   }
 
