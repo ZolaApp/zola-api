@@ -20,7 +20,7 @@ const resolver = async (
   }
 
   const project = await Project.query()
-    .eager('locales')
+    .eager('[locales, translationKeys]')
     .findOne({ slug: projectSlug, ownerId: request.user.id })
 
   if (!project) {

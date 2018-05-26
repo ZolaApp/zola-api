@@ -1,0 +1,6 @@
+type TranslationValue {
+  id: ID
+  value: String
+  translationKey: TranslationKey
+  locale: Locale
+}
