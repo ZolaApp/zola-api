@@ -1,5 +1,7 @@
 type Project {
   id: ID
+  createdAt: Date
+  updatedAt: Date
   ownerId: ID
   name: String
   slug: String
