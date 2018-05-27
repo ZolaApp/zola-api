@@ -53,11 +53,16 @@ const addTranslationValueToTranslationKey = async ({
     throw new Error('This locale doesn’t exist.')
   }
 
-  const isLocaleActivated = !!project.locales.find(
-    projectLocale => projectLocale.id === locale.id
-  )
+  const isLocaleActivated = await Locale.query()
+    .join('projects_locales as r', 'locales.id', 'r.localeId')
+    .join('projects as p', 'r.projectId', 'p.id')
+    .where('locales.id', '=', localeId)
+    .andWhere('p.id', '=', project.id)
+    .count()
+    .pluck('count')
+    .first()
 
-  if (!isLocaleActivated) {
+  if (isLocaleActivated === '0') {
     throw new Error('This locale is not activated for this project')
   }
 
