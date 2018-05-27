@@ -35,8 +35,8 @@ const addTranslationValueToTranslationKey = async ({
   const errors: Array<ValidationError> = []
 
   const translationKey: TranslationKey = await TranslationKey.query()
+    .eager('project')
     .findById(translationKeyId)
-    .eager('[project.locales, translationValues.locale]')
 
   if (!translationKey) {
     throw new Error('This translation key was not found.')
@@ -53,9 +53,15 @@ const addTranslationValueToTranslationKey = async ({
     throw new Error('This locale doesn’t exist.')
   }
 
-  const isLocaleActivated = !!project.locales.find(
-    projectLocale => projectLocale.id === locale.id
-  )
+  const isLocaleActivated =
+    (await Locale.query()
+      .join('projects_locales as r', 'locales.id', 'r.localeId')
+      .join('projects as p', 'r.projectId', 'p.id')
+      .where('locales.id', '=', localeId)
+      .andWhere('p.id', '=', project.id)
+      .count()
+      .pluck('count')
+      .first()) !== '0'
 
   if (!isLocaleActivated) {
     throw new Error('This locale is not activated for this project')
@@ -75,10 +81,10 @@ const addTranslationValueToTranslationKey = async ({
   // Saving key
   try {
     const translationValue = new TranslationValue(value, locale)
-    translationKey.translationValues.push(translationValue)
+    translationKey.translationValues = [translationValue]
 
     const updatedTranslationKey = await TranslationKey.query()
-      .upsertGraphAndFetch(translationKey, { relate: true })
+      .upsertGraphAndFetch(translationKey, { relate: true, noDelete: true })
       .eager('translationValues.locale')
 
     return { translationKey: updatedTranslationKey, errors }
