@@ -3,6 +3,7 @@ import slugify from 'slug'
 import validateString from '@helpers/validateString'
 import Project from '@models/Project'
 import { type ValidationError } from '@types/ValidationError'
+import Locale from '@models/Locale'
 
 const validateName = validateString({ type: 'name', maxLength: 50 })
 const validateDescription = validateString({
@@ -14,6 +15,7 @@ const validateDescription = validateString({
 export type CreateProjectArgs = {
   name: string,
   description: string,
+  defaultLocaleId: string,
   ownerId: string
 }
 
@@ -25,7 +27,8 @@ type CreateProjectResponse = {
 const createProject = async ({
   name,
   description = '',
-  ownerId
+  ownerId,
+  defaultLocaleId
 }: CreateProjectArgs): Promise<CreateProjectResponse> => {
   const errors: Array<ValidationError> = []
   const trimmedName = name.trim()
@@ -61,14 +64,26 @@ const createProject = async ({
     return { errors }
   }
 
-  const project = await Project.query().insertAndFetch({
-    name: trimmedName,
-    slug,
-    description: trimmedDescription,
-    ownerId
-  })
+  const locale = await Locale.query().findById(defaultLocaleId)
 
-  return { project, errors: [] }
+  try {
+    const project = await Project.query().insertGraphAndFetch(
+      {
+        name: trimmedName,
+        slug,
+        description: trimmedDescription,
+        locales: [locale],
+        ownerId
+      },
+      { relate: true }
+    )
+
+    return { project, errors: [] }
+  } catch (error) {
+    errors.push({ field: 'generic', message: error.message })
+
+    return { errors }
+  }
 }
 
 export default createProject
