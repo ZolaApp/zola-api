@@ -66,6 +66,10 @@ const createProject = async ({
 
   const locale = await Locale.query().findById(defaultLocaleId)
 
+  if (!locale) {
+    throw new Error('This locale doesn’t exist')
+  }
+
   try {
     const project = await Project.query().insertGraphAndFetch(
       {
