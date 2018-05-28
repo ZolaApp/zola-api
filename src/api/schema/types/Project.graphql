@@ -8,7 +8,7 @@ type Project {
   description: String
   locales: [Locale]
   newKeys: Int
-  missingKeys: Int
+  missingTranslations: Int
   translationKeys: [TranslationKey]
 }
 

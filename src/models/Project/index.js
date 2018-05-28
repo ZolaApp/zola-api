@@ -39,7 +39,7 @@ class Project extends Model {
     }
   }
 
-  static virtualAttributes = ['missingKeys', 'newKeys']
+  static virtualAttributes = ['missingTranslations', 'newKeys']
 
   id: string
   updatedAt: Date
@@ -50,10 +50,10 @@ class Project extends Model {
   owner: User
   locales: Array<Locale>
   translationKeys: Array<TranslationKey>
-  missingKeys: number
+  missingTranslations: number
   newKeys: number
 
-  missingKeys() {
+  missingTranslations() {
     return 0
   }
 
