@@ -39,6 +39,8 @@ class Project extends Model {
     }
   }
 
+  static virtualAttributes = ['missingTranslations', 'newKeys']
+
   id: string
   updatedAt: Date
   createdAt: Date
@@ -48,6 +50,16 @@ class Project extends Model {
   owner: User
   locales: Array<Locale>
   translationKeys: Array<TranslationKey>
+  missingTranslations: number
+  newKeys: number
+
+  missingTranslations() {
+    return 0
+  }
+
+  newKeys() {
+    return 0
+  }
 
   hasOwnerId(ownerId: string): boolean {
     return this.ownerId === ownerId
