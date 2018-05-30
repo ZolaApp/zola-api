@@ -6,6 +6,7 @@ type Project {
   name: String
   slug: String
   description: String
+  cdnToken: String
   locales: [Locale]
   newKeys: Int
   missingTranslations: Int
