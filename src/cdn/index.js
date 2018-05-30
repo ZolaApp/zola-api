@@ -10,16 +10,13 @@ export default async (
 ) => {
   const { cdnToken, localeCode } = request.params
 
-  console.log(request.params)
-  console.log(localeCode)
-
   const project = await Project.query().findOne({
     cdnToken,
     ownerId: request.user.id
   })
 
   if (!project) {
-    response.status(404).send("This project wasn't found")
+    response.status(404).send('This project wasn’t found')
 
     return
   }
@@ -27,7 +24,7 @@ export default async (
   const locale = await Locale.query().findOne({ code: localeCode })
 
   if (!locale) {
-    response.status(404).send("This locale doesn't exist")
+    response.status(404).send('This locale doesn’t exist')
 
     return
   }
