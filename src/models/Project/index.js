@@ -1,5 +1,6 @@
 // @flow
 import path from 'path'
+import { createHash } from 'crypto'
 import { Model } from 'objection'
 import User from '@models/User'
 import Locale from '@models/Locale'
@@ -52,6 +53,7 @@ class Project extends Model {
   translationKeys: Array<TranslationKey>
   missingTranslations: number
   newKeys: number
+  cdnToken: string
 
   missingTranslations() {
     return 0
@@ -61,12 +63,19 @@ class Project extends Model {
     return 0
   }
 
+  createCdnToken() {
+    const hash = createHash('sha256')
+    const now = new Date().toISOString()
+    this.cdnToken = hash.update(`${this.name}${this.id}${now}`).digest('hex')
+  }
+
   hasOwnerId(ownerId: string): boolean {
     return this.ownerId === ownerId
   }
 
   $beforeInsert() {
     this.createdAt = new Date()
+    this.createCdnToken()
   }
 
   $beforeUpdate() {

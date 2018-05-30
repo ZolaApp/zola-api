@@ -14,7 +14,8 @@
           "@models": "./src/models",
           "@server": "./src/server",
           "@tests": "./src/tests",
-          "@types": "./src/types"
+          "@types": "./src/types",
+          "@cdn": "./src/cdn"
         }
       }
     ],
