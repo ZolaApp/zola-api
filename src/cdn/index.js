@@ -21,13 +21,17 @@ export default async (
   console.log('found project')
 
   if (!project) {
-    throw new Error("This project wasn't found")
+    response.status(404).send("This project wasn't found")
+
+    return
   }
 
   const locale = await Locale.query().findOne({ code: localeCode })
 
   if (!locale) {
-    throw new Error("This locale doesn't exist")
+    response.status(404).send("This locale doesn't exist")
+
+    return
   }
 
   console.log('found locale')
@@ -46,7 +50,9 @@ export default async (
       .first()) !== '0'
 
   if (!isLocaleActivated) {
-    throw new Error('This locale is not activated for this project')
+    response.status(404).send('This locale is not activated for this project')
+
+    return
   }
 
   const keysValues = await TranslationKey.query()
