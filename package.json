@@ -40,8 +40,8 @@
     "start": "node dist/index.js"
   },
   "devDependencies": {
-    "apollo-cache-inmemory": "1.2.1",
-    "apollo-client": "2.3.1",
+    "apollo-cache-inmemory": "1.2.2",
+    "apollo-client": "2.3.2",
     "apollo-link-schema": "1.1.0",
     "babel-cli": "6.26.0",
     "babel-eslint": "8.2.3",
