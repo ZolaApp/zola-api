@@ -18,8 +18,6 @@ export default async (
     ownerId: request.user.id
   })
 
-  console.log('found project')
-
   if (!project) {
     response.status(404).send("This project wasn't found")
 
@@ -33,11 +31,6 @@ export default async (
 
     return
   }
-
-  console.log('found locale')
-
-  console.log(locale.id)
-  console.log(project.id)
 
   const isLocaleActivated =
     (await Locale.query()
