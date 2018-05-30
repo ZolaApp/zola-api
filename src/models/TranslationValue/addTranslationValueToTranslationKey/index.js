@@ -4,7 +4,6 @@ import TranslationKey from '@models/TranslationKey'
 import Locale from '@models/Locale'
 import validateString from '@helpers/validateString'
 import type { ValidationError } from '@types/ValidationError'
-import { DUPLICATE_ENTRY_ERROR_TYPE } from '@constants/errors'
 
 const validateValue = validateString({
   type: 'translation value',
@@ -80,7 +79,14 @@ const addTranslationValueToTranslationKey = async ({
 
   // Saving key
   try {
-    const translationValue = new TranslationValue(value, locale)
+    const translationValue =
+      (await TranslationValue.query().findOne({
+        translationKeyId: translationKey.id,
+        localeId: locale.id
+      })) || new TranslationValue(value, locale)
+
+    translationValue.value = value
+
     translationKey.translationValues = [translationValue]
 
     const updatedTranslationKey = await TranslationKey.query()
@@ -89,14 +95,7 @@ const addTranslationValueToTranslationKey = async ({
 
     return { translationKey: updatedTranslationKey, errors }
   } catch (err) {
-    const message =
-      err.routine === DUPLICATE_ENTRY_ERROR_TYPE
-        ? `A value already exists for the key "${
-            translationKey.key
-          }" and locale ${locale.name}`
-        : `Something went wrong while adding this value to the key`
-
-    throw new Error(message)
+    throw new Error(`Something went wrong while adding this value to the key`)
   }
 }
 
