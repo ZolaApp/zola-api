@@ -4,6 +4,7 @@ import Project from '@models/Project'
 import Locale from '@models/Locale'
 import TranslationValue from '@models/TranslationValue'
 import TranslationKey from '@models/TranslationKey'
+import Stats from '@models/Stats'
 
 type Context = {
   request: express$Request
@@ -54,19 +55,23 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     (actualTranslationValuesCount / expectedTranslationValuesCount) * 100
   )
 
-  const newKeysCount = 10
+  const newKeysCount = await TranslationKey.query()
+    .join('projects as p', 'translationKeys.projectId', 'p.id')
+    .where('translationKeys.isNew', '=', true)
+    .where('p.ownerId', '=', request.user.id)
+    .count()
+    .pluck('count')
+    .first()
 
-  const globalStats = {
+  const stats = new Stats(
     missingTranslationsCount,
     completePercentage,
+    newKeysCount,
     projectsCount,
-    localesCount,
-    newKeysCount
-  }
+    localesCount
+  )
 
-  console.log(globalStats)
-
-  return globalStats
+  return stats
 }
 
 export default resolver

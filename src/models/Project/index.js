@@ -5,6 +5,7 @@ import { Model } from 'objection'
 import User from '@models/User'
 import Locale from '@models/Locale'
 import TranslationKey from '@models/TranslationKey'
+import Stats from '@models/Stats'
 
 class Project extends Model {
   static tableName = 'projects'
@@ -40,8 +41,6 @@ class Project extends Model {
     }
   }
 
-  static virtualAttributes = ['missingTranslations', 'newKeys']
-
   id: string
   updatedAt: Date
   createdAt: Date
@@ -51,17 +50,8 @@ class Project extends Model {
   owner: User
   locales: Array<Locale>
   translationKeys: Array<TranslationKey>
-  missingTranslations: number
-  newKeys: number
+  stats: Stats
   cdnToken: string
-
-  missingTranslations() {
-    return 0
-  }
-
-  newKeys() {
-    return 0
-  }
 
   createCdnToken() {
     const hash = createHash('sha256')

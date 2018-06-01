@@ -15,7 +15,7 @@ import Project from './types/Project.graphql'
 import Locale from './types/Locale.graphql'
 import TranslationKey from './types/TranslationKey.graphql'
 import TranslationValue from './types/TranslationValue.graphql'
-import GlobalStats from './types/GlobalStats.graphql'
+import Stats from './types/Stats.graphql'
 
 const typeDefs = [
   Root,
@@ -27,7 +27,7 @@ const typeDefs = [
   Locale,
   TranslationKey,
   TranslationValue,
-  GlobalStats
+  Stats
 ]
 const resolvers = [
   scalarsResolvers,
