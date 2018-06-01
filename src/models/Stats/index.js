@@ -22,7 +22,7 @@ class Stats {
     }
 
     if (projectsCount) {
-      this.projectsCount = projectsCount || undefined
+      this.projectsCount = projectsCount
     }
   }
 }
