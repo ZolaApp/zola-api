@@ -3,6 +3,7 @@ import { makeExecutableSchema } from 'graphql-tools'
 import usersAPI from '@api/users'
 import projectsAPI from '@api/projects'
 import localesAPI from '@api/locales'
+import statsApi from '@api/stats'
 import translationKeysApi from '@api/translationKey'
 import Root from './types/Root.graphql'
 import Scalars from './scalars/scalars.graphql'
@@ -14,6 +15,7 @@ import Project from './types/Project.graphql'
 import Locale from './types/Locale.graphql'
 import TranslationKey from './types/TranslationKey.graphql'
 import TranslationValue from './types/TranslationValue.graphql'
+import GlobalStats from './types/GlobalStats.graphql'
 
 const typeDefs = [
   Root,
@@ -24,14 +26,16 @@ const typeDefs = [
   Project,
   Locale,
   TranslationKey,
-  TranslationValue
+  TranslationValue,
+  GlobalStats
 ]
 const resolvers = [
   scalarsResolvers,
   usersAPI,
   projectsAPI,
   localesAPI,
-  translationKeysApi
+  translationKeysApi,
+  statsApi
 ]
 const schema = makeExecutableSchema({
   typeDefs,
