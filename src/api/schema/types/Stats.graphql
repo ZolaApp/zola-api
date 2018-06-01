@@ -1,9 +1,9 @@
 type Stats {
-  projectsCount: Int!
   completePercentage: Int!
-  localesCount: Int!
   newKeysCount: Int!
   missingTranslationsCount: Int!
+  localesCount: Int
+  projectsCount: Int
 }
 
 extend type Query {
