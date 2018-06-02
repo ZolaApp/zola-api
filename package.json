@@ -81,7 +81,7 @@
     "helmet": "3.12.1",
     "knex": "0.14.6",
     "nodemon": "1.17.5",
-    "objection": "1.1.8",
+    "objection": "1.1.10",
     "pg": "7.4.3",
     "slug": "0.9.1",
     "validator": "10.2.0",
