@@ -22,8 +22,8 @@ const resolver = async (
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  const project: Project = await Project.query()
-    .eager('[locales, translationKeys]')
+  const project = await Project.query()
+    .eager('[locales, translationKeys.translationValues]')
     .findOne({ slug: projectSlug, ownerId: request.user.id })
 
   const translationKeysCount = project.translationKeys.length
