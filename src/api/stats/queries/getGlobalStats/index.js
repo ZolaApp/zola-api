@@ -1,35 +1,40 @@
 // @flow
-import Project from '@models/Project'
 import { AUTHENTICATION_ERROR_NO_USER } from '@constants/errors'
-import TranslationKey from '@models/TranslationKey'
+import Project from '@models/Project'
+import Locale from '@models/Locale'
 import TranslationValue from '@models/TranslationValue'
+import TranslationKey from '@models/TranslationKey'
 import Stats from '@models/Stats'
 
 type Context = {
   request: express$Request
 }
 
-type GetProjectArgs = {
-  projectSlug: string
-}
-
-const resolver = async (
-  _: any,
-  { projectSlug }: GetProjectArgs,
-  { request }: Context
-) => {
+const resolver = async (_: any, args: any, { request }: Context) => {
   if (request.user === null) {
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  const project = await Project.query()
-    .eager(
-      '[locales, translationKeys.translationValues, translationKeys.translationValues.locale]'
-    )
-    .findOne({ slug: projectSlug, ownerId: request.user.id })
+  const projectsCount = await Project.query()
+    .count()
+    .pluck('count')
+    .first()
 
-  const translationKeysCount = project.translationKeys.length
-  const localesCount = project.locales.length
+  const localesCount = await Locale.query()
+    .join('projects_locales as pl', 'locales.id', 'pl.localeId')
+    .join('projects as p', 'pl.projectId', 'p.id')
+    .where('p.ownerId', '=', request.user.id)
+    .count()
+    .pluck('count')
+    .first()
+
+  // To check for missing translations, we count the number of keys, the number of values, and check whether it matches.
+  const translationKeysCount = await TranslationKey.query()
+    .join('projects as p', 'translationKeys.projectId', 'p.id')
+    .where('p.ownerId', '=', request.user.id)
+    .count()
+    .pluck('count')
+    .first()
 
   const expectedTranslationValuesCount = translationKeysCount * localesCount
   const actualTranslationValuesCount = await TranslationValue.query()
@@ -53,21 +58,20 @@ const resolver = async (
   const newKeysCount = await TranslationKey.query()
     .join('projects as p', 'translationKeys.projectId', 'p.id')
     .where('translationKeys.isNew', '=', true)
+    .where('p.ownerId', '=', request.user.id)
     .count()
     .pluck('count')
     .first()
 
-  project.stats = new Stats(
+  const stats = new Stats(
     missingTranslationsCount,
+    completePercentage,
     newKeysCount,
-    completePercentage
+    projectsCount,
+    localesCount
   )
 
-  if (!project) {
-    throw new Error('This project was not found')
-  }
-
-  return project
+  return stats
 }
 
 export default resolver

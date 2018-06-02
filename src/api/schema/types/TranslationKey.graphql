@@ -3,6 +3,8 @@ type TranslationKey {
   key: String
   project: Project
   translationValues: [TranslationValue]
+  isNew: Boolean
+  hasMissingTranslations: Boolean
 }
 
 type AddTranslationValueToTranslationKeyResponse {

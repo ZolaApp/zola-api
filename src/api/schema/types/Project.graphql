@@ -8,9 +8,8 @@ type Project {
   description: String
   cdnToken: String
   locales: [Locale]
-  newKeys: Int
-  missingTranslations: Int
   translationKeys: [TranslationKey]
+  stats: Stats
 }
 
 type CreateProjectResponse {
