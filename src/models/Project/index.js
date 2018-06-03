@@ -83,7 +83,14 @@ class Project extends Model {
       .first()
 
     if (translationKeysCount === '0') {
-      return new Stats(0, 0, 100, 0, localesCount)
+      return new Stats({
+        missingTranslationsCount: 0,
+        newKeysCount: 0,
+        completePercentage: 100,
+        translationKeysCount: 0,
+        localesCount,
+        projectsCount: null
+      })
     }
 
     const expectedTranslationValuesCount = translationKeysCount * localesCount
@@ -113,13 +120,14 @@ class Project extends Model {
       .pluck('count')
       .first()
 
-    return new Stats(
+    return new Stats({
       missingTranslationsCount,
       newKeysCount,
       completePercentage,
       translationKeysCount,
-      localesCount
-    )
+      localesCount,
+      projectsCount: null
+    })
   }
 
   $beforeInsert() {

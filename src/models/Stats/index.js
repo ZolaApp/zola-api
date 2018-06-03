@@ -1,4 +1,13 @@
 // @flow
+export type StatsConstructor = {
+  missingTranslationsCount: number,
+  newKeysCount: number,
+  completePercentage: number,
+  translationKeysCount: number,
+  localesCount: ?number,
+  projectsCount: ?number
+}
+
 class Stats {
   missingTranslationsCount: number
   newKeysCount: number
@@ -7,25 +16,18 @@ class Stats {
   projectsCount: number
   localesCount: number
 
-  constructor(
-    missingTranslationsCount: number,
-    newKeysCount: number,
-    completePercentage: number,
-    translationKeysCount: number,
-    localesCount: ?number,
-    projectsCount: ?number
-  ) {
-    this.missingTranslationsCount = missingTranslationsCount
-    this.newKeysCount = newKeysCount
-    this.completePercentage = completePercentage
-    this.translationKeysCount = translationKeysCount
+  constructor(args: StatsConstructor) {
+    this.missingTranslationsCount = args.missingTranslationsCount
+    this.newKeysCount = args.newKeysCount
+    this.completePercentage = args.completePercentage
+    this.translationKeysCount = args.translationKeysCount
 
-    if (localesCount) {
-      this.localesCount = localesCount
+    if (args.localesCount) {
+      this.localesCount = args.localesCount
     }
 
-    if (projectsCount) {
-      this.projectsCount = projectsCount
+    if (args.projectsCount) {
+      this.projectsCount = args.projectsCount
     }
   }
 }

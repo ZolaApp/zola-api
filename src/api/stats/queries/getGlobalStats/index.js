@@ -63,14 +63,14 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     .pluck('count')
     .first()
 
-  const stats = new Stats(
+  const stats = new Stats({
     missingTranslationsCount,
     newKeysCount,
     completePercentage,
     translationKeysCount,
     localesCount,
     projectsCount
-  )
+  })
 
   return stats
 }
