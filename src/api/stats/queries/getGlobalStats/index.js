@@ -68,6 +68,7 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     completePercentage,
     newKeysCount,
     projectsCount,
+    translationKeysCount,
     localesCount
   )
 

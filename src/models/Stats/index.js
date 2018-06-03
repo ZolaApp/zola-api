@@ -3,6 +3,7 @@ class Stats {
   missingTranslationsCount: number
   newKeysCount: number
   completePercentage: number
+  translationKeysCount: number
   projectsCount: number
   localesCount: number
 
@@ -10,12 +11,14 @@ class Stats {
     missingTranslationsCount: number,
     newKeysCount: number,
     completePercentage: number,
+    translationKeysCount: number,
     localesCount: ?number,
     projectsCount: ?number
   ) {
     this.missingTranslationsCount = missingTranslationsCount
     this.newKeysCount = newKeysCount
     this.completePercentage = completePercentage
+    this.translationKeysCount = translationKeysCount
 
     if (localesCount) {
       this.localesCount = localesCount

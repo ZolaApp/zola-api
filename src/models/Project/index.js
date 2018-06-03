@@ -6,6 +6,7 @@ import User from '@models/User'
 import Locale from '@models/Locale'
 import TranslationKey from '@models/TranslationKey'
 import Stats from '@models/Stats'
+import TranslationValue from '@models/TranslationValue'
 
 class Project extends Model {
   static tableName = 'projects'
@@ -41,6 +42,8 @@ class Project extends Model {
     }
   }
 
+  static virtualAttributes = ['stats']
+
   id: string
   updatedAt: Date
   createdAt: Date
@@ -61,6 +64,65 @@ class Project extends Model {
 
   hasOwnerId(ownerId: string): boolean {
     return this.ownerId === ownerId
+  }
+
+  async stats() {
+    console.log('===================================> GETTING STATS')
+    const translationKeysCount = await TranslationKey.query()
+      .join('projects as p', 'translationKeys.projectId', 'p.id')
+      .where('p.id', '=', this.id)
+      .count()
+      .pluck('count')
+      .first()
+
+    const localesCount = await Locale.query()
+      .join('projects_locales as r', 'locales.id', 'r.localeId')
+      .join('projects as p', 'r.projectId', 'p.id')
+      .where('p.id', '=', this.id)
+      .count()
+      .pluck('count')
+      .first()
+
+    if (translationKeysCount === '0') {
+      return new Stats(0, 0, 100, 0, localesCount)
+    }
+
+    const expectedTranslationValuesCount = translationKeysCount * localesCount
+    const actualTranslationValuesCount = await TranslationValue.query()
+      .join(
+        'translationKeys as tk',
+        'translationValues.translationKeyId',
+        'tk.id'
+      )
+      .join('projects as p', 'tk.projectId', 'p.id')
+      .where('p.id', '=', this.id)
+      .count()
+      .pluck('count')
+      .first()
+
+    const missingTranslationsCount =
+      expectedTranslationValuesCount - actualTranslationValuesCount
+
+    const completePercentage = Math.round(
+      (actualTranslationValuesCount / expectedTranslationValuesCount) * 100
+    )
+
+    const newKeysCount = await TranslationKey.query()
+      .join('projects as p', 'translationKeys.projectId', 'p.id')
+      .where('translationKeys.isNew', '=', true)
+      .count()
+      .pluck('count')
+      .first()
+
+    console.log('===================================> GETTING STATS')
+
+    return new Stats(
+      missingTranslationsCount,
+      newKeysCount,
+      completePercentage,
+      translationKeysCount,
+      localesCount
+    )
   }
 
   $beforeInsert() {
