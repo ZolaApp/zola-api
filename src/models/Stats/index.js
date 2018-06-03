@@ -16,13 +16,20 @@ class Stats {
   projectsCount: ?number
   localesCount: ?number
 
-  constructor(args: StatsConstructor) {
-    this.missingTranslationsCount = args.missingTranslationsCount
-    this.newKeysCount = args.newKeysCount
-    this.completePercentage = args.completePercentage
-    this.translationKeysCount = args.translationKeysCount
-    this.localesCount = args.localesCount
-    this.projectsCount = args.projectsCount
+  constructor({
+    missingTranslationsCount,
+    newKeysCount,
+    completePercentage,
+    translationKeysCount,
+    localesCount,
+    projectsCount
+  }: StatsConstructor) {
+    this.missingTranslationsCount = missingTranslationsCount
+    this.newKeysCount = newKeysCount
+    this.completePercentage = completePercentage
+    this.translationKeysCount = translationKeysCount
+    this.localesCount = localesCount
+    this.projectsCount = projectsCount
   }
 }
 
