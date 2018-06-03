@@ -65,11 +65,11 @@ const resolver = async (_: any, args: any, { request }: Context) => {
 
   const stats = new Stats(
     missingTranslationsCount,
-    completePercentage,
     newKeysCount,
-    projectsCount,
+    completePercentage,
     translationKeysCount,
-    localesCount
+    localesCount,
+    projectsCount
   )
 
   return stats
