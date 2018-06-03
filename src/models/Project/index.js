@@ -67,7 +67,6 @@ class Project extends Model {
   }
 
   async stats() {
-    console.log('===================================> GETTING STATS')
     const translationKeysCount = await TranslationKey.query()
       .join('projects as p', 'translationKeys.projectId', 'p.id')
       .where('p.id', '=', this.id)
@@ -113,8 +112,6 @@ class Project extends Model {
       .count()
       .pluck('count')
       .first()
-
-    console.log('===================================> GETTING STATS')
 
     return new Stats(
       missingTranslationsCount,
