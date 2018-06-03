@@ -2,6 +2,8 @@ type Locale {
   id: ID
   name: String
   code: String
+  missingTranslations: Int
+  completePercentage: Int
 }
 
 extend type Query {

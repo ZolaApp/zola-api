@@ -26,6 +26,8 @@ class Locale extends Model {
   createdAt: Date
   code: string
   name: string
+  missingTranslations: ?number
+  completePercentage: ?number
   projects: Array<Project>
 
   $beforeInsert() {
