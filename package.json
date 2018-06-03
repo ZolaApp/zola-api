@@ -84,7 +84,7 @@
     "objection": "1.1.10",
     "pg": "7.4.3",
     "slug": "0.9.1",
-    "validator": "10.2.0",
+    "validator": "10.3.0",
     "zxcvbn": "4.4.2"
   }
 }
