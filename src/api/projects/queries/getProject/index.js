@@ -28,8 +28,18 @@ const resolver = async (
     )
     .findOne({ slug: projectSlug, ownerId: request.user.id })
 
+  if (!project) {
+    throw new Error('This project was not found')
+  }
+
   const translationKeysCount = project.translationKeys.length
   const localesCount = project.locales.length
+
+  if (translationKeysCount === 0) {
+    project.stats = new Stats(0, 0, 100, localesCount)
+
+    return project
+  }
 
   const expectedTranslationValuesCount = translationKeysCount * localesCount
   const actualTranslationValuesCount = await TranslationValue.query()
@@ -39,13 +49,14 @@ const resolver = async (
       'tk.id'
     )
     .join('projects as p', 'tk.projectId', 'p.id')
-    .where('p.ownerId', '=', request.user.id)
+    .where('p.id', '=', project.id)
     .count()
     .pluck('count')
     .first()
 
   const missingTranslationsCount =
     expectedTranslationValuesCount - actualTranslationValuesCount
+
   const completePercentage = Math.round(
     (actualTranslationValuesCount / expectedTranslationValuesCount) * 100
   )
@@ -60,12 +71,9 @@ const resolver = async (
   project.stats = new Stats(
     missingTranslationsCount,
     newKeysCount,
-    completePercentage
+    completePercentage,
+    localesCount
   )
-
-  if (!project) {
-    throw new Error('This project was not found')
-  }
 
   return project
 }
