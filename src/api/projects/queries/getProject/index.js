@@ -57,12 +57,9 @@ const resolver = async (
   const missingTranslationsCount =
     expectedTranslationValuesCount - actualTranslationValuesCount
 
-  const completePercentage =
-    expectedTranslationValuesCount > 0
-      ? Math.round(
-          (actualTranslationValuesCount / expectedTranslationValuesCount) * 100
-        )
-      : 100
+  const completePercentage = Math.round(
+    (actualTranslationValuesCount / expectedTranslationValuesCount) * 100
+  )
 
   const newKeysCount = await TranslationKey.query()
     .join('projects as p', 'translationKeys.projectId', 'p.id')
