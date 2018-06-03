@@ -54,11 +54,6 @@ const resolver = async (
     .pluck('count')
     .first()
 
-  console.log(translationKeysCount)
-  console.log(localesCount)
-  console.log(expectedTranslationValuesCount)
-  console.log(actualTranslationValuesCount)
-
   const missingTranslationsCount =
     expectedTranslationValuesCount - actualTranslationValuesCount
 
@@ -68,9 +63,6 @@ const resolver = async (
           (actualTranslationValuesCount / expectedTranslationValuesCount) * 100
         )
       : 100
-
-  console.log(missingTranslationsCount)
-  console.log(completePercentage)
 
   const newKeysCount = await TranslationKey.query()
     .join('projects as p', 'translationKeys.projectId', 'p.id')
