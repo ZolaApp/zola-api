@@ -13,6 +13,15 @@ type AddTranslationValueToTranslationKeyResponse {
   translationKey: TranslationKey
 }
 
+type TranslationKeyPage {
+  pageSize: Int!
+  page: Int!
+  previousPage: Int
+  nextPage: Int
+  totalCount: Int
+  translationKeys: [TranslationKey]
+}
+
 type DeleteTranslationKeyResponse {
   status: ResponseStatus!
   errors: [ValidationError]!

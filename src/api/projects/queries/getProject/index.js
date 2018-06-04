@@ -4,35 +4,43 @@ import { AUTHENTICATION_ERROR_NO_USER } from '@constants/errors'
 import TranslationValue from '@models/TranslationValue'
 import TranslationKey from '@models/TranslationKey'
 import Locale from '@models/Locale'
+import getPaginatedTranslationKeys from '@models/TranslationKey/getPaginatedTranslationKeys'
 
 type Context = {
   request: express$Request
 }
 
 type GetProjectArgs = {
-  projectSlug: string
+  projectSlug: string,
+  pageSize: number,
+  page: number
 }
 
 const resolver = async (
   _: any,
-  { projectSlug }: GetProjectArgs,
+  { projectSlug, pageSize, page }: GetProjectArgs,
   { request }: Context
 ) => {
   if (request.user === null) {
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  const project: Project = await Project.query()
-    .eager(
-      '[translationKeys.translationValues, translationKeys.translationValues.locale]'
-    )
-    .findOne({ slug: projectSlug, ownerId: request.user.id })
+  const project: Project = await Project.query().findOne({
+    slug: projectSlug,
+    ownerId: request.user.id
+  })
 
   project.locales = await Locale.query()
     .join('projects_locales as pl', 'pl.localeId', 'locales.id')
     .join('projects as p', 'pl.projectId', 'p.id')
     .where('p.id', '=', project.id)
     .orderBy('pl.id', 'ASC')
+
+  project.translationKeys = await getPaginatedTranslationKeys({
+    pageSize,
+    page,
+    projectId: project.id
+  })
 
   await Promise.all(
     project.locales.map(async locale => {

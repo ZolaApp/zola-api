@@ -10,7 +10,6 @@ export type AddLocaleToProjectArgs = {
 }
 
 type AddProjectToLocaleResponse = {
-  project?: Project,
   errors: Array<ValidationError>
 }
 
@@ -39,18 +38,7 @@ const addLocaleToProject = async ({
       relate: true
     })
 
-    const updatedProject = await Project.query().findOne({
-      id: projectId,
-      ownerId: userId
-    })
-
-    updatedProject.locales = Locale.query()
-      .join('projects_locales as pl', 'pl.localeId', 'locales.id')
-      .join('projects as p', 'pl.projectId', 'p.id')
-      .where('p.id', '=', updatedProject.id)
-      .orderBy('pl.id', 'ASC')
-
-    return { project: updatedProject, errors }
+    return { errors }
   } catch (error) {
     errors.push({ field: 'generic', message: error.message })
 

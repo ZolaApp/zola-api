@@ -8,7 +8,7 @@ type Project {
   description: String
   cdnToken: String
   locales: [Locale]
-  translationKeys: [TranslationKey]
+  translationKeys: TranslationKeyPage
   stats: Stats
 }
 
@@ -21,13 +21,11 @@ type CreateProjectResponse {
 type AddLocaleToProjectResponse {
   status: ResponseStatus!
   errors: [ValidationError]!
-  project: Project
 }
 
 type AddTranslationKeyToProjectResponse {
   status: ResponseStatus!
   errors: [ValidationError]!
-  project: Project
 }
 
 extend type Mutation {
@@ -45,5 +43,5 @@ extend type Mutation {
 
 extend type Query {
   getProjects: [Project]
-  getProject(projectSlug: String!): Project
+  getProject(projectSlug: String!, pageSize: Int, page: Int): Project
 }

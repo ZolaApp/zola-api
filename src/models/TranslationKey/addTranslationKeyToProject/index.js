@@ -18,7 +18,6 @@ export type AddTranslationKeyToProjectArgs = {
 }
 
 type AddTranslationKeyToProjectResponse = {
-  project?: Project,
   errors: Array<ValidationError>
 }
 
@@ -39,9 +38,7 @@ const addTranslationKeyToProject = async ({
   }
 
   //  First some authorization stuff
-  const project: Project = await Project.query()
-    .findById(projectId)
-    .eager('translationKeys')
+  const project: Project = await Project.query().findById(projectId)
 
   if (project && !project.hasOwnerId(ownerId)) {
     throw new Error('This project was not found')
@@ -50,11 +47,11 @@ const addTranslationKeyToProject = async ({
   // Saving key
   try {
     const translationKey = new TranslationKey(key)
-    project.translationKeys.push(translationKey)
+    translationKey.project = project
 
-    const updatedProject = await Project.query().upsertGraph(project)
+    await TranslationKey.query().insertGraph(translationKey, { relate: true })
 
-    return { project: updatedProject, errors }
+    return { errors }
   } catch (err) {
     if (err.routine === DUPLICATE_ENTRY_ERROR_TYPE) {
       return {
