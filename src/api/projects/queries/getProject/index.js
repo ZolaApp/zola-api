@@ -34,36 +34,40 @@ const resolver = async (
     .where('p.id', '=', project.id)
     .orderBy('pl.id', 'ASC')
 
-  await project.locales.forEach(async locale => {
-    const expectedTranslationValues = await TranslationKey.query()
-      .join('projects as p', 'translationKeys.projectId', 'p.id')
-      .join('projects_locales as pl', 'pl.projectId', 'p.id')
-      .join('locales as l', 'pl.localeId', 'l.id')
-      .where('l.id', '=', locale.id)
-      .andWhere('p.ownerId', '=', request.user.id)
-      .count()
-      .pluck('count')
-      .first()
+  await Promise.all(
+    project.locales.map(async locale => {
+      const expectedTranslationValues = await TranslationKey.query()
+        .join('projects as p', 'translationKeys.projectId', 'p.id')
+        .join('projects_locales as pl', 'pl.projectId', 'p.id')
+        .join('locales as l', 'pl.localeId', 'l.id')
+        .where('l.id', '=', locale.id)
+        .andWhere('p.ownerId', '=', request.user.id)
+        .count()
+        .pluck('count')
+        .first()
 
-    const actualTranslationValues = await TranslationValue.query()
-      .join('locales as l', 'translationValues.localeId', 'l.id')
-      .join('projects_locales as pl', 'pl.localeId', 'l.id')
-      .join('projects as p', 'pl.projectId', 'p.id')
-      .where('l.id', '=', locale.id)
-      .andWhere('p.ownerId', '=', request.user.id)
-      .count()
-      .pluck('count')
-      .first()
+      const actualTranslationValues = await TranslationValue.query()
+        .join('locales as l', 'translationValues.localeId', 'l.id')
+        .join('projects_locales as pl', 'pl.localeId', 'l.id')
+        .join('projects as p', 'pl.projectId', 'p.id')
+        .where('l.id', '=', locale.id)
+        .andWhere('p.ownerId', '=', request.user.id)
+        .count()
+        .pluck('count')
+        .first()
 
-    locale.missingTranslations =
-      expectedTranslationValues - actualTranslationValues
-    locale.completePercentage =
-      expectedTranslationValues > 0
-        ? Math.floor(
-            (actualTranslationValues / expectedTranslationValues) * 100
-          )
-        : 100
-  })
+      locale.missingTranslations =
+        expectedTranslationValues - actualTranslationValues
+      locale.completePercentage =
+        expectedTranslationValues > 0
+          ? Math.floor(
+              (actualTranslationValues / expectedTranslationValues) * 100
+            )
+          : 100
+
+      return locale
+    })
+  )
 
   if (!project) {
     throw new Error('This project was not found')
