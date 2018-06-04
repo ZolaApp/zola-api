@@ -4,7 +4,6 @@ import type { ValidationError } from '@types/ValidationError'
 import validateString from '@helpers/validateString'
 import Project from '@models/Project'
 import { DUPLICATE_ENTRY_ERROR_TYPE } from '@constants/errors'
-import getPaginatedTranslationKeys from '@models/TranslationKey/getPaginatedTranslationKeys'
 
 const validateKey = validateString({
   type: 'translation key',
@@ -19,7 +18,6 @@ export type AddTranslationKeyToProjectArgs = {
 }
 
 type AddTranslationKeyToProjectResponse = {
-  project?: Project,
   errors: Array<ValidationError>
 }
 
@@ -53,15 +51,7 @@ const addTranslationKeyToProject = async ({
 
     await TranslationKey.query().insertGraph(translationKey, { relate: true })
 
-    const updatedProject = await Project.query().findById(project.id)
-    console.log(updatedProject)
-    updatedProject.translationKeys = await getPaginatedTranslationKeys({
-      pageSize: 10,
-      page: 0,
-      projectId: project.id
-    })
-
-    return { project: updatedProject, errors }
+    return { errors }
   } catch (err) {
     const message =
       err.routine === DUPLICATE_ENTRY_ERROR_TYPE

@@ -21,13 +21,11 @@ type CreateProjectResponse {
 type AddLocaleToProjectResponse {
   status: ResponseStatus!
   errors: [ValidationError]!
-  project: Project
 }
 
 type AddTranslationKeyToProjectResponse {
   status: ResponseStatus!
   errors: [ValidationError]!
-  project: Project
 }
 
 extend type Mutation {
