@@ -53,12 +53,18 @@ const addTranslationKeyToProject = async ({
 
     return { errors }
   } catch (err) {
-    const message =
-      err.routine === DUPLICATE_ENTRY_ERROR_TYPE
-        ? `A key with value "${key}" already exists for this project`
-        : `Something went wrong while adding this key to the project`
+    if (err.routine === DUPLICATE_ENTRY_ERROR_TYPE) {
+      return {
+        errors: [
+          {
+            field: 'key',
+            message: `A key with value "${key}" already exists for this project`
+          }
+        ]
+      }
+    }
 
-    throw new Error(message)
+    throw new Error('Something went wrong while adding this key to the project')
   }
 }
 
