@@ -1,4 +1,5 @@
 // @flow
+import { type ValidationError } from '@types/ValidationError'
 import TranslationKey from '@models/TranslationKey'
 
 export type DeleteTranslationKeyArgs = {
@@ -6,10 +7,14 @@ export type DeleteTranslationKeyArgs = {
   ownerId: string
 }
 
+type DeleteTranslationKeyResponse = {
+  errors: Array<ValidationError>
+}
+
 const deleteTranslationKey = async ({
   translationKeyId,
   ownerId
-}: DeleteTranslationKeyArgs): Promise<void> => {
+}: DeleteTranslationKeyArgs): Promise<DeleteTranslationKeyResponse> => {
   const translationKey: TranslationKey = await TranslationKey.query()
     .eager('project')
     .findById(translationKeyId)
@@ -21,7 +26,13 @@ const deleteTranslationKey = async ({
     throw new Error('This translation key was not found.')
   }
 
-  await TranslationKey.query().deleteById(translationKeyId)
+  try {
+    await TranslationKey.query().deleteById(translationKeyId)
+
+    return { errors: [] }
+  } catch (error) {
+    return { errors: [{ field: 'generic', message: error.message }] }
+  }
 }
 
 export default deleteTranslationKey

@@ -17,12 +17,16 @@ const resolver = async (
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  await deleteTranslationKey({
+  const { errors } = await deleteTranslationKey({
     ...args,
     ownerId: request.user.id
   })
 
-  return { status: 'SUCCESS' }
+  if (errors.length) {
+    return { status: 'FAILURE', errors }
+  }
+
+  return { status: 'SUCCESS', errors: [] }
 }
 
 export default resolver

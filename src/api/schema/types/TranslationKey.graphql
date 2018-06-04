@@ -15,6 +15,7 @@ type AddTranslationValueToTranslationKeyResponse {
 
 type DeleteTranslationKeyResponse {
   status: ResponseStatus!
+  errors: [ValidationError]!
 }
 
 extend type Mutation {
