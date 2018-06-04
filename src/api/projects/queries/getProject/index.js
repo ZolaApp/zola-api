@@ -36,7 +36,7 @@ const resolver = async (
     .where('p.id', '=', project.id)
     .orderBy('pl.id', 'ASC')
 
-  project.translationKeys = await getPaginatedTranslationKeys({
+  project.translationKeyPage = await getPaginatedTranslationKeys({
     pageSize,
     page,
     projectId: project.id

@@ -8,7 +8,7 @@ type Project {
   description: String
   cdnToken: String
   locales: [Locale]
-  translationKeys: TranslationKeyPage
+  translationKeyPage: TranslationKeyPage
   stats: Stats
 }
 
