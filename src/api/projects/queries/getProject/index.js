@@ -30,6 +30,10 @@ const resolver = async (
     ownerId: request.user.id
   })
 
+  if (!project) {
+    throw new Error('This project was not found')
+  }
+
   project.locales = await Locale.query()
     .join('projects_locales as pl', 'pl.localeId', 'locales.id')
     .join('projects as p', 'pl.projectId', 'p.id')
@@ -76,10 +80,6 @@ const resolver = async (
       return locale
     })
   )
-
-  if (!project) {
-    throw new Error('This project was not found')
-  }
 
   return project
 }

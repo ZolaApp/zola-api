@@ -1,8 +1,8 @@
 type Stats {
-  completePercentage: Int!
-  newKeysCount: Int!
-  missingTranslationsCount: Int!
-  translationKeysCount: Int!
+  completePercentage: Int
+  newKeysCount: Int
+  missingTranslationsCount: Int
+  translationKeysCount: Int
   localesCount: Int
   projectsCount: Int
 }

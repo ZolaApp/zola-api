@@ -20,6 +20,17 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     .pluck('count')
     .first()
 
+  if (projectsCount === 0) {
+    return new Stats({
+      missingTranslationsCount: 0,
+      newKeysCount: 0,
+      completePercentage: 0,
+      translationKeysCount: 0,
+      localesCount: 0,
+      projectsCount: 0
+    })
+  }
+
   const localesCount = await Locale.query()
     .join('projects_locales as pl', 'locales.id', 'pl.localeId')
     .join('projects as p', 'pl.projectId', 'p.id')
