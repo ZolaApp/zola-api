@@ -50,7 +50,7 @@ const addTranslationKeyToProject = async ({
   // Saving key
   try {
     const translationKey = new TranslationKey(key)
-    project.translationKeys.push(translationKey)
+    project.translationKeys.translationKeys.push(translationKey)
 
     const updatedProject = await Project.query().upsertGraph(project)
 

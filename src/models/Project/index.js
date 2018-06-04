@@ -7,6 +7,7 @@ import Locale from '@models/Locale'
 import TranslationKey from '@models/TranslationKey'
 import Stats from '@models/Stats'
 import TranslationValue from '@models/TranslationValue'
+import type { TranslationKeyPage } from '@models/TranslationKey/getPage'
 
 class Project extends Model {
   static tableName = 'projects'
@@ -44,7 +45,7 @@ class Project extends Model {
 
   static virtualAttributes = ['stats']
 
-  id: string
+  id: number
   updatedAt: Date
   createdAt: Date
   name: string
@@ -52,7 +53,7 @@ class Project extends Model {
   description: string
   owner: User
   locales: Array<Locale>
-  translationKeys: Array<TranslationKey>
+  translationKeys: TranslationKeyPage
   stats: Stats
   cdnToken: string
 
