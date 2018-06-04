@@ -45,6 +45,7 @@ export const up = async knex => {
       .unsigned()
       .references('id')
       .inTable('translationKeys')
+      .onDelete('CASCADE')
     table.unique(['translationKeyId', 'localeId'])
   })
 }
