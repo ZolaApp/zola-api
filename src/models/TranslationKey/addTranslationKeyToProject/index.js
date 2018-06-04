@@ -4,6 +4,7 @@ import type { ValidationError } from '@types/ValidationError'
 import validateString from '@helpers/validateString'
 import Project from '@models/Project'
 import { DUPLICATE_ENTRY_ERROR_TYPE } from '@constants/errors'
+import getPaginatedTranslationKeys from '@models/TranslationKey/getPaginatedTranslationKeys'
 
 const validateKey = validateString({
   type: 'translation key',
@@ -39,9 +40,7 @@ const addTranslationKeyToProject = async ({
   }
 
   //  First some authorization stuff
-  const project: Project = await Project.query()
-    .findById(projectId)
-    .eager('translationKeys')
+  const project: Project = await Project.query().findById(projectId)
 
   if (project && !project.hasOwnerId(ownerId)) {
     throw new Error('This project was not found')
@@ -50,9 +49,17 @@ const addTranslationKeyToProject = async ({
   // Saving key
   try {
     const translationKey = new TranslationKey(key)
-    project.translationKeys.translationKeys.push(translationKey)
+    translationKey.project = project
 
-    const updatedProject = await Project.query().upsertGraph(project)
+    await TranslationKey.query().insertGraph(translationKey, { relate: true })
+
+    const updatedProject = await Project.query().findById(project.id)
+    console.log(updatedProject)
+    updatedProject.translationKeys = await getPaginatedTranslationKeys({
+      pageSize: 10,
+      page: 0,
+      projectId: project.id
+    })
 
     return { project: updatedProject, errors }
   } catch (err) {

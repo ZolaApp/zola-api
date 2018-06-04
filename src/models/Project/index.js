@@ -7,7 +7,7 @@ import Locale from '@models/Locale'
 import TranslationKey from '@models/TranslationKey'
 import Stats from '@models/Stats'
 import TranslationValue from '@models/TranslationValue'
-import type { TranslationKeyPage } from '@models/TranslationKey/getPage'
+import type { TranslationKeyPage } from '@models/TranslationKey/getPaginatedTranslationKeys'
 
 class Project extends Model {
   static tableName = 'projects'

@@ -18,7 +18,7 @@ export type TranslationKeyPage = {
   errors: Array<ValidationError>
 }
 
-const getPage = async ({
+const getPaginatedTranslationKeys = async ({
   pageSize,
   page,
   projectId
@@ -33,6 +33,7 @@ const getPage = async ({
   try {
     const query = await TranslationKey.query()
       .where('projectId', '=', projectId)
+      .orderBy('id', 'DESC')
       .page(page, pageSize)
       .eager('translationValues.locale')
 
@@ -70,4 +71,4 @@ const getPage = async ({
   }
 }
 
-export default getPage
+export default getPaginatedTranslationKeys

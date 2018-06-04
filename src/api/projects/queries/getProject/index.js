@@ -4,7 +4,7 @@ import { AUTHENTICATION_ERROR_NO_USER } from '@constants/errors'
 import TranslationValue from '@models/TranslationValue'
 import TranslationKey from '@models/TranslationKey'
 import Locale from '@models/Locale'
-import getPage from '@models/TranslationKey/getPage'
+import getPaginatedTranslationKeys from '@models/TranslationKey/getPaginatedTranslationKeys'
 
 type Context = {
   request: express$Request
@@ -36,7 +36,7 @@ const resolver = async (
     .where('p.id', '=', project.id)
     .orderBy('pl.id', 'ASC')
 
-  project.translationKeys = await getPage({
+  project.translationKeys = await getPaginatedTranslationKeys({
     pageSize,
     page,
     projectId: project.id
