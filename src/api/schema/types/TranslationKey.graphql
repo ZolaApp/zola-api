@@ -13,10 +13,16 @@ type AddTranslationValueToTranslationKeyResponse {
   translationKey: TranslationKey
 }
 
+type DeleteTranslationKeyResponse {
+  status: ResponseStatus!
+}
+
 extend type Mutation {
   addTranslationValueToTranslationKey(
     value: String
     translationKeyId: ID!
     localeId: ID!
   ): AddTranslationValueToTranslationKeyResponse
+
+  deleteTranslationKey(translationKeyId: ID!): DeleteTranslationKeyResponse
 }
