@@ -35,9 +35,20 @@ const addLocaleToProject = async ({
   project.locales.push(locale)
 
   try {
-    const updatedProject = await Project.query().upsertGraphAndFetch(project, {
+    await Project.query().upsertGraph(project, {
       relate: true
     })
+
+    const updatedProject = await Project.query().findOne({
+      id: projectId,
+      ownerId: userId
+    })
+
+    updatedProject.locales = Locale.query()
+      .join('projects_locales as pl', 'pl.localeId', 'locales.id')
+      .join('projects as p', 'pl.projectId', 'p.id')
+      .where('p.id', '=', updatedProject.id)
+      .orderBy('pl.id', 'ASC')
 
     return { project: updatedProject, errors }
   } catch (error) {
