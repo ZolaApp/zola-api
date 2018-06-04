@@ -68,6 +68,7 @@ class TranslationKey extends Model {
   }
 
   $beforeInsert() {
+    this.isNew = true
     this.createdAt = new Date()
   }
 

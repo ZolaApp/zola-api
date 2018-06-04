@@ -47,7 +47,6 @@ const addTranslationKeyToProject = async ({
   // Saving key
   try {
     const translationKey = new TranslationKey(key)
-    translationKey.isNew = true
     translationKey.project = project
 
     await TranslationKey.query().insertGraph(translationKey, { relate: true })
