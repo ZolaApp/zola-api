@@ -1,11 +1,13 @@
 // @flow
 import TranslationKey from '@models/TranslationKey'
 import type { ValidationError } from '@types/ValidationError'
+import Locale from '@models/Locale'
 
 export type TranslationKeysPageInput = {
   pageSize: number,
   page: number,
-  projectId: number
+  projectId: number,
+  filter: ?string
 }
 
 export type TranslationKeyPage = {
@@ -21,7 +23,8 @@ export type TranslationKeyPage = {
 const getPaginatedTranslationKeys = async ({
   pageSize,
   page,
-  projectId
+  projectId,
+  filter
 }: TranslationKeysPageInput): Promise<TranslationKeyPage> => {
   const errors = []
 
@@ -31,14 +34,38 @@ const getPaginatedTranslationKeys = async ({
   }
 
   try {
-    const query = await TranslationKey.query()
-      .where('projectId', '=', projectId)
-      .orderBy('id', 'DESC')
+    const query = TranslationKey.query()
+      .where('translationKeys.projectId', '=', projectId)
+
+      .orderBy('translationKeys.id', 'DESC')
       .page(page, pageSize)
       .eager('translationValues.locale')
 
-    const totalCount = query.total
-    const translationKeys = query.results
+    if (filter === 'isNew') {
+      query.where('isNew', '=', true)
+    }
+
+    if (filter === 'hasMissingTranslations') {
+      const localesCount = await Locale.query()
+        .join('projects_locales as pl', 'pl.localeId', 'locales.id')
+        .join('projects', 'pl.projectId', 'projects.id')
+        .where('projects.id', '=', projectId)
+        .count()
+        .pluck('count')
+        .first()
+
+      query
+        .joinRaw(
+          'LEFT OUTER JOIN "translationValues" on "translationValues"."translationKeyId" = "translationKeys".id'
+        )
+        .groupByRaw('"translationKeys".id')
+        .havingRaw('COUNT("translationValues".id) < ?', localesCount)
+    }
+
+    const results = await query
+
+    const totalCount = results.total
+    const translationKeys = results.results
 
     // We substract 1 because pages indexes start at 0
     const rawDivide = Math.floor(totalCount / pageSize) - 1

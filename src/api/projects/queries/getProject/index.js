@@ -13,12 +13,13 @@ type Context = {
 type GetProjectArgs = {
   projectSlug: string,
   pageSize: number,
-  page: number
+  page: number,
+  filter: ?string
 }
 
 const resolver = async (
   _: any,
-  { projectSlug, pageSize, page }: GetProjectArgs,
+  { projectSlug, pageSize, page, filter }: GetProjectArgs,
   { request }: Context
 ) => {
   if (request.user === null) {
@@ -43,7 +44,8 @@ const resolver = async (
   project.translationKeyPage = await getPaginatedTranslationKeys({
     pageSize,
     page,
-    projectId: project.id
+    projectId: project.id,
+    filter
   })
 
   await Promise.all(

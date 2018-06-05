@@ -43,5 +43,10 @@ extend type Mutation {
 
 extend type Query {
   getProjects: [Project]
-  getProject(projectSlug: String!, pageSize: Int, page: Int): Project
+  getProject(
+    projectSlug: String!
+    pageSize: Int
+    page: Int
+    filter: String
+  ): Project
 }
