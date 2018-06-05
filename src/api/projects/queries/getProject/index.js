@@ -14,12 +14,13 @@ type GetProjectArgs = {
   projectSlug: string,
   pageSize: number,
   page: number,
-  filter: ?string
+  filter: ?string,
+  search: ?string
 }
 
 const resolver = async (
   _: any,
-  { projectSlug, pageSize, page, filter }: GetProjectArgs,
+  { projectSlug, pageSize, page, filter, search }: GetProjectArgs,
   { request }: Context
 ) => {
   if (request.user === null) {
@@ -45,7 +46,8 @@ const resolver = async (
     pageSize,
     page,
     projectId: project.id,
-    filter
+    filter,
+    search
   })
 
   await Promise.all(

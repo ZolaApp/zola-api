@@ -7,7 +7,8 @@ export type TranslationKeysPageInput = {
   pageSize: number,
   page: number,
   projectId: number,
-  filter: ?string
+  filter: ?string,
+  search: ?string
 }
 
 export type TranslationKeyPage = {
@@ -24,7 +25,8 @@ const getPaginatedTranslationKeys = async ({
   pageSize,
   page,
   projectId,
-  filter
+  filter,
+  search
 }: TranslationKeysPageInput): Promise<TranslationKeyPage> => {
   const errors = []
 
@@ -40,6 +42,10 @@ const getPaginatedTranslationKeys = async ({
       .orderBy('translationKeys.id', 'DESC')
       .page(page, pageSize)
       .eager('translationValues.locale')
+
+    if (search) {
+      query.where('translationKeys.key', 'like', `%${search}%`)
+    }
 
     if (filter === 'isNew') {
       query.where('isNew', '=', true)
