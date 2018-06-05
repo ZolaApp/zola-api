@@ -11,8 +11,7 @@ export default async (
   const { cdnToken, localeCode } = request.params
 
   const project = await Project.query().findOne({
-    cdnToken,
-    ownerId: request.user.id
+    cdnToken
   })
 
   if (!project) {
@@ -57,7 +56,7 @@ export default async (
     return acc
   }, {})
 
-  if (request.route.match('download')) {
+  if (request.path.match('download')) {
     response.set('Content-Disposition', 'attachment')
     response.set('Content-Type', 'application/json')
     response.set('filename', 'export.json')
