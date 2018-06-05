@@ -34,6 +34,7 @@ export default (): express$Application => {
     }))
   )
 
+  app.get(`${CDN_PATH}/download`, cdnRoute)
   app.get(CDN_PATH, cdnRoute)
 
   if (process.env.NODE_ENV !== 'production') {

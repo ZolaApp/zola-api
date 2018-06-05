@@ -8,7 +8,7 @@ export default async (
   response: express$Response,
   next: express$NextFunction
 ) => {
-  const { cdnToken, localeCode } = request.params
+  const { cdnToken, localeCode, download } = request.params
 
   const project = await Project.query().findOne({
     cdnToken,
@@ -56,6 +56,11 @@ export default async (
 
     return acc
   }, {})
+
+  if (download) {
+    response.set('Content-Disposition', 'attachment')
+    response.set('filename', 'picture.png')
+  }
 
   response.send(JSON.stringify(resultKeys))
 }
