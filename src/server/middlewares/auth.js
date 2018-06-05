@@ -12,7 +12,7 @@ const auth: express$Middleware = async (
   response: express$Response,
   next: express$NextFunction
 ) => {
-  if (AUTH_MIDDLEWARE_WHITELIST.includes(request.path)) {
+  if (AUTH_MIDDLEWARE_WHITELIST.some(path => request.path.includes(path))) {
     return next()
   }
 
