@@ -34,7 +34,11 @@ extend type Mutation {
     defaultLocaleId: ID!
     description: String
   ): CreateProjectResponse
-  addLocaleToProject(projectId: ID!, localeId: ID!): AddLocaleToProjectResponse
+  addLocaleToProject(
+    projectId: ID!
+    localeId: ID!
+    shouldPrefillTranslations: Boolean!
+  ): AddLocaleToProjectResponse
   addTranslationKeyToProject(
     projectId: ID!
     key: String
