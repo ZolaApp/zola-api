@@ -71,7 +71,6 @@ const addTranslationValueToTranslationKey = async ({
         await TranslationValue.query().deleteById(existingTranslationValue.id)
       }
 
-      // $FlowFixMe
       return { errors }
     }
 
