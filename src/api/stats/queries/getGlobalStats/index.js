@@ -69,12 +69,6 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     .pluck('count')
     .first()
 
-  console.log('====================================')
-  console.log(expectedTranslationValuesCount)
-  console.log(actualTotalTranslationValuesCount)
-  console.log(newKeysCount)
-  console.log('====================================')
-
   const missingTranslationsCount =
     expectedTranslationValuesCount -
     actualTotalTranslationValuesCount -

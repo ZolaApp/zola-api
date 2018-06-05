@@ -83,12 +83,6 @@ const resolver = async (
         .pluck('count')
         .first()
 
-      console.log('===============================+>')
-      console.log(expectedTranslationValues)
-      console.log(actualTranslationValues)
-      console.log(newKeysCount)
-      console.log('===============================+>')
-
       locale.missingTranslations =
         expectedTranslationValues - actualTranslationValues - newKeysCount
       locale.completePercentage =
