@@ -16,6 +16,7 @@ const resolver = async (_: any, args: any, { request }: Context) => {
   }
 
   const projectsCount = await Project.query()
+    .where('ownerId', '=', request.user.id)
     .count()
     .pluck('count')
     .first()
