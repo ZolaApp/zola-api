@@ -11,7 +11,7 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  const locales = await Locale.query()
+  const locales = await Locale.query().orderBy('locales.id', 'ASC')
 
   return locales
 }
