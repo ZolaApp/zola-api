@@ -59,7 +59,8 @@ export default async (
 
   if (download) {
     response.set('Content-Disposition', 'attachment')
-    response.set('filename', 'picture.png')
+    response.set('Content-Type', 'application/json')
+    response.set('filename', 'export.json')
   }
 
   response.send(JSON.stringify(resultKeys))
