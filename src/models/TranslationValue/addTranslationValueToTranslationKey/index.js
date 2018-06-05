@@ -12,7 +12,6 @@ export type AddTranslationValueToTranslationKeyArgs = {
 }
 
 type AddTranslationValueToTranslationKeyResponse = {
-  translationKey?: TranslationKey,
   errors: Array<ValidationError>
 }
 
@@ -73,7 +72,7 @@ const addTranslationValueToTranslationKey = async ({
       }
 
       // $FlowFixMe
-      return { translationKey: null, errors }
+      return { errors }
     }
 
     const translationValue =
@@ -82,11 +81,11 @@ const addTranslationValueToTranslationKey = async ({
     translationValue.value = value
     translationKey.translationValues = [translationValue]
 
-    const updatedTranslationKey = await TranslationKey.query()
+    await TranslationKey.query()
       .upsertGraphAndFetch(translationKey, { relate: true, noDelete: true })
       .eager('translationValues.locale')
 
-    return { translationKey: updatedTranslationKey, errors }
+    return { errors }
   } catch (err) {
     throw new Error(`Something went wrong while adding this value to the key`)
   }
