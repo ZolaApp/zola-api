@@ -33,11 +33,6 @@ const getPaginatedTranslationKeys = async ({
     pageSize = 5
   }
 
-  console.log(filter)
-  console.log(
-    '=======================================================================>'
-  )
-
   try {
     const query = TranslationKey.query()
       .where('translationKeys.projectId', '=', projectId)
