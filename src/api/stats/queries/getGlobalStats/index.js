@@ -49,7 +49,7 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     .first()
 
   const expectedTranslationValuesCount = translationKeysCount * localesCount
-  const actualTranslationValuesCount = await TranslationValue.query()
+  const actualTotalTranslationValuesCount = await TranslationValue.query()
     .join(
       'translationKeys as tk',
       'translationValues.translationKeyId',
@@ -61,19 +61,27 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     .pluck('count')
     .first()
 
-  const missingTranslationsCount =
-    expectedTranslationValuesCount - actualTranslationValuesCount
-  const completePercentage = Math.round(
-    (actualTranslationValuesCount / expectedTranslationValuesCount) * 100
-  )
-
   const newKeysCount = await TranslationKey.query()
     .join('projects as p', 'translationKeys.projectId', 'p.id')
     .where('translationKeys.isNew', '=', true)
-    .where('p.ownerId', '=', request.user.id)
+    .andWhere('p.ownerId', '=', request.user.id)
     .count()
     .pluck('count')
     .first()
+
+  console.log('====================================')
+  console.log(expectedTranslationValuesCount)
+  console.log(actualTotalTranslationValuesCount)
+  console.log(newKeysCount)
+  console.log('====================================')
+
+  const missingTranslationsCount =
+    expectedTranslationValuesCount -
+    actualTotalTranslationValuesCount -
+    newKeysCount
+  const completePercentage = Math.round(
+    (actualTotalTranslationValuesCount / expectedTranslationValuesCount) * 100
+  )
 
   const stats = new Stats({
     missingTranslationsCount,
