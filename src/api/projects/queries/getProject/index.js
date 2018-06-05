@@ -14,13 +14,13 @@ type GetProjectArgs = {
   projectSlug: string,
   pageSize: number,
   page: number,
-  filter: ?string,
+  filters: [?string],
   search: ?string
 }
 
 const resolver = async (
   _: any,
-  { projectSlug, pageSize, page, filter, search }: GetProjectArgs,
+  { projectSlug, pageSize, page, filters, search }: GetProjectArgs,
   { request }: Context
 ) => {
   if (request.user === null) {
@@ -46,7 +46,7 @@ const resolver = async (
     pageSize,
     page,
     projectId: project.id,
-    filter,
+    filters,
     search
   })
 
@@ -72,8 +72,19 @@ const resolver = async (
         .pluck('count')
         .first()
 
+      const newKeysCount = await TranslationKey.query()
+        .join('projects as p', 'translationKeys.projectId', 'p.id')
+        .join('projects_locales as pl', 'pl.projectId', 'p.id')
+        .join('locales as l', 'pl.localeId', 'l.id')
+        .where('l.id', '=', locale.id)
+        .andWhere('p.ownerId', '=', request.user.id)
+        .andWhere('isNew', '=', true)
+        .count()
+        .pluck('count')
+        .first()
+
       locale.missingTranslations =
-        expectedTranslationValues - actualTranslationValues
+        expectedTranslationValues - actualTranslationValues - newKeysCount
       locale.completePercentage =
         expectedTranslationValues > 0
           ? Math.floor(

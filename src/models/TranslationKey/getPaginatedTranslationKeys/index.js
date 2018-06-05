@@ -7,7 +7,7 @@ export type TranslationKeysPageInput = {
   pageSize: number,
   page: number,
   projectId: number,
-  filter: ?string,
+  filters: [?string],
   search: ?string
 }
 
@@ -25,7 +25,7 @@ const getPaginatedTranslationKeys = async ({
   pageSize,
   page,
   projectId,
-  filter,
+  filters,
   search
 }: TranslationKeysPageInput): Promise<TranslationKeyPage> => {
   const errors = []
@@ -38,20 +38,15 @@ const getPaginatedTranslationKeys = async ({
   try {
     const query = TranslationKey.query()
       .where('translationKeys.projectId', '=', projectId)
-
       .orderBy('translationKeys.id', 'DESC')
       .page(page, pageSize)
       .eager('translationValues.locale')
 
     if (search) {
-      query.where('translationKeys.key', 'like', `%${search}%`)
+      query.andWhere('translationKeys.key', 'like', `%${search}%`)
     }
 
-    if (filter === 'isNew') {
-      query.where('isNew', '=', true)
-    }
-
-    if (filter === 'hasMissingTranslations') {
+    if (filters.includes('hasMissingTranslations')) {
       const localesCount = await Locale.query()
         .join('projects_locales as pl', 'pl.localeId', 'locales.id')
         .join('projects', 'pl.projectId', 'projects.id')
@@ -66,6 +61,17 @@ const getPaginatedTranslationKeys = async ({
         )
         .groupByRaw('"translationKeys".id')
         .havingRaw('COUNT("translationValues".id) < ?', localesCount)
+
+      if (!filters.includes('isNew')) {
+        query.andWhere('translationKeys.isNew', '=', false)
+      }
+    }
+
+    if (
+      filters.includes('isNew') &&
+      !filters.includes('hasMissingTranslations')
+    ) {
+      query.andWhere('translationKeys.isNew', '=', true)
     }
 
     const results = await query

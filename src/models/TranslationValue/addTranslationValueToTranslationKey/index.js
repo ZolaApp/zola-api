@@ -88,6 +88,7 @@ const addTranslationValueToTranslationKey = async ({
     translationValue.value = value
 
     translationKey.translationValues = [translationValue]
+    translationKey.isNew = false
 
     const updatedTranslationKey = await TranslationKey.query()
       .upsertGraphAndFetch(translationKey, { relate: true, noDelete: true })

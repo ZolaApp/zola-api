@@ -107,19 +107,22 @@ class Project extends Model {
       .pluck('count')
       .first()
 
+    const newKeysCount = await TranslationKey.query()
+      .join('projects as p', 'translationKeys.projectId', 'p.id')
+      .where('translationKeys.isNew', '=', true)
+      .where('p.id', '=', this.id)
+      .count()
+      .pluck('count')
+      .first()
+
     const missingTranslationsCount =
-      expectedTranslationValuesCount - actualTranslationValuesCount
+      expectedTranslationValuesCount -
+      actualTranslationValuesCount -
+      newKeysCount
 
     const completePercentage = Math.round(
       (actualTranslationValuesCount / expectedTranslationValuesCount) * 100
     )
-
-    const newKeysCount = await TranslationKey.query()
-      .join('projects as p', 'translationKeys.projectId', 'p.id')
-      .where('translationKeys.isNew', '=', true)
-      .count()
-      .pluck('count')
-      .first()
 
     return new Stats({
       missingTranslationsCount,
