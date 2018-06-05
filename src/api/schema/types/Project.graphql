@@ -48,5 +48,6 @@ extend type Query {
     pageSize: Int
     page: Int
     filter: String
+    search: String
   ): Project
 }
