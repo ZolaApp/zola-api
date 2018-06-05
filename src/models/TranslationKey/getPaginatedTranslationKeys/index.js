@@ -91,7 +91,7 @@ const getPaginatedTranslationKeys = async ({
       pageSize,
       nextPage,
       previousPage,
-      totalCount,
+      totalCount: totalCount || 0,
       translationKeys,
       errors
     }
@@ -104,7 +104,7 @@ const getPaginatedTranslationKeys = async ({
       errors,
       previousPage: null,
       nextPage: null,
-      totalCount: null,
+      totalCount: 0,
       translationKeys: []
     }
   }
