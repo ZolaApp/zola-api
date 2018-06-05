@@ -6,7 +6,9 @@ const prefillTranslationsValues = async (
   project: Project,
   newLocale: Locale
 ) => {
-  console.log(project, newLocale)
+  const defaultLocale = project.locales[0]
+
+  console.log(defaultLocale)
 }
 
 export default prefillTranslationsValues

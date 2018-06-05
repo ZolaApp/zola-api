@@ -22,16 +22,10 @@ const addLocaleToProject = async ({
   shouldPrefillTranslations
 }: AddLocaleToProjectArgs): Promise<AddProjectToLocaleResponse> => {
   const errors: Array<ValidationError> = []
-  const relations = [
-    'locales',
-    shouldPrefillTranslations && 'translationKeys.translationValues'
-  ]
-    .filter(Boolean)
-    .join(', ')
-
-  const project = await Project.query()
-    .eager(`[${relations}]`)
-    .findOne({ id: projectId, ownerId: userId })
+  const projectQuery = shouldPrefillTranslations
+    ? Project.query().eager('translationKeys.translationValues')
+    : Project.query()
+  const project = await projectQuery.findOne({ id: projectId, ownerId: userId })
   const locale = await Locale.query().findById(localeId)
 
   if (!project || !locale) {
@@ -39,6 +33,13 @@ const addLocaleToProject = async ({
 
     throw new Error(`This ${notFound} could not be found.`)
   }
+
+  // Load locales in the correct order
+  project.locales = await Locale.query()
+    .join('projects_locales as pl', 'pl.localeId', 'locales.id')
+    .join('projects as p', 'pl.projectId', 'p.id')
+    .where('p.id', '=', project.id)
+    .orderBy('pl.id', 'ASC')
 
   try {
     if (shouldPrefillTranslations) {
