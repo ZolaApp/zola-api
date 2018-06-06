@@ -13,17 +13,18 @@ services:
     environment:
       - NODE_ENV
       - NO_DEBUG
+      - PORT
       - POSTGRES_HOST
       - POSTGRES_DATABASE
       - POSTGRES_USER
       - POSTGRES_PASSWORD
     entrypoint: /bin/bash /zola-api/docker/node/entrypoint.sh
     restart: always
-    # logging:
-    #   driver: "syslog"
-    #   options:
-    #     syslog-facility: "local0"
-    #     tag: "zola-node"
+    logging:
+      driver: "syslog"
+      options:
+        syslog-facility: "local0"
+        tag: "zola-node"
 
   postgres:
     image: postgres:10@sha256:852dd8150c5ea73015cf2c9c601de07113c31b3272628f9a945d46c7d960004d
@@ -37,8 +38,8 @@ services:
       - POSTGRES_DATABASE
       - POSTGRES_USER
       - POSTGRES_PASSWORD
-    # logging:
-    #   driver: "syslog"
-    #   options:
-    #     syslog-facility: "local0"
-    #     tag: "zola-postgres"
+    logging:
+      driver: "syslog"
+      options:
+        syslog-facility: "local0"
+        tag: "zola-postgres"

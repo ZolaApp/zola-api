@@ -1,19 +1,21 @@
 #!/bin/bash
 
-# cd /zola-api
-# npm install > /dev/null
-# node index.js
+cd /zola-api
+npm install > /dev/null
+npm run heroku-prebuild
+npm run heroku-postbuild
+npm run start
 
-cleanup ()
-{
-  kill -s SIGTERM $!
-  exit 0
-}
+# cleanup ()
+# {
+#   kill -s SIGTERM $!
+#   exit 0
+# }
 
-trap cleanup SIGINT SIGTERM
+# trap cleanup SIGINT SIGTERM
 
-while [ 1 ]
-do
-  sleep 10 &
-  wait $!
-done
+# while [ 1 ]
+# do
+#   sleep 10 &
+#   wait $!
+# done
