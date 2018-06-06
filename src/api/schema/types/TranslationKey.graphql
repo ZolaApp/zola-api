@@ -10,7 +10,6 @@ type TranslationKey {
 type AddTranslationValueToTranslationKeyResponse {
   status: ResponseStatus!
   errors: [ValidationError]!
-  translationKey: TranslationKey
 }
 
 type TranslationKeyPage {

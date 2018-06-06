@@ -17,7 +17,7 @@ const resolver = async (
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  const { errors, translationKey } = await addTranslationValueToTranslationKey({
+  const { errors } = await addTranslationValueToTranslationKey({
     ...args,
     ownerId: request.user.id
   })
@@ -26,7 +26,7 @@ const resolver = async (
     return { status: 'FAILURE', errors }
   }
 
-  return { status: 'SUCCESS', translationKey, errors }
+  return { status: 'SUCCESS', errors }
 }
 
 export default resolver

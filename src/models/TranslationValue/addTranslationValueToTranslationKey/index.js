@@ -2,14 +2,7 @@
 import TranslationValue from '@models/TranslationValue'
 import TranslationKey from '@models/TranslationKey'
 import Locale from '@models/Locale'
-import validateString from '@helpers/validateString'
 import type { ValidationError } from '@types/ValidationError'
-
-const validateValue = validateString({
-  type: 'translation value',
-  minLength: 1,
-  maxLength: Infinity
-})
 
 export type AddTranslationValueToTranslationKeyArgs = {
   value: string,
@@ -19,7 +12,6 @@ export type AddTranslationValueToTranslationKeyArgs = {
 }
 
 type AddTranslationValueToTranslationKeyResponse = {
-  translationKey?: TranslationKey,
   errors: Array<ValidationError>
 }
 
@@ -66,35 +58,34 @@ const addTranslationValueToTranslationKey = async ({
     throw new Error('This locale is not activated for this project')
   }
 
-  const valueValidation = validateValue(value)
-
-  if (!valueValidation.isValid) {
-    errors.push({
-      field: 'value',
-      message: valueValidation.error
-    })
-
-    return { errors }
-  }
-
   // Saving key
   try {
+    const existingTranslationValue = await TranslationValue.query().findOne({
+      translationKeyId: translationKey.id,
+      localeId: locale.id
+    })
+
+    if (!value) {
+      if (existingTranslationValue) {
+        // Delete the translation value if the new value is falsy (empty or null).
+        await TranslationValue.query().deleteById(existingTranslationValue.id)
+      }
+
+      return { errors }
+    }
+
     const translationValue =
-      (await TranslationValue.query().findOne({
-        translationKeyId: translationKey.id,
-        localeId: locale.id
-      })) || new TranslationValue(value, locale)
+      existingTranslationValue || new TranslationValue(value, locale)
 
     translationValue.value = value
-
     translationKey.translationValues = [translationValue]
     translationKey.isNew = false
 
-    const updatedTranslationKey = await TranslationKey.query()
+    await TranslationKey.query()
       .upsertGraphAndFetch(translationKey, { relate: true, noDelete: true })
       .eager('translationValues.locale')
 
-    return { translationKey: updatedTranslationKey, errors }
+    return { errors }
   } catch (err) {
     throw new Error(`Something went wrong while adding this value to the key`)
   }
