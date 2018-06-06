@@ -33,6 +33,7 @@ services:
     ports:
       - "127.0.0.1:3000:3000"
     volumes:
+      - "${APP_DIR}:/zola-api:rw"
       - "${FRONT_DIR}:/zola-app:rw"
     environment:
       - NODE_ENV
