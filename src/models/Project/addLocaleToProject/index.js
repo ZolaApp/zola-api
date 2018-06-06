@@ -23,7 +23,7 @@ const addLocaleToProject = async ({
 }: AddLocaleToProjectArgs): Promise<AddProjectToLocaleResponse> => {
   const errors: Array<ValidationError> = []
   const projectQuery = shouldPrefillTranslations
-    ? Project.query().eager('translationKeys.translationValues')
+    ? Project.query().eager('translationKeys.translationValues.locale')
     : Project.query()
   const project = await projectQuery.findOne({ id: projectId, ownerId: userId })
   const locale = await Locale.query().findById(localeId)

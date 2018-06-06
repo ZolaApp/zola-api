@@ -29,7 +29,7 @@ class TranslationKey extends Model {
 
   static virtualAttributes = ['hasMissingTranslations']
 
-  id: string
+  id: number
   updatedAt: Date
   createdAt: Date
   key: string
