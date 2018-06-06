@@ -9,58 +9,85 @@ export default async (
   next: express$NextFunction
 ) => {
   const { cdnToken, localeCode } = request.params
-
-  const project = await Project.query().findOne({
-    cdnToken
-  })
+  const isDownload = request.path.includes('download')
+  const project = await Project.query().findOne({ cdnToken })
+  let resultKeys
 
   if (!project) {
-    response.status(404).send('This project wasn’t found')
-
-    return
+    return response.status(404).send('This project wasn’t found')
   }
 
-  const locale = await Locale.query().findOne({ code: localeCode })
+  if (!isDownload) {
+    const locale = await Locale.query().findOne({ code: localeCode })
 
-  if (!locale) {
-    response.status(404).send('This locale doesn’t exist')
+    if (!locale) {
+      return response.status(404).send('This locale doesn’t exist')
+    }
 
-    return
-  }
+    const isLocaleActivated =
+      (await Locale.query()
+        .join('projects_locales as r', 'locales.id', 'r.localeId')
+        .join('projects as p', 'r.projectId', 'p.id')
+        .where('locales.id', '=', locale.id)
+        .andWhere('p.id', '=', project.id)
+        .count()
+        .pluck('count')
+        .first()) !== '0'
 
-  const isLocaleActivated =
-    (await Locale.query()
-      .join('projects_locales as r', 'locales.id', 'r.localeId')
-      .join('projects as p', 'r.projectId', 'p.id')
-      .where('locales.id', '=', locale.id)
-      .andWhere('p.id', '=', project.id)
-      .count()
-      .pluck('count')
-      .first()) !== '0'
+    if (!isLocaleActivated) {
+      return response
+        .status(404)
+        .send('This locale is not activated for this project')
+    }
 
-  if (!isLocaleActivated) {
-    response.status(404).send('This locale is not activated for this project')
+    const keysValues = await TranslationKey.query()
+      .select('translationKeys.key', 'v.value')
+      .join(
+        'translationValues as v',
+        'translationKeys.id',
+        'v.translationKeyId'
+      )
+      .where('translationKeys.projectId', '=', project.id)
+      .andWhere('v.localeId', '=', locale.id)
 
-    return
-  }
+    resultKeys = keysValues.reduce((acc, row) => {
+      acc[row.key] = row.value
 
-  const keysValues = await TranslationKey.query()
-    .select('translationKeys.key', 'v.value')
-    .join('translationValues as v', 'translationKeys.id', 'v.translationKeyId')
-    .where('translationKeys.projectId', '=', project.id)
-    .andWhere('v.localeId', '=', locale.id)
+      return acc
+    }, {})
+  } else {
+    const keysValues = await TranslationKey.query()
+      .join(
+        'translationValues as translationValue',
+        'translationKeys.id',
+        'translationValue.translationKeyId'
+      )
+      .join('locales as locale', 'translationValue.localeId', 'locale.id')
+      .select(
+        'translationKeys.key',
+        'translationValue.value',
+        'locale.code as locale'
+      )
+      .where('translationKeys.projectId', '=', project.id)
 
-  const resultKeys = keysValues.reduce((acc, row) => {
-    acc[row.key] = row.value
+    resultKeys = keysValues.reduce(
+      (acc, row) => ({
+        // I’m in love with the shape of you
+        // We push and pull like a magnet do
+        // Although my heart is falling too
+        // I’m in love with your body
+        ...acc,
+        [row.locale]: {
+          ...acc[row.locale],
+          [row.key]: row.value
+        }
+      }),
+      {}
+    )
 
-    return acc
-  }, {})
-
-  if (request.path.match('download')) {
-    response.set('Content-Disposition', 'attachment')
+    response.set('Content-Disposition', 'attachment; filename=export.json')
     response.set('Content-Type', 'application/json')
-    response.set('filename', 'export.json')
   }
 
-  response.send(JSON.stringify(resultKeys))
+  return response.send(JSON.stringify(resultKeys))
 }
