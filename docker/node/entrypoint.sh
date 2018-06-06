@@ -1,9 +1,14 @@
 #!/bin/bash
 
+set -xe
+
+FORMERENV=$NODE_ENV
+export NODE_ENV=development
 cd /zola-api
 npm install
-npm run heroku-prebuild
-npm run heroku-postbuild
+npx babel-cli ./src --out-dir ./dist --ignore spec.js,tests
+npm run knex migrate:latest
+export NODE_ENV=$FORMERENV
 npm run start
 
 # cleanup ()
