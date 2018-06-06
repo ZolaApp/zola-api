@@ -57,15 +57,33 @@ export default async (
     }, {})
   } else {
     const keysValues = await TranslationKey.query()
-      .select('translationKeys.key', 'v.value')
       .join(
-        'translationValues as v',
+        'translationValues as translationValue',
         'translationKeys.id',
-        'v.translationKeyId'
+        'translationValue.translationKeyId'
+      )
+      .join('locales as locale', 'translationValue.localeId', 'locale.id')
+      .select(
+        'translationKeys.key',
+        'translationValue.value',
+        'locale.code as locale'
       )
       .where('translationKeys.projectId', '=', project.id)
 
-    resultKeys = keysValues
+    resultKeys = keysValues.reduce(
+      (acc, row) => ({
+        // I’m in love with the shape of you
+        // We push and pull like a magnet do
+        // Although my heart is falling too
+        // I’m in love with your body
+        ...acc,
+        [row.locale]: {
+          ...acc[row.locale],
+          [row.key]: row.value
+        }
+      }),
+      {}
+    )
 
     response.set('Content-Disposition', 'attachment; filename=export.json')
     response.set('Content-Type', 'application/json')
