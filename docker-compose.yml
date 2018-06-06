@@ -26,7 +26,7 @@ services:
         syslog-facility: "local0"
         tag: "zola-api"
 
-  api-node:
+  app-node:
     image: node:9@sha256:81ebac40ce2e25fd348b332623a57dc6182c61e3170612be8de2655beb8a84c3
     container_name: "zola-api"
     working_dir: /zola-api
