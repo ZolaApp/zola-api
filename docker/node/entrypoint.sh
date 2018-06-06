@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /zola-api
-npm install > /dev/null
+npm install
 npm run heroku-prebuild
 npm run heroku-postbuild
 npm run start
