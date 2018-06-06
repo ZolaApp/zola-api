@@ -53,11 +53,7 @@ const resolver = async (
   await Promise.all(
     project.locales.map(async locale => {
       const expectedTranslationValues = await TranslationKey.query()
-        .join('projects as p', 'translationKeys.projectId', 'p.id')
-        .join('projects_locales as pl', 'pl.projectId', 'p.id')
-        .join('locales as l', 'pl.localeId', 'l.id')
-        .where('l.id', '=', locale.id)
-        .andWhere('p.id', '=', project.id)
+        .andWhere('translationKeys.projectId', '=', project.id)
         .count()
         .pluck('count')
         .first()
