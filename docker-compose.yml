@@ -5,11 +5,12 @@ services:
     container_name: "zola-node"
     working_dir: /zola-api
     ports:
-      - "localhost:3001:3001"
+      - "127.0.0.1:3001:3001"
     links:
       - "postgres:postgres.host"
     volumes:
       - "${APP_DIR}:/zola-api:rw"
+      - "${FRONT_DIR}:/zola-app:rw"
     environment:
       - NODE_ENV
       - NO_DEBUG
