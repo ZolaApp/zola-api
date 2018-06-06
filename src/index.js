@@ -5,7 +5,7 @@ import '@database/index' // Init database and Objection.
 
 const port = process.env.PORT || 3001
 const app = server()
-app.listen(port, () => {
+app.listen(Number(port), 'localhost', () => {
   console.info(`✨  Zola API running on port ${port}. ✨`)
 })
 
