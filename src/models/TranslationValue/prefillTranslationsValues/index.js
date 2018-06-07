@@ -4,10 +4,7 @@ import Project from '@models/Project'
 import Locale from '@models/Locale'
 import TranslationValue from '@models/TranslationValue'
 
-const translate = new Translate({
-  key: process.env.TRANSLATE_API_KEY,
-  projectId: process.env.TRANSLATE_API_PROJECT_ID
-})
+const translate = new Translate({ key: process.env.TRANSLATE_API_KEY })
 
 const prefillTranslationsValues = async (
   project: Project,
