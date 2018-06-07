@@ -2,8 +2,6 @@
 import { AUTHENTICATION_ERROR_NO_USER } from '@constants/errors'
 import Project from '@models/Project'
 import Locale from '@models/Locale'
-import TranslationValue from '@models/TranslationValue'
-import TranslationKey from '@models/TranslationKey'
 import Stats from '@models/Stats'
 
 type Context = {
@@ -15,11 +13,13 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     throw new Error(AUTHENTICATION_ERROR_NO_USER)
   }
 
-  const projectsCount = await Project.query()
-    .where('ownerId', '=', request.user.id)
-    .count()
-    .pluck('count')
-    .first()
+  const projects: Array<Project> = await Project.query().where(
+    'ownerId',
+    '=',
+    request.user.id
+  )
+
+  const projectsCount = projects.length
 
   if (projectsCount === 0) {
     return new Stats({
@@ -32,7 +32,12 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     })
   }
 
-  const localesCount = await Locale.query()
+  let totalMissingTranslationsCount = 0
+  let totalNewKeysCount = 0
+  let totalTranslationKeysCount = 0
+  let totalExpectedValues = 0
+
+  const totalLocalesCount = await Locale.query()
     .join('projects_locales as pl', 'locales.id', 'pl.localeId')
     .join('projects as p', 'pl.projectId', 'p.id')
     .where('p.ownerId', '=', request.user.id)
@@ -40,49 +45,35 @@ const resolver = async (_: any, args: any, { request }: Context) => {
     .pluck('count')
     .first()
 
-  // To check for missing translations, we count the number of keys, the number of values, and check whether it matches.
-  const translationKeysCount = await TranslationKey.query()
-    .join('projects as p', 'translationKeys.projectId', 'p.id')
-    .where('p.ownerId', '=', request.user.id)
-    .count()
-    .pluck('count')
-    .first()
+  await Promise.all(
+    projects.map(async project => {
+      // $FlowFixMe
+      const projectStats: Stats = await project.stats()
 
-  const expectedTranslationValuesCount = translationKeysCount * localesCount
-  const actualTotalTranslationValuesCount = await TranslationValue.query()
-    .join(
-      'translationKeys as tk',
-      'translationValues.translationKeyId',
-      'tk.id'
-    )
-    .join('projects as p', 'tk.projectId', 'p.id')
-    .where('p.ownerId', '=', request.user.id)
-    .count()
-    .pluck('count')
-    .first()
+      totalNewKeysCount += Number(projectStats.newKeysCount)
+      totalMissingTranslationsCount += Number(
+        projectStats.missingTranslationsCount
+      )
+      totalTranslationKeysCount += Number(projectStats.translationKeysCount)
+      totalExpectedValues += Number(
+        projectStats.translationKeysCount * (projectStats.localesCount || 0)
+      )
+    })
+  )
 
-  const newKeysCount = await TranslationKey.query()
-    .join('projects as p', 'translationKeys.projectId', 'p.id')
-    .where('translationKeys.isNew', '=', true)
-    .andWhere('p.ownerId', '=', request.user.id)
-    .count()
-    .pluck('count')
-    .first()
-
-  const missingTranslationsCount =
-    expectedTranslationValuesCount -
-    actualTotalTranslationValuesCount -
-    newKeysCount
-  const completePercentage = Math.round(
-    (actualTotalTranslationValuesCount / expectedTranslationValuesCount) * 100
+  const actualNumberOfValues = Number(
+    totalTranslationKeysCount - totalMissingTranslationsCount
+  )
+  const completePercentage = Number(
+    Math.round((actualNumberOfValues / totalExpectedValues) * 100)
   )
 
   const stats = new Stats({
-    missingTranslationsCount,
-    newKeysCount,
+    missingTranslationsCount: totalMissingTranslationsCount,
+    newKeysCount: totalNewKeysCount,
     completePercentage: completePercentage || 0,
-    translationKeysCount,
-    localesCount,
+    translationKeysCount: totalTranslationKeysCount,
+    localesCount: totalLocalesCount,
     projectsCount
   })
 
