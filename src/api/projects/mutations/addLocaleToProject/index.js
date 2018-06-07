@@ -9,7 +9,7 @@ type Context = {
 
 const resolver = async (
   _: any,
-  { projectId, localeId }: AddLocaleToProjectArgs,
+  args: AddLocaleToProjectArgs,
   { request }: Context
 ) => {
   if (request.user === null) {
@@ -17,8 +17,7 @@ const resolver = async (
   }
 
   const { errors } = await addLocaleToProject({
-    projectId,
-    localeId,
+    ...args,
     userId: request.user.id
   })
 
