@@ -39,6 +39,10 @@ class TranslationKey extends Model {
   hasMissingTranslations: boolean
 
   async hasMissingTranslations() {
+    if (!this.id || this.newKey) {
+      return false
+    }
+
     const expectedTranslationValuesCount = await Locale.query()
       .join('projects_locales as pl', 'locales.id', 'pl.localeId')
       .join('projects as p', 'pl.projectId', 'p.id')

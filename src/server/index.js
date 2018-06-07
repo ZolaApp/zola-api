@@ -5,7 +5,12 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
-import { GRAPHQL_PATH, GRAPHIQL_PATH, CDN_PATH } from '@constants/routes'
+import {
+  GRAPHQL_PATH,
+  GRAPHIQL_PATH,
+  CDN_DOWNLOAD_PATH,
+  CDN_PATH
+} from '@constants/routes'
 import schema from '@api/schema'
 import authMiddleware from '@server/middlewares/auth'
 import cdnRoute from '@cdn/index'
@@ -34,7 +39,7 @@ export default (): express$Application => {
     }))
   )
 
-  app.get(`${CDN_PATH}/download`, cdnRoute)
+  app.get(CDN_DOWNLOAD_PATH, cdnRoute)
   app.get(CDN_PATH, cdnRoute)
 
   if (process.env.NODE_ENV !== 'production') {
