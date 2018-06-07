@@ -53,7 +53,8 @@ class Project extends Model {
   description: string
   owner: User
   locales: Array<Locale>
-  translationKeys: TranslationKeyPage
+  translationKeyPage: TranslationKeyPage
+  translationKeys: Array<TranslationKey>
   stats: Stats
   cdnToken: string
 
