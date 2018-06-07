@@ -39,7 +39,7 @@ class TranslationKey extends Model {
   hasMissingTranslations: boolean
 
   async hasMissingTranslations() {
-    if (!this.id || this.newKey) {
+    if (!this.id || this.isNew) {
       return false
     }
 
