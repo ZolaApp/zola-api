@@ -7,7 +7,7 @@ services:
     ports:
       - "127.0.0.1:3001:3001"
     links:
-      - "postgres:postgres.host"
+      - "zola-postgres:postgres.host"
     volumes:
       - "${APP_DIR}:/zola-api:rw"
     environment:
