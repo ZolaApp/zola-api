@@ -1,6 +1,6 @@
 version: '3'
 services:
-  api-node:
+  zola-api:
     image: node:9@sha256:81ebac40ce2e25fd348b332623a57dc6182c61e3170612be8de2655beb8a84c3
     container_name: "zola-api"
     working_dir: /zola-api
@@ -26,7 +26,7 @@ services:
         syslog-facility: "local0"
         tag: "zola-api"
 
-  app-node:
+  zola-app:
     image: node:9@sha256:81ebac40ce2e25fd348b332623a57dc6182c61e3170612be8de2655beb8a84c3
     container_name: "zola-app"
     working_dir: /zola-api
@@ -46,7 +46,7 @@ services:
         syslog-facility: "local0"
         tag: "zola-app"
 
-  postgres:
+  zola-postgres:
     image: postgres:10@sha256:852dd8150c5ea73015cf2c9c601de07113c31b3272628f9a945d46c7d960004d
     container_name: "zola-postgres"
     ports:
