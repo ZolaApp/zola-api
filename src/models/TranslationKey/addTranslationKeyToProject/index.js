@@ -52,19 +52,22 @@ const addTranslationKeyToProject = async ({
     await TranslationKey.query().insertGraph(translationKey, { relate: true })
 
     return { errors }
-  } catch (err) {
-    if (err.routine === DUPLICATE_ENTRY_ERROR_TYPE) {
-      return {
-        errors: [
-          {
-            field: 'key',
-            message: `A key with value "${key}" already exists for this project`
-          }
-        ]
-      }
+  } catch (error) {
+    if (error.routine === DUPLICATE_ENTRY_ERROR_TYPE) {
+      errors.push({
+        field: 'key',
+        message: `A key with value "${key}" already exists for this project`
+      })
+
+      return { errors }
     }
 
-    throw new Error('Something went wrong while adding this key to the project')
+    errors.push({
+      field: 'generic',
+      message: error.message
+    })
+
+    return { errors }
   }
 }
 
