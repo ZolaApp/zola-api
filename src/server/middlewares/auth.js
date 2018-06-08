@@ -36,7 +36,7 @@ const auth: express$Middleware = async (
     return next()
   }
 
-  return response.status(403).send(AUTHENTICATION_ERROR_INVALID_LOGIN)
+  return response.status(401).send(AUTHENTICATION_ERROR_INVALID_LOGIN)
 }
 
 export default auth
