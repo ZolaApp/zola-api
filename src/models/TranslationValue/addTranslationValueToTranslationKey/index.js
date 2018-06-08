@@ -24,7 +24,6 @@ const addTranslationValueToTranslationKey = async ({
   AddTranslationValueToTranslationKeyResponse
 > => {
   const errors: Array<ValidationError> = []
-
   const translationKey: TranslationKey = await TranslationKey.query()
     .eager('project')
     .findById(translationKeyId)
