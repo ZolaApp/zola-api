@@ -86,8 +86,10 @@ const addTranslationValueToTranslationKey = async ({
       .eager('translationValues.locale')
 
     return { errors }
-  } catch (err) {
-    throw new Error(`Something went wrong while adding this value to the key`)
+  } catch (error) {
+    errors.push({ field: 'generic', message: error.message })
+
+    return { errors }
   }
 }
 

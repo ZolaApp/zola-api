@@ -52,11 +52,17 @@ const resolver = async (
 
   let token = await retrieveToken(user)
 
-  if (token === null) {
-    token = await createToken(user)
-  }
+  try {
+    if (token === null) {
+      token = await createToken(user)
+    }
 
-  return { status: 'SUCCESS', token: token.token, errors }
+    return { status: 'SUCCESS', token: token.token, errors }
+  } catch (error) {
+    errors.push({ field: 'generic', message: error.message })
+
+    return { status: 'FAILURE', errors }
+  }
 }
 
 export default resolver

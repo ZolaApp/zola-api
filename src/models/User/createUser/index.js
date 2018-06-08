@@ -99,17 +99,23 @@ const createUser = async ({
     return { errors }
   }
 
-  // Saving user
-  const passwordHash: string = await bcrypt.hash(passwordPlain, 10)
-  const user = await User.query().insertAndFetch({
-    firstName: trimmedFirstName,
-    lastName: trimmedLastName,
-    job: trimmedJob,
-    email: normalizedEmail,
-    passwordHash
-  })
+  try {
+    // Saving user
+    const passwordHash: string = await bcrypt.hash(passwordPlain, 10)
+    const user = await User.query().insertAndFetch({
+      firstName: trimmedFirstName,
+      lastName: trimmedLastName,
+      job: trimmedJob,
+      email: normalizedEmail,
+      passwordHash
+    })
 
-  return { user, errors: [] }
+    return { user, errors: [] }
+  } catch (error) {
+    errors.push({ field: 'generic', message: error.message })
+
+    return { errors }
+  }
 }
 
 export default createUser
