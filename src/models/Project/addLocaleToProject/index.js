@@ -3,6 +3,7 @@ import Project from '@models/Project'
 import Locale from '@models/Locale'
 import type { ValidationError } from '@types/ValidationError'
 import prefillTranslationsValues from '@models/TranslationValue/prefillTranslationsValues'
+import { DUPLICATE_ENTRY_ERROR_TYPE } from '@constants/errors'
 
 export type AddLocaleToProjectArgs = {
   projectId: string,
@@ -51,6 +52,17 @@ const addLocaleToProject = async ({
 
     return { errors }
   } catch (error) {
+    if (error.routine === DUPLICATE_ENTRY_ERROR_TYPE) {
+      errors.push({
+        field: 'key',
+        message: `The locale "${
+          locale.code
+        }" is already activated for this project`
+      })
+
+      return { errors }
+    }
+
     errors.push({ field: 'generic', message: error.message })
 
     return { errors }
