@@ -3,6 +3,7 @@ import Translate from '@google-cloud/translate'
 import Project from '@models/Project'
 import Locale from '@models/Locale'
 import TranslationValue from '@models/TranslationValue'
+import supportedLocales from './supportedLocales'
 
 const translate = new Translate({ key: process.env.TRANSLATE_API_KEY })
 
@@ -20,7 +21,15 @@ const prefillTranslationsValues = async (
     return translationValue ? translationValue.value : ''
   })
 
-  const targetLanguage = newLocale.code
+  const targetLanguage = newLocale.code.toLowerCase()
+  const isLocaleSupported = supportedLocales.has(targetLanguage.toLowerCase())
+
+  if (!isLocaleSupported) {
+    throw new Error(
+      'Sorry! We do not provide translations prefilling for this locale yet…'
+    )
+  }
+
   const translatedValues = await translate.translate(
     stringsToBeTranslated,
     targetLanguage
