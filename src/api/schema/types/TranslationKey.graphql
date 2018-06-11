@@ -7,11 +7,6 @@ type TranslationKey {
   hasMissingTranslations: Boolean
 }
 
-type AddTranslationValueToTranslationKeyResponse {
-  status: ResponseStatus!
-  errors: [ValidationError]!
-}
-
 type TranslationKeyPage {
   pageSize: Int!
   page: Int!
@@ -19,6 +14,16 @@ type TranslationKeyPage {
   nextPage: Int
   totalCount: Int
   translationKeys: [TranslationKey]
+}
+
+type AddTranslationValueToTranslationKeyResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+}
+
+type PrefillTranslationValueResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
 }
 
 type DeleteTranslationKeyResponse {
@@ -32,6 +37,12 @@ extend type Mutation {
     translationKeyId: ID!
     localeId: ID!
   ): AddTranslationValueToTranslationKeyResponse
+
+  prefillTranslationValue(
+    value: String
+    translationKeyId: ID!
+    localeId: ID!
+  ): PrefillTranslationValueResponse
 
   deleteTranslationKey(translationKeyId: ID!): DeleteTranslationKeyResponse
 }
