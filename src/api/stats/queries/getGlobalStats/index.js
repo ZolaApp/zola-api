@@ -62,7 +62,7 @@ const resolver = async (_: any, args: any, { request }: Context) => {
   )
 
   const actualNumberOfValues = Number(
-    totalTranslationKeysCount - totalMissingTranslationsCount
+    totalExpectedValues - totalMissingTranslationsCount
   )
   const completePercentage = Number(
     Math.round((actualNumberOfValues / totalExpectedValues) * 100)
