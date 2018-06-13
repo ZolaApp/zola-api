@@ -9,11 +9,12 @@ import {
   GRAPHQL_PATH,
   GRAPHIQL_PATH,
   CDN_DOWNLOAD_PATH,
-  CDN_PATH
+  CDN_PATH,
+  CDN_LOCALES_PATH
 } from '@constants/routes'
 import schema from '@api/schema'
 import authMiddleware from '@server/middlewares/auth'
-import cdnRoute from '@cdn/index'
+import { cdnRoute, cdnLocaleRoute } from '@cdn/index'
 
 export default (): express$Application => {
   const app = express()
@@ -39,6 +40,7 @@ export default (): express$Application => {
     }))
   )
 
+  app.get(CDN_LOCALES_PATH, cdnLocaleRoute)
   app.get(CDN_DOWNLOAD_PATH, cdnRoute)
   app.get(CDN_PATH, cdnRoute)
 
