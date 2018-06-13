@@ -1,0 +1,48 @@
+type TranslationKey {
+  id: ID
+  key: String
+  project: Project
+  translationValues: [TranslationValue]
+  isNew: Boolean
+  hasMissingTranslations: Boolean
+}
+
+type TranslationKeyPage {
+  pageSize: Int!
+  page: Int!
+  previousPage: Int
+  nextPage: Int
+  totalCount: Int
+  translationKeys: [TranslationKey]
+}
+
+type AddTranslationValueToTranslationKeyResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+}
+
+type PrefillTranslationValueResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+}
+
+type DeleteTranslationKeyResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+}
+
+extend type Mutation {
+  addTranslationValueToTranslationKey(
+    value: String
+    translationKeyId: ID!
+    localeId: ID!
+  ): AddTranslationValueToTranslationKeyResponse
+
+  prefillTranslationValue(
+    value: String
+    translationKeyId: ID!
+    localeId: ID!
+  ): PrefillTranslationValueResponse
+
+  deleteTranslationKey(translationKeyId: ID!): DeleteTranslationKeyResponse
+}

@@ -1,6 +1,28 @@
 {
   "plugins": [
-    "transform-strict-mode",
-    "transform-flow-strip-types"
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./"
+        ],
+        "alias": {
+          "@api": "./src/api",
+          "@constants": "./src/constants",
+          "@database": "./src/database",
+          "@helpers": "./src/helpers",
+          "@models": "./src/models",
+          "@server": "./src/server",
+          "@tests": "./src/tests",
+          "@types": "./src/types",
+          "@cdn": "./src/cdn"
+        }
+      }
+    ],
+    "transform-es2015-modules-commonjs",
+    "transform-object-rest-spread",
+    "transform-class-properties",
+    "transform-flow-strip-types",
+    "inline-import-graphql-ast"
   ]
 }

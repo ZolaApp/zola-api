@@ -1,0 +1,12 @@
+type Stats {
+  completePercentage: Int
+  newKeysCount: Int
+  missingTranslationsCount: Int
+  translationKeysCount: Int
+  localesCount: Int
+  projectsCount: Int
+}
+
+extend type Query {
+  getGlobalStats: Stats
+}

@@ -1,0 +1,65 @@
+version: '3'
+services:
+  zola-api:
+    image: node:9@sha256:a18dcc02ca8e3eedd1b41a4085c3c506d785081e19c88df42f1c0c2ecdb098fc
+    container_name: "zola-api"
+    working_dir: /zola-api
+    ports:
+      - "127.0.0.1:3001:3001"
+    links:
+      - "zola-postgres:postgres.host"
+    volumes:
+      - "${APP_DIR}:/zola-api:rw"
+    environment:
+      - NODE_ENV
+      - NO_DEBUG
+      - PORT
+      - POSTGRES_HOST
+      - POSTGRES_DATABASE
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    entrypoint: /bin/bash /zola-api/docker/node/entrypoint-api.sh
+    restart: always
+    logging:
+      driver: "syslog"
+      options:
+        syslog-facility: "local0"
+        tag: "zola-api"
+
+  zola-app:
+    image: node:9@sha256:a18dcc02ca8e3eedd1b41a4085c3c506d785081e19c88df42f1c0c2ecdb098fc
+    container_name: "zola-app"
+    working_dir: /zola-api
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - "${APP_DIR}:/zola-api:rw"
+      - "${FRONT_DIR}:/zola-app:rw"
+    environment:
+      - NODE_ENV
+      - NO_DEBUG
+    entrypoint: /bin/bash /zola-api/docker/node/entrypoint-app.sh
+    restart: always
+    logging:
+      driver: "syslog"
+      options:
+        syslog-facility: "local0"
+        tag: "zola-app"
+
+  zola-postgres:
+    image: postgres:10@sha256:852dd8150c5ea73015cf2c9c601de07113c31b3272628f9a945d46c7d960004d
+    container_name: "zola-postgres"
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - "${POSTGRES_DATA_DIR}:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_DATABASE
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    logging:
+      driver: "syslog"
+      options:
+        syslog-facility: "local0"
+        tag: "zola-postgres"

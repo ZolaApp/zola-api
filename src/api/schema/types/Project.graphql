@@ -1,0 +1,57 @@
+type Project {
+  id: ID
+  createdAt: Date
+  updatedAt: Date
+  ownerId: ID
+  name: String
+  slug: String
+  description: String
+  cdnToken: String
+  locales: [Locale]
+  translationKeyPage: TranslationKeyPage
+  stats: Stats
+}
+
+type CreateProjectResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+  project: Project
+}
+
+type AddLocaleToProjectResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+}
+
+type AddTranslationKeyToProjectResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+}
+
+extend type Mutation {
+  createProject(
+    name: String!
+    defaultLocaleId: ID!
+    description: String
+  ): CreateProjectResponse
+  addLocaleToProject(
+    projectId: ID!
+    localeId: ID!
+    shouldPrefillTranslations: Boolean!
+  ): AddLocaleToProjectResponse
+  addTranslationKeyToProject(
+    projectId: ID!
+    key: String
+  ): AddTranslationKeyToProjectResponse
+}
+
+extend type Query {
+  getProjects: [Project]
+  getProject(
+    projectSlug: String!
+    pageSize: Int
+    page: Int
+    filters: [String]
+    search: String
+  ): Project
+}

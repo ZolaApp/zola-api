@@ -1,0 +1,38 @@
+type User {
+  id: ID
+  createdAt: Date
+  updatedAt: Date
+  firstName: String
+  lastName: String
+  fullName: String
+  job: String
+  email: String
+}
+
+type CreateUserResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+  user: User
+}
+
+type LoginUserResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+  token: String
+}
+
+extend type Mutation {
+  createUser(
+    firstName: String!
+    lastName: String!
+    job: String!
+    email: String!
+    passwordPlain: String!
+    passwordConfirmation: String!
+  ): CreateUserResponse
+  loginUser(email: String!, password: String!): LoginUserResponse
+}
+
+extend type Query {
+  getUser: User
+}
