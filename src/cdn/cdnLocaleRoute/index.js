@@ -21,7 +21,7 @@ export default async (
     .where('p.id', '=', project.id)
 
   if (!locales) {
-    return response.status(404).send('This project has no locales activated')
+    return response.send(JSON.stringify(resultLocales))
   }
 
   locales.forEach(locale => {
