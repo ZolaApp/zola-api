@@ -1,8 +1,8 @@
 version: '3'
 services:
-  nodejs:
+  zola-api:
     image: node:9@sha256:a18dcc02ca8e3eedd1b41a4085c3c506d785081e19c88df42f1c0c2ecdb098fc
-    container_name: "zola-node"
+    container_name: "zola-api"
     working_dir: /zola-api
     ports:
       - "3001:3001"
@@ -25,7 +25,7 @@ services:
     #     syslog-facility: "local0"
     #     tag: "zola-node"
 
-  postgres:
+  zola-postgres:
     image: postgres:10@sha256:e033c99282a81622b1eed36b735034e10d633a34cca3387f6142381770cfbcc8
     container_name: "zola-postgres"
     ports:
