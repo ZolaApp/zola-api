@@ -2,12 +2,12 @@
 
 [Zola Api](https://github.com/ZolaApp/zola-api) is the source code for Zola’s api, [https://api.zola.ink](https://api.zola.ink).
 
-The API is a GraphQL API, the full schema and types definitions can be explored using graphiql.
+The API is a GraphQL API, the full schema and types definitions can be explored using [graphiql](https://api.zola.ink/graphiql).
 
 # Meta
 
 - **Production:** [https://api.zola.ink](https://api.zola.ink)
-- **Staging:** [https://zola-api-preprod.herokuapp.com/](http://zola-api-preprod.herokuapp.com/)
+- **Staging:** [https://zola-api-preprod.herokuapp.com/](https://zola-api-preprod.herokuapp.com/)
 - **Github:** [https://github.com/ZolaApp/zola-api](https://github.com/ZolaApp/zola-api)
 - **Deploys:** merged PRs to `develop` are automatically deployed to staging; merged PRs from `develop` to `master` are automatically deployed to production.
 - **Explore the schema using GraphiQL:** [https://api.zola.ink/graphiql](https://api.zola.ink/graphiql)
@@ -20,7 +20,7 @@ Copy the `.env.dist` file to `.env` and run:
 $ npm install
 $ npm run dev
 
-✨Zola app running on port 3001. ✨
+✨Zola API running on port 3001. ✨
 ```
 
 You can use a custom port using the `PORT` environment variable.
