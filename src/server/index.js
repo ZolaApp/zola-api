@@ -44,9 +44,8 @@ export default (): express$Application => {
   app.get(CDN_DOWNLOAD_PATH, cdnRoute)
   app.get(CDN_PATH, cdnRoute)
 
-  if (process.env.NODE_ENV !== 'production') {
-    app.get(GRAPHIQL_PATH, graphiqlExpress({ endpointURL: GRAPHQL_PATH }))
-  }
+  // Enable GraphiQL in prod env to allow schema exploration
+  app.get(GRAPHIQL_PATH, graphiqlExpress({ endpointURL: GRAPHQL_PATH }))
 
   return app
 }
