@@ -1,3 +1,4 @@
+# Translation key object
 type TranslationKey {
   id: ID
   key: String
@@ -7,6 +8,7 @@ type TranslationKey {
   hasMissingTranslations: Boolean
 }
 
+# Translation keys paginated object
 type TranslationKeyPage {
   pageSize: Int!
   page: Int!
@@ -32,17 +34,20 @@ type DeleteTranslationKeyResponse {
 }
 
 extend type Mutation {
+  # Add a new translation value for a locale to a translation key
   addTranslationValueToTranslationKey(
     value: String
     translationKeyId: ID!
     localeId: ID!
   ): AddTranslationValueToTranslationKeyResponse
 
+  # Fetch automatic translation for a given key and locale
   prefillTranslationValue(
     value: String
     translationKeyId: ID!
     localeId: ID!
   ): PrefillTranslationValueResponse
 
+  # Delete a translation key
   deleteTranslationKey(translationKeyId: ID!): DeleteTranslationKeyResponse
 }

@@ -1,3 +1,4 @@
+# Stats object
 type Stats {
   completePercentage: Int
   newKeysCount: Int
@@ -8,5 +9,6 @@ type Stats {
 }
 
 extend type Query {
+  # Get global stats (stats on all projects)
   getGlobalStats: Stats
 }

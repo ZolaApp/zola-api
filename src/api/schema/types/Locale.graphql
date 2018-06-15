@@ -1,3 +1,4 @@
+# Locale object
 type Locale {
   id: ID
   name: String
@@ -7,5 +8,6 @@ type Locale {
 }
 
 extend type Query {
+  # Get all available locales
   getLocales: [Locale]
 }

@@ -1,3 +1,4 @@
+# Project object
 type Project {
   id: ID
   createdAt: Date
@@ -29,16 +30,21 @@ type AddTranslationKeyToProjectResponse {
 }
 
 extend type Mutation {
+  # Create a new project
   createProject(
     name: String!
     defaultLocaleId: ID!
     description: String
   ): CreateProjectResponse
+
+  # Add a locale to a project
   addLocaleToProject(
     projectId: ID!
     localeId: ID!
     shouldPrefillTranslations: Boolean!
   ): AddLocaleToProjectResponse
+
+  # Add a new translation key to a project
   addTranslationKeyToProject(
     projectId: ID!
     key: String
@@ -46,7 +52,10 @@ extend type Mutation {
 }
 
 extend type Query {
+  # Get all available projects
   getProjects: [Project]
+
+  # Get a single project
   getProject(
     projectSlug: String!
     pageSize: Int

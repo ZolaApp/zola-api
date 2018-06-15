@@ -1,3 +1,4 @@
+# User object
 type User {
   id: ID
   createdAt: Date
@@ -22,6 +23,7 @@ type LoginUserResponse {
 }
 
 extend type Mutation {
+  # Sign up mutation
   createUser(
     firstName: String!
     lastName: String!
@@ -30,9 +32,12 @@ extend type Mutation {
     passwordPlain: String!
     passwordConfirmation: String!
   ): CreateUserResponse
+
+  # Login mutation
   loginUser(email: String!, password: String!): LoginUserResponse
 }
 
 extend type Query {
+  # Get current user profile
   getUser: User
 }
