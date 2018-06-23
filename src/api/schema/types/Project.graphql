@@ -29,6 +29,11 @@ type AddTranslationKeyToProjectResponse {
   errors: [ValidationError]!
 }
 
+type AddTranslationKeysToProjectResponse {
+  status: ResponseStatus!
+  errors: [ValidationError]!
+}
+
 extend type Mutation {
   # Create a new project
   createProject(
@@ -49,6 +54,12 @@ extend type Mutation {
     projectId: ID!
     key: String
   ): AddTranslationKeyToProjectResponse
+
+  # Add an array of new translation keys to a project
+  addTranslationKeysToProject(
+    projectId: ID!
+    keys: [String]
+  ): AddTranslationKeysToProjectResponse
 }
 
 extend type Query {
