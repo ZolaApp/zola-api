@@ -126,7 +126,8 @@ class Project extends Model {
     )
 
     return new Stats({
-      missingTranslationsCount,
+      missingTranslationsCount:
+        missingTranslationsCount < 0 ? 0 : missingTranslationsCount,
       newKeysCount,
       completePercentage,
       translationKeysCount,
