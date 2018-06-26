@@ -69,7 +69,8 @@ const resolver = async (_: any, args: any, { request }: Context) => {
   )
 
   const stats = new Stats({
-    missingTranslationsCount: totalMissingTranslationsCount,
+    missingTranslationsCount:
+      totalMissingTranslationsCount > 0 ? totalMissingTranslationsCount : 0,
     newKeysCount: totalNewKeysCount,
     completePercentage: completePercentage || 0,
     translationKeysCount: totalTranslationKeysCount,
